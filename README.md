@@ -1,4 +1,4 @@
-# QuditsTeam
+# QISKIT FOR HIGH DIMENSIONAL MULTIPARTITE QUANTUM STATES
 Repository for Qudits team for IBM Hackathon
 
 We aim to extend QiSkit's versatility to higher dimensional multipartite quantum states, ie, qudits, allowing access to the complex entanglement structure of various quantum systems. We test our idea for a family of graph states with applications in quantum cryptography, quantum communication, quantum simulation and quantum error correction.
