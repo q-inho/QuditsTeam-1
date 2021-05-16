@@ -8,4 +8,10 @@ We propose to add to QiSkit the capacity to handle qudits following two approach
 1. In the Schrödinger picture; remapping d-dimension qudits to ⌈log₂(d)⌉ qubits, and find the decomposition of qudits gates into qubit gates. 
 2. In the Heisenberg picture; using generalized Pauli matrices to write a simulator handling directly gates acting on qudits.
 
-Team members: Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien
+## Team members
+
+Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien
+
+## License
+
+[Apache License 2.0](LICENSE.txt)
