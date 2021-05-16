@@ -34,6 +34,7 @@ class Qudit(Qubit):
 
     def __init__(self, dimension, qubits, register=None, index=None):
         """Creates a qudit.
+
         Args:
             dimension (int): Dimension of the qudit
             qubits (list): List of Qubits representing the qudit.
@@ -157,11 +158,9 @@ class QuditQuantumRegister(QuantumRegister):
     def __init__(self, dimensions, name=None):
         """Create a new register for qudits.
 
-        bla
-
         Args:
-            dimensions (int, list[int], dict[int: int]): Either an int describing
-                the dimension of a single qudit or a list of int with dimensions of
+            dimensions (int, list[int], dict[int: int]): Either an int as a number
+                of 2 dimensional qudits (qubit) or a list of int with dimensions of
                 multiple qudits in order or a dictionary containing the
                 dimensions as keys and corresponding qudit counts as values.
             name (str): Optional. The name of the register. If not provided, a
@@ -172,7 +171,7 @@ class QuditQuantumRegister(QuantumRegister):
         """
 
         if isinstance(dimensions, int):
-            dimensions = [dimensions]
+            dimensions = [2 for _ in range(dimensions)]
         if isinstance(dimensions, dict):
             dimensions = [dimension for dimension in dimensions
                           for _ in range(dimensions[dimension])]
