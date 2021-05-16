@@ -1,4 +1,4 @@
-# This code is from Qiskit Hackathon 2021 by the Team
+# This code is from Qiskit Hackathon 2021 by the team
 # Qiskit for high dimensional multipartite quantum states.
 # It is a modified version of quantumregister.py from the original Qiskit-Terra code.
 #
