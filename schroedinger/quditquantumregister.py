@@ -2,7 +2,7 @@
 # Qiskit for high dimensional multipartite quantum states.
 # It is a modified version of quantumregister.py from the original Qiskit-Terra code.
 #
-# (C) Copyright Qiskit Hackathon 2021.
+# (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
