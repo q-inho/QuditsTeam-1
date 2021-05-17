@@ -27,7 +27,7 @@ def dLvlSwap(circuit,x,y,d):
             circuit.x(n-i)
             
 def dFourier(circuit,d):
-    n=int(np.ceil(np.log2(d)))
+    n=int(np.ceil(np.log2(d)))-1  #start from 0
     for i in range(0,n):
         circuit.cp(np.pi/2**(n-i), i, n)
         
