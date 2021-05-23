@@ -80,8 +80,7 @@ class QuditInstruction(Instruction):
                 "Qudit dimension must be 2 or higher."
             )
 
-        # sorted for comparisons
-        self.qudit_dimensions = sorted(qudit_dimensions)
+        self.qudit_dimensions = qudit_dimensions
         super().__init__(name, *args, **kwargs)
 
     def __eq__(self, other):
@@ -94,7 +93,8 @@ class QuditInstruction(Instruction):
         Returns:
             bool: are self and other equal.
         """
-        if type(self) is not type(other) or self.qudit_dimensions != other.qudit_dimensions:
+        if type(self) is not type(other) or \
+                sorted(self.qudit_dimensions) != sorted(other.qudit_dimensions):
             return False
         return super().__eq__(other)
 
@@ -111,7 +111,8 @@ class QuditInstruction(Instruction):
         Returns:
             bool: are self and other equal up to parameter expressions.
         """
-        if type(self) is not type(other) or self.qudit_dimensions != other.qudit_dimensions:
+        if type(self) is not type(other) or \
+                sorted(self.qudit_dimensions) != sorted(other.qudit_dimensions):
             return False
         return super().soft_compare(other)
 
