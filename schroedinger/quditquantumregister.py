@@ -11,14 +11,28 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+#
+###############################################################################
+#
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+#
+###############################################################################
 
 """
 Qudit and qudit register reference object.
 """
 
-import itertools
 from numpy import ceil, log2, integer
-
 from qiskit.circuit.quantumregister import QuantumRegister, Qubit
 from qiskit.circuit.exceptions import CircuitError
 
@@ -148,59 +162,59 @@ class QuditQuantumRegister(QuantumRegister):
 
     __slots__ = ["_qdsize", "_qudits"]
 
-    # Counter for the number of instances in this class.
-    instances_counter = itertools.count()
     # Prefix to use for auto naming.
     prefix = "qd"
     # bit_type is not set and inherited as qubit to
     # use bit_type constructor of super class
 
-    def __init__(self, dimensions, name=None):
+    def __init__(self, qudit_dimensions, name=None):
         """Create a new register for qudits.
 
         Args:
-            dimensions (int, list[int], dict[int: int]): Either an int as a number
-                of 2 dimensional qudits (qubit) or a list of int with dimensions of
+            qudit_dimensions (int, list[int], dict[int: int]): Either an int as a number
+                of 2 dimensional qudits (qubit) or a list of int with qudit_dimensions of
                 multiple qudits in order or a dictionary containing the
-                dimensions as keys and corresponding qudit counts as values.
+                qudit_dimensions as keys and corresponding qudit counts as values.
             name (str): Optional. The name of the register. If not provided, a
                unique name will be auto-generated from the register type.
         Raises:
-            TypeError: If ``dimensions`` has an incorrect type.
-            CircuitError: If a dimension in ``dimensions`` is smaller than two.
+            TypeError: If ``qudit_dimensions`` has an incorrect type.
+            CircuitError: If a dimension in ``qudit_dimensions`` is smaller than two.
         """
 
-        if isinstance(dimensions, int):
-            dimensions = [2 for _ in range(dimensions)]
-        if isinstance(dimensions, dict):
-            dimensions = [dimension for dimension in dimensions
-                          for _ in range(dimensions[dimension])]
-        if not isinstance(dimensions, list) or \
-                any(not isinstance(dimension, int) for dimension in dimensions):
+        if isinstance(qudit_dimensions, int):
+            qudit_dimensions = [2 for _ in range(qudit_dimensions)]
+        if isinstance(qudit_dimensions, dict):
+            #  [{3:2, 4:3}] -> [3,3,4,4,4]
+            qudit_dimensions = [dimension for dimension in qudit_dimensions
+                                for _ in range(qudit_dimensions[dimension])]
+        if not isinstance(qudit_dimensions, list) or \
+                any(not isinstance(dimension, int) for dimension in qudit_dimensions):
             raise TypeError(
-                "Dimensions must either be the dimension for a single qudit (as an int) "
-                "or a list of dimensions of qudits or a dictionary containing the"
-                "the dimensions as keys and corresponding qudit counts as values"
+                "qudit_dimensions must either be the dimension for a single qudit (as an int) "
+                "or a list of qudit_dimensions of qudits or a dictionary containing the"
+                "the qudit_dimensions as keys and corresponding qudit counts as values."
             )
-        if any(d < 2 for d in dimensions):
+        if any(d < 2 for d in qudit_dimensions):
             raise CircuitError(
-                "Qudit dimension must be 2 or higher"
+                "Qudit dimension must be 2 or higher."
             )
 
-        qubit_counts = [int(ceil(log2(dimension))) for dimension in dimensions]
+        qubit_counts = [int(ceil(log2(dimension))) for dimension in qudit_dimensions]
         super().__init__(sum(qubit_counts), name)
 
-        self._qdsize = len(dimensions)
+        self._qdsize = len(qudit_dimensions)
         self._qudits = []
         for idx in range(self._qdsize):
 
             self._qudits.append(
                 # Each qudit gets a partial and disjoint list of
                 # all qubits with the length according to the dimension
-                Qudit(dimensions[idx],
+                Qudit(qudit_dimensions[idx],
                       self[sum(qubit_counts[:idx]): sum(qubit_counts[:idx + 1])],
                       self,
-                      idx)
+                      idx
+                )
             )
 
     @property
@@ -250,8 +264,6 @@ class AncillaQudit(Qudit):
 class AncillaQuditRegister(QuditQuantumRegister):
     """Implement an ancilla register for qudits."""
 
-    # Counter for the number of instances in this class.
-    instances_counter = itertools.count()
     # Prefix to use for auto naming.
     prefix = "ad"
     bit_type = AncillaQudit
