@@ -80,7 +80,8 @@ class QuditInstruction(Instruction):
                 "Qudit dimension must be 2 or higher."
             )
 
-        self.qudit_dimensions = qudit_dimensions
+        # sorted for comparisons
+        self.qudit_dimensions = sorted(qudit_dimensions)
         super().__init__(name, *args, **kwargs)
 
     def __eq__(self, other):

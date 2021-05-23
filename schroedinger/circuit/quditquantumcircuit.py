@@ -128,6 +128,7 @@ class QuditQuantumCircuit(QuantumCircuit):
 
     # TODO: work progress up to here
     # TODO: overwrite methods or rename to qd... (also in QuditInstruction, QuditQuantumCircuitData?
+    # TODO: comment where qd... is needed and why (per class basis)
     # TODO: Shorten classes QuditQuantum... -> Qudit...
 
     @property
