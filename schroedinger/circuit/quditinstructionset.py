@@ -31,7 +31,7 @@
 """
 QuditInstruction collection.
 """
-from qiskit.circuit.exceptions import CircuitError
+from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.instructionset import InstructionSet
 
 from .quditinstruction import QuditInstruction
@@ -49,11 +49,17 @@ class QuditInstructionSet(InstructionSet):
         self.qdargs = []
         super().__init__()
 
-    def add(self, gate, qdargs, qargs, cargs):
-        """Add an qudit instruction and its context (where it is attached)."""
-        if not isinstance(gate, QuditInstruction):
-            raise CircuitError("attempt to add non-QuditInstruction to QuditInstructionSet")
-        self.instructions.append(gate)
-        self.qdargs.append(qdargs)
-        self.qargs.append(qargs)
-        self.cargs.append(cargs)
+    def add(self, instruction, qdargs, qargs, cargs):
+        """Add an instruction and its context (where it is attached).
+
+        Args:
+            instruction (Instruction): Any Instruction instance.
+            qdargs (List): List of d-dimensional quantum bit arguments.
+            qargs (List): List of quantum bit arguments.
+            cargs (List): List of classical bit arguments.
+        """
+        super.add(instruction, qargs, cargs)
+        if isinstance(instruction, QuditInstruction):
+            self.qdargs.append(qdargs)
+        else:
+            self.qdargs.append([])
