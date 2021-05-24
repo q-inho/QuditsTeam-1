@@ -32,7 +32,7 @@
 Qudit and qudit register reference object.
 """
 
-from numpy import ceil, log2, integer
+import numpy as np
 from qiskit.circuit.quantumregister import QuantumRegister, Qubit
 from qiskit.circuit.exceptions import CircuitError
 
@@ -44,7 +44,7 @@ class Qudit(Qubit):
     which are referenced by an internal list.
     """
 
-    __slots__ = ["_dimension", "_qubit_count", "_qubits"]
+    __slots__ = ["_dimension", "_size", "_qubits"]
 
     def __init__(self, dimension, qubits, register=None, index=None):
         """Creates a qudit.
@@ -52,7 +52,7 @@ class Qudit(Qubit):
         Args:
             dimension (int): Dimension of the qudit
             qubits (list): List of Qubits representing the qudit.
-            register (QuditQuantumRegister): Optional.
+            register (QuditRegister): Optional.
                 A qudit register containing the bit.
             index (int): Optional. The index of the first qudit in its register.
         Raises:
@@ -81,11 +81,11 @@ class Qudit(Qubit):
             raise TypeError(
                 "only a list of Qubit instances is accepted for qubits argument"
             )
-        self._qubit_count = len(qubits)
+        self._size = len(qubits)
         self._qubits = qubits
 
-        if register is None or isinstance(register, QuditQuantumRegister):
-            # Super class will only check if index is within size of QuditQuantumRegister
+        if register is None or isinstance(register, QuditRegister):
+            # Super class will only check if index is within size of QuditRegister
             # which is not the number of qudits in the register, but the number of qubits
             # representing them.
             try:
@@ -104,7 +104,7 @@ class Qudit(Qubit):
             super().__init__(register, index)
         else:
             raise CircuitError(
-                f"Qudit needs a QuditQuantumRegister and {type(register)} was provided"
+                f"Qudit needs a QuditRegister and {type(register)} was provided"
             )
 
     @property
@@ -113,13 +113,13 @@ class Qudit(Qubit):
         return self._dimension
 
     @property
-    def qubit_count(self):
+    def size(self):
         """Return number of qubits representing this qudit."""
-        return self._qubit_count
+        return self._size
 
     def __len__(self):
         """Return number of qubits representing this qudit."""
-        return self._qubit_count
+        return self._size
 
     def __getitem__(self, key):
         """
@@ -132,7 +132,7 @@ class Qudit(Qubit):
             CircuitError: If the `key` is not an integer.
             QiskitIndexError: If the `key` is not in the range `(0, self.qubit_count)`.
         """
-        if not isinstance(key, (int, integer, slice, list)):
+        if not isinstance(key, (int, np.integer, slice, list)):
             raise CircuitError("expected integer or slice index into qubits")
         if isinstance(key, slice):
             return self._qubits[key]
@@ -146,14 +146,14 @@ class Qudit(Qubit):
 
     def __iter__(self):
         """Iterates through Qubits of the Qudit."""
-        for idx in range(self._qubit_count):
+        for idx in range(self._size):
             yield self._qubits[idx]
 
 
-class QuditQuantumRegister(QuantumRegister):
+class QuditRegister(QuantumRegister):
     """Implement a qudit register.
 
-    A QuditQuantumRegister acts like a QuantumRegister except when addressed with
+    A QuditRegister acts like a QuantumRegister except when addressed with
     any non-inherited subclass method. As a QuantumRegister it contains Qubits used
     for the quantum circuit. Additionally Qudits are registered and can be accessed
     via the ``qdget`` or ``qditer`` method. Qudits are layered on top of their
@@ -200,7 +200,7 @@ class QuditQuantumRegister(QuantumRegister):
                 "Qudit dimension must be 2 or higher."
             )
 
-        qubit_counts = [int(ceil(log2(dimension))) for dimension in qudit_dimensions]
+        qubit_counts = [int(np.ceil(np.log2(dimension))) for dimension in qudit_dimensions]
         super().__init__(sum(qubit_counts), name)
 
         self._qdsize = len(qudit_dimensions)
@@ -214,7 +214,7 @@ class QuditQuantumRegister(QuantumRegister):
                       self[sum(qubit_counts[:idx]): sum(qubit_counts[:idx + 1])],
                       self,
                       idx
-                )
+                      )
             )
 
     @property
@@ -228,6 +228,8 @@ class QuditQuantumRegister(QuantumRegister):
 
     def qdget(self, key):
         """
+        Get single qudit at index key or list of qudits with slice as key.
+
         Arg:
             key (int or slice or list): Index of the qudit to be retrieved.
         Returns:
@@ -237,8 +239,8 @@ class QuditQuantumRegister(QuantumRegister):
             CircuitError: If the `key` is not an integer.
             QiskitIndexError: If the `key` is not in the range `(0, self.qdsize)`.
         """
-        if not isinstance(key, (int, integer, slice, list)):
-            raise CircuitError("expected integer or slice index into register")
+        if not isinstance(key, (int, np.integer, slice, list)):
+            raise CircuitError(f"Expected integer or slice index into register, got {type(key)}.")
         if isinstance(key, slice):
             return self._qudits[key]
         elif isinstance(key, list):
@@ -248,6 +250,46 @@ class QuditQuantumRegister(QuantumRegister):
                 raise CircuitError("register index out of range")
         else:
             return self._qudits[key]
+
+    def __getitem__(self, key):
+        """
+        Overwritten __getitem__ method of superclass.
+        Supports imaginary numbers (e.g. 0j) for indexing into qudits.
+
+        Arg:
+            key (int or complex or slice or list): Index of the qubit or qudit to be retrieved.
+        Returns:
+            A Qudit instance / list of Qudits if key is a purely imaginary integer / slice
+            with purely imaginary integers.
+            A Qubit instance / list of Qubits if key is a real integer / slice with real integers.
+
+        Raises:
+            TypeError: If the `key` is complex but not a purely imaginary integer.
+            TypeError: If the `key` is a slice with different index types (not regarding None).
+        """
+        if isinstance(key, complex):
+            if key.real != 0 or int(key.imag) != key.imag:
+                raise TypeError("Complex keys must be purely imaginary integers.")
+
+            return self.qdget(int(key.imag))
+
+        if isinstance(key, slice):
+            slice_types = set(type(i) for i in (key.start, key.stop, key.step) if i is not None)
+            if len(slice_types) > 1:
+                raise TypeError("All slice indices must either have the same type or be None.")
+
+            if any(type(idx) == complex for idx in (key.start, key.stop, key.step)):
+
+                if any(idx.real != 0 or int(idx.imag) != idx.imag
+                       for idx in (key.start, key.stop, key.step) if idx is not None):
+                    raise TypeError("Complex slice indices must be purely imaginary integers.")
+
+                return self.qdget(slice(
+                    *(int(idx.imag) if idx is not None else None
+                      for idx in (key.start, key.stop, key.step))
+                ))
+
+        return super().__getitem__(key)
 
     def qditer(self):
         """Iterator for the register."""
@@ -261,7 +303,7 @@ class AncillaQudit(Qudit):
     pass
 
 
-class AncillaQuditRegister(QuditQuantumRegister):
+class AncillaQuditRegister(QuditRegister):
     """Implement an ancilla register for qudits."""
 
     # Prefix to use for auto naming.

@@ -56,13 +56,14 @@ from .parametervector import ParameterVector, ParameterVectorElement
 from .instructionset import InstructionSet
 from .register import Register
 from .bit import Bit
-from .quantumcircuitdata import QuantumCircuitData
 from .delay import Delay
 from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from quditquantumregister import QuditQuantumRegister, Qudit, AncillaQuditRegister, AncillaQudit
+from .quditcircuitdata import QuditCircuitData
+from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQudit
 
-class QuditQuantumCircuit(QuantumCircuit):
+
+class QuditCircuit(QuantumCircuit):
     """Implement a new circuit with qudits."""
 
     __slots__ = ["_qddata"]
@@ -75,17 +76,17 @@ class QuditQuantumCircuit(QuantumCircuit):
         Args:
             regs (list(:class:`Register`|``ìnt``|``list``|``dict``) + list(...)):
                 Registers to be included in the circuit. The first register will be
-                interpreted as an QuditQuantumRegister. The other registers will be
+                interpreted as an QuditRegister. The other registers will be
                 passed on to the superclass QuantumCircuit.
             kwargs: Additional keyword arguments passed on to the superclass Quantumcircuit.
 
         Raises:
-            CircuitError: If first register of regs cannot be interpreted as a QuditQuantumRegister.
+            CircuitError: If first register of regs cannot be interpreted as a QuditRegister.
         """
 
         # Only check if first register is a valid qudit register, others will be handed superclass.
         qdreg = regs[0]
-        if not isinstance(qdreg, (list, dict, QuditQuantumRegister)):
+        if not isinstance(qdreg, (list, dict, QuditRegister)):
             try:
                 valid_reg_size = qdreg == int(qdreg)
             except (ValueError, TypeError):
@@ -124,7 +125,7 @@ class QuditQuantumCircuit(QuantumCircuit):
                 is an Instruction (or subclass) object, qdargs is a list of Qudit objects,
                 qargs is a list of Qubit objects and cargs is a list of Clbit objects.
         """
-        return QuditQuantumCircuitData(self)
+        return QuditCircuitData(self)
 
     # TODO: work progress up to here
     # TODO: overwrite methods or rename to qd... (also in QuditInstruction, QuditQuantumCircuitData?

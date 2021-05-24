@@ -37,7 +37,8 @@ from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.quantumregister import QuantumRegister
 from qiskit.circuit.classicalregister import ClassicalRegister
-from quditquantumregister import QuditQuantumRegister
+
+from .quditregister import QuditRegister
 
 _CUTOFF_PRECISION = 1e-10
 
@@ -162,8 +163,7 @@ class QuditInstruction(Instruction):
         if self.definition is None:
             raise CircuitError("inverse() not implemented for %s." % self.name)
 
-        from quditgate import QuditGate  # pylint: disable=cyclic-import
-        from quditquantumcircuit import QuditQuantumCircuit  # pylint: disable=cyclic-import
+        from . import QuditCircuit, QuditGate  # pylint: disable=cyclic-import
 
         if self.num_clbits:
             inverse_gate = QuditInstruction(
@@ -182,7 +182,7 @@ class QuditInstruction(Instruction):
                 params=self.params.copy()
             )
 
-        inverse_gate.definition = QuditQuantumCircuit(
+        inverse_gate.definition = QuditCircuit(
             *self.definition.qdregs,
             *self.definition.qregs,
             *self.definition.cregs,
@@ -255,19 +255,20 @@ class QuditInstruction(Instruction):
 
         instruction = self._return_repeat(n)
         qdargs = [] if not self.qudit_dimensions \
-            else QuditQuantumRegister(self.qudit_dimensions, "qd")
+            else QuditRegister(self.qudit_dimensions, "qd")
         qargs = [] if self.num_qubits == 0 else QuantumRegister(self.num_qubits, "q")
         cargs = [] if self.num_clbits == 0 else ClassicalRegister(self.num_clbits, "c")
 
-        from quditquantumcircuit import QuditQuantumCircuit  # pylint: disable=cyclic-import
+        from .quditcircuit import QuditCircuit  # pylint: disable=cyclic-import
 
-        qdc = QuditQuantumCircuit()
+        qdc = QuditCircuit()
         if qdargs:
             qdc.add_register(qdargs)
         if qargs:
             qdc.add_register(qargs)
         if cargs:
             qdc.add_register(cargs)
+        # TODO: qdargs[:] accesses underlying qubits but should access qudits
         qdc.data = [(self, qdargs[:], qargs[:], cargs[:])] * n
         instruction.definition = qdc
         return instruction

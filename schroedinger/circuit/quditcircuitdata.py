@@ -29,17 +29,17 @@
 ###############################################################################
 
 """A wrapper class for the purposes of validating modifications to
-QuditQuantumCircuit.qddata while maintaining the interface of a python list."""
+QuditCircuit.qddata while maintaining the interface of a python list."""
 
 from qiskit.circuit.quantumcircuitdata import QuantumCircuitData
 from qiskit.circuit.exceptions import CircuitError
 
-from quditinstruction import QuditInstruction
+from .quditinstruction import QuditInstruction
 
 
-class QuditQuantumCircuitData(QuantumCircuitData):
+class QuditCircuitData(QuantumCircuitData):
     """A wrapper class for the purposes of validating modifications to
-    QuditQuantumCircuit.qddata while maintaining the interface of a python list."""
+    QuditCircuit.qddata while maintaining the interface of a python list."""
 
     def __getitem__(self, i):
         return self._circuit._qddata[i]
@@ -58,13 +58,13 @@ class QuditQuantumCircuitData(QuantumCircuitData):
         expanded_qargs = [self._circuit.qbit_argument_conversion(qarg) for qarg in qargs or []]
         expanded_cargs = [self._circuit.cbit_argument_conversion(carg) for carg in cargs or []]
 
-        broadcast_args = list(instruction.broadcast_qdarguments(
+        broadcast_args = list(instruction.broadcast_arguments(
             expanded_qdargs, expanded_qargs, expanded_cargs)
         )
 
         if len(broadcast_args) > 1:
             raise CircuitError(
-                "QuditQuantumCircuit.qddata modification does not support argument broadcasting."
+                "QuditCircuit.qddata modification does not support argument broadcasting."
             )
 
         qdargs, qargs, cargs = broadcast_args[0]
@@ -80,4 +80,4 @@ class QuditQuantumCircuitData(QuantumCircuitData):
         self._circuit._update_parameter_table(instruction)
 
     def __cast(self, other):
-        return other._circuit._qddata if isinstance(other, QuditQuantumCircuitData) else other
+        return other._circuit._qddata if isinstance(other, QuditCircuitData) else other
