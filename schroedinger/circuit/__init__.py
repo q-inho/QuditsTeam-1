@@ -1,10 +1,10 @@
 # from .quditcircuit import QuditCircuit
 from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQudit
-# from .quditgate import QuditGate
+from .quditgate import QuditGate
 # pylint: disable=cyclic-import
 # from .controlledgate import ControlledGate
 from .quditinstruction import QuditInstruction
-# from .instructionset import InstructionSet
+from .quditinstructionset import QuditInstructionSet
 # from .barrier import Barrier
 # from .delay import Delay
 # from .measure import Measure

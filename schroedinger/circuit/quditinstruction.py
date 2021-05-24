@@ -33,6 +33,7 @@ A qudit quantum instruction.
 Qudit instructions additionally hold the number of affected qudits.
 """
 import warnings
+import numpy as np
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.quantumregister import QuantumRegister
@@ -44,17 +45,15 @@ _CUTOFF_PRECISION = 1e-10
 
 
 class QuditInstruction(Instruction):
-    """Qudit quantum instruction."""
+    """Qudit quantum instruction. Both definition """
 
-    def __init__(self, name, qudit_dimensions, *args, **kwargs):
+    def __init__(self, name, qudit_dimensions, num_single_qubits, *args, **kwargs):
         """Create a new qudit instruction.
 
         Args:
             name (str): instruction name
-            qudit_dimensions (int, list[int], dict[int: int]): Either an int as a number
-                of 2 dimensional qudits (qubit) or a list of int with qudit_dimensions of
-                multiple qudits in order or a dictionary containing the
-                qudit_dimensions as keys and corresponding qudit counts as values.
+            qudit_dimensions (list[int]): A list of int with dimensions of
+                multiple qudits in order.
             args: Additional arguments passed on to the superclass Instruction.
             kwargs: Additional keyword arguments passed on to the superclass Instruction.
 
@@ -62,31 +61,29 @@ class QuditInstruction(Instruction):
             TypeError: If ``qudit_dimensions`` has an incorrect type.
             CircuitError: If a dimension in ``qudit_dimensions`` is smaller than two.
         """
-
-        if isinstance(qudit_dimensions, int):
-            qudit_dimensions = [2 for _ in range(qudit_dimensions)]
-        if isinstance(qudit_dimensions, dict):
-            #  [{3:2, 4:3}] -> [3,3,4,4,4]
-            qudit_dimensions = [dimension for dimension in qudit_dimensions
-                                for _ in range(qudit_dimensions[dimension])]
         if not isinstance(qudit_dimensions, list) or \
                 any(not isinstance(dimension, int) for dimension in qudit_dimensions):
             raise TypeError(
-                "qudit_dimensions must either be the dimension for a single qudit (as an int) "
-                "or a list of qudit_dimensions of qudits or a dictionary containing the"
-                "the qudit_dimensions as keys and corresponding qudit counts as values."
+                "qudit_dimensions must be a list of integers"
             )
         if any(d < 2 for d in qudit_dimensions):
             raise CircuitError(
-                "Qudit dimension must be 2 or higher."
+                "qudit dimension must be 2 or higher"
             )
 
+        # todo seperate qudits, ancilla qubits, unerlying qubits in Instruction
+        # todo is self._qd_definition necessary? or works _definition recursivly
         self.qudit_dimensions = qudit_dimensions
-        super().__init__(name, *args, **kwargs)
+        self.num_single_qubits = num_single_qubits
+
+        # map qudits to qubits for underlying Instruction
+        num_qubits = int(sum(np.ceil(np.log2(dimension)) for dimension in qudit_dimensions))
+        num_qubits += num_single_qubits
+        super().__init__(name, num_qubits, *args, **kwargs)
 
     def __eq__(self, other):
-        """Two instructions are the same if they have the same name,
-        same dimensions, and same params.
+        """Two qudit instructions are the same if they have the same name,
+        same qudit dimensions, same numbers of qubits and classical bits, and same params.
 
         Args:
             other (QuditInstruction): other instruction
@@ -101,8 +98,8 @@ class QuditInstruction(Instruction):
 
     def soft_compare(self, other: "QuditInstruction") -> bool:
         """
-        Soft comparison between gates. Their names, number of qubits, and classical
-        bit numbers must match. The number of parameters must match. Each parameter
+        Soft comparison between qudit gates. Their names, qudit dimensions, number of qubits,
+        and classical bit numbers must match. The number of parameters must match. Each parameter
         is compared. If one is a ParameterExpression then it is not taken into
         account.
 
@@ -268,7 +265,8 @@ class QuditInstruction(Instruction):
             qdc.add_register(qargs)
         if cargs:
             qdc.add_register(cargs)
-        # TODO: qdargs[:] accesses underlying qubits but should access qudits
-        qdc.data = [(self, qdargs[:], qargs[:], cargs[:])] * n
+
+        # imaginary index to access qudits instead of qubits in QuditRegister
+        qdc.data = [(self, qdargs[0j:], qargs[:], cargs[:])] * n
         instruction.definition = qdc
         return instruction

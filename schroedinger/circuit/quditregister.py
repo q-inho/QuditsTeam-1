@@ -171,33 +171,22 @@ class QuditRegister(QuantumRegister):
         """Create a new register for qudits.
 
         Args:
-            qudit_dimensions (int, list[int], dict[int: int]): Either an int as a number
-                of 2 dimensional qudits (qubit) or a list of int with qudit_dimensions of
-                multiple qudits in order or a dictionary containing the
-                qudit_dimensions as keys and corresponding qudit counts as values.
+            qudit_dimensions (list[int]): A list of int with dimensions of
+                multiple qudits in order.
             name (str): Optional. The name of the register. If not provided, a
                unique name will be auto-generated from the register type.
         Raises:
             TypeError: If ``qudit_dimensions`` has an incorrect type.
             CircuitError: If a dimension in ``qudit_dimensions`` is smaller than two.
         """
-
-        if isinstance(qudit_dimensions, int):
-            qudit_dimensions = [2 for _ in range(qudit_dimensions)]
-        if isinstance(qudit_dimensions, dict):
-            #  [{3:2, 4:3}] -> [3,3,4,4,4]
-            qudit_dimensions = [dimension for dimension in qudit_dimensions
-                                for _ in range(qudit_dimensions[dimension])]
         if not isinstance(qudit_dimensions, list) or \
                 any(not isinstance(dimension, int) for dimension in qudit_dimensions):
             raise TypeError(
-                "qudit_dimensions must either be the dimension for a single qudit (as an int) "
-                "or a list of qudit_dimensions of qudits or a dictionary containing the"
-                "the qudit_dimensions as keys and corresponding qudit counts as values."
+                "qudit_dimensions must be a list of integers"
             )
         if any(d < 2 for d in qudit_dimensions):
             raise CircuitError(
-                "Qudit dimension must be 2 or higher."
+                "qudit dimension must be 2 or higher"
             )
 
         qubit_counts = [int(np.ceil(np.log2(dimension))) for dimension in qudit_dimensions]
