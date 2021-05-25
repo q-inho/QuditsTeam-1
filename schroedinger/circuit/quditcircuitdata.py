@@ -124,10 +124,10 @@ class QuditCircuitData(QuantumCircuitData):
             if not isinstance(instruction, QuditInstruction):
                 raise CircuitError(
                     "Instruction argument is not an QuditInstruction, "
-                    "but value includes has qdargs."
+                    "but value includes qdargs."
                 )
 
-            broadcast_args = list(instruction.broadcast_arguments(
+            broadcast_args = list(instruction.qd_broadcast_arguments(
                 expanded_qdargs, expanded_qargs, expanded_cargs)
             )
             qdargs, qargs, cargs = broadcast_args[0]
