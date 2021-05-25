@@ -59,14 +59,14 @@ class QuditInstructionSet(InstructionSet):
             qargs (List): List of quantum bit arguments.
             cargs (List): List of classical bit arguments.
         """
-        super.add(instruction, qargs, cargs)
+        super().add(instruction, qargs, cargs)
         self.qdargs.append([])
 
     def qd_add(self, qudit_instruction, qdargs, qargs, cargs):
         """Add a qudit instruction and its context (where it is attached).
 
         Args:
-            instruction (QuditInstruction): Any QuditInstruction instance.
+            qudit_instruction (QuditInstruction): Any QuditInstruction instance.
             qdargs (List): List of d-dimensional quantum bit arguments.
             qargs (List): List of quantum bit arguments.
             cargs (List): List of classical bit arguments.
@@ -75,5 +75,5 @@ class QuditInstructionSet(InstructionSet):
         """
         if not isinstance(qudit_instruction, QuditInstruction):
             raise CircuitError
-        super.add(qudit_instruction, qargs, cargs)
+        super().add(qudit_instruction, qargs, cargs)
         self.qdargs.append(qdargs)

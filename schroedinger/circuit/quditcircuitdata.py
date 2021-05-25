@@ -76,7 +76,7 @@ class QuditCircuitData(QuantumCircuitData):
             if len(slice_types) > 1:
                 raise TypeError("All slice indices must either have the same type or be None.")
 
-            if any(type(idx) == complex for idx in (key.start, key.stop, key.step)):
+            if any(type(idx) is complex for idx in (key.start, key.stop, key.step)):
 
                 if any(idx.real != 0 or int(idx.imag) != idx.imag
                        for idx in (key.start, key.stop, key.step) if idx is not None):
