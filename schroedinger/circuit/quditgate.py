@@ -42,20 +42,20 @@ from qiskit.circuit.exceptions import CircuitError
 from .quditinstruction import QuditInstruction
 
 
-# Due to multiple inheritance issues with Gate and QuditInstruction, as both are subclasses
+# Duetiple inheritance issues with Gate and QuditInstruction, as both are subclasses
 # of Instruction (see diamond inheritance problem), only inherit from QuditInstruction
 # but implement all methods of the Gate class.
 class QuditGate(QuditInstruction):
     """Unitary qudit gate."""
 
-    def __init__(self, name: str, qudit_dimensions: List[int], num_qubits: int, params: List,
+    def __init__(self, name: str, qudit_dimensions: List[int], num_single_qubits: int, params: List,
                  label: Optional[str] = None) -> None:
         """Create a new qudit gate.
 
         Args:
             name: The Qobj name of the gate.
             qudit_dimensions: A list of dimensions for each qudit, in order.
-            num_qubits: The number of qubits the gate acts on.
+            num_single_qubits: The number of qubits the gate acts on.
             params: A list of parameters.
             label: An optional label for the gate.
         """

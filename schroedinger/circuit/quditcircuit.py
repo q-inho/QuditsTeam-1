@@ -130,6 +130,7 @@ class QuditCircuit(QuantumCircuit):
     # TODO: work progress up to here
     # TODO: overwrite methods or rename to qd... (also in QuditInstruction, QuditQuantumCircuitData?
     # TODO: comment where qd... is needed and why (per class basis)
+    # TODO: (ancilla)qubits <-> (ancilla)qudits with d=2
 
     @property
     def calibrations(self):
@@ -1114,11 +1115,12 @@ class QuditCircuit(QuantumCircuit):
                     "AncillaQubit, but was passed {}".format(bit)
                 )
 
-    def _check_qddups(self, qudits):
-        """Raise exception if list of qudits contains duplicates."""
-        squdits = set(qudits)
-        if len(squdits) != len(qudits):
-            raise CircuitError("duplicate qudit arguments")
+    def _check_dups(self, bits):
+        """Raise exception if list of bits contains duplicates.
+            Overwrites superclass method to support qudits."""
+        sbits = set(bits)
+        if len(sbits) != len(bits):
+            raise CircuitError("duplicate qubit or qudit arguments")
 
     def _check_qdargs(self, qdargs):
         """Raise exception if a qdarg is not in this circuit or bad format."""
