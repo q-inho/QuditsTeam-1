@@ -289,7 +289,7 @@ class QuditInstruction(Instruction):
             if cargs:
                 qc.add_register(cargs)
 
-            # imaginary index to access qudits instead of qubits in qdargs
+            # imaginary index to access qudits instead of qubits in qdargs (QuditRegister)
             qc.qd_data = [(self, qdargs[0j:], qargs[:], cargs[:])] * n
         else:
             qc = QuantumCircuit()
@@ -298,7 +298,7 @@ class QuditInstruction(Instruction):
             if cargs:
                 qc.add_register(cargs)
 
-        # access underlying qubits of qdargs
+        # access underlying qubits of qdargs (QuditRegister or empty list)
         qc.data = [(self, qdargs[:] + qargs[:], cargs[:])] * n
 
         instruction.definition = qc

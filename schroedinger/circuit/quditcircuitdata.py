@@ -156,6 +156,7 @@ class QuditCircuitData(QuantumCircuitData):
         self._circuit._check_cargs(cargs)
 
         # add underlying qubits (of qdargs) and single qubits (qargs) to data
+        # here qdargs is a list of qudits
         self._circuit._data[key] = (instruction,
                                     [qubit for qudit in qdargs for qubit in qudit] + qargs,
                                     cargs)
