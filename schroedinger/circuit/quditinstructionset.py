@@ -52,7 +52,7 @@ class QuditInstructionSet(InstructionSet):
 
     def add(self, instruction, qargs, cargs):
         """Add an instruction and its context (where it is attached).
-        Overwritten to support qubits.
+        Overwritten to append an empty list to qdargs for each added instruction.
 
         Args:
             instruction (Instruction): Any Instruction instance.
