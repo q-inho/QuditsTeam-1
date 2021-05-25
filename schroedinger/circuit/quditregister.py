@@ -91,8 +91,8 @@ class Qudit(Qubit):
             try:
                 index = int(index)
                 if index < 0:
-                    index += register.qdsize
-                if index > register.qdsize:
+                    index += register.qd_size
+                if index > register.qd_size:
                     raise CircuitError(
                         "index must be under the size of the register: "
                         f"{index} was provided"
@@ -156,11 +156,11 @@ class QuditRegister(QuantumRegister):
     A QuditRegister acts like a QuantumRegister except when addressed with
     any non-inherited subclass method. As a QuantumRegister it contains Qubits used
     for the quantum circuit. Additionally Qudits are registered and can be accessed
-    via the ``qdget`` or ``qditer`` method. Qudits are layered on top of their
+    via the ``qd_get`` or ``qd_iter`` method. Qudits are layered on top of their
     associated Qubits and hold references to them.
     """
 
-    __slots__ = ["_qdsize", "_qudits"]
+    __slots__ = ["_qd_size", "_qudits"]
 
     # Prefix to use for auto naming.
     prefix = "qd"
@@ -181,20 +181,16 @@ class QuditRegister(QuantumRegister):
         """
         if not isinstance(qudit_dimensions, list) or \
                 any(not isinstance(dimension, int) for dimension in qudit_dimensions):
-            raise TypeError(
-                "qudit_dimensions must be a list of integers"
-            )
+            raise TypeError("qudit_dimensions must be a list of integers")
         if any(d < 2 for d in qudit_dimensions):
-            raise CircuitError(
-                "qudit dimension must be 2 or higher"
-            )
+            raise CircuitError("qudit dimension must be 2 or higher")
 
         qubit_counts = [int(np.ceil(np.log2(dimension))) for dimension in qudit_dimensions]
         super().__init__(sum(qubit_counts), name)
 
-        self._qdsize = len(qudit_dimensions)
+        self._qd_size = len(qudit_dimensions)
         self._qudits = []
-        for idx in range(self._qdsize):
+        for idx in range(self._qd_size):
 
             self._qudits.append(
                 # Each qudit gets a partial and disjoint list of
@@ -207,15 +203,15 @@ class QuditRegister(QuantumRegister):
             )
 
     @property
-    def qdsize(self):
+    def qd_size(self):
         """Get the register size."""
-        return self._qdsize
+        return self._qd_size
 
-    def qdlen(self):
+    def qd_len(self):
         """Get the register size."""
-        return self._qdsize
+        return self._qd_size
 
-    def qdget(self, key):
+    def qd_get(self, key):
         """
         Get single qudit at index key or list of qudits with slice as key.
 
@@ -226,7 +222,7 @@ class QuditRegister(QuantumRegister):
 
         Raises:
             CircuitError: If the `key` is not an integer.
-            QiskitIndexError: If the `key` is not in the range `(0, self.qdsize)`.
+            QiskitIndexError: If the `key` is not in the range `(0, self.qd_size)`.
         """
         if not isinstance(key, (int, np.integer, slice, list)):
             raise CircuitError(f"Expected integer or slice index into register, got {type(key)}.")
@@ -260,7 +256,7 @@ class QuditRegister(QuantumRegister):
             if key.real != 0 or int(key.imag) != key.imag:
                 raise TypeError("Complex keys must be purely imaginary integers.")
 
-            return self.qdget(int(key.imag))
+            return self.qd_get(int(key.imag))
 
         if isinstance(key, slice):
             slice_types = set(type(i) for i in (key.start, key.stop, key.step) if i is not None)
@@ -273,16 +269,16 @@ class QuditRegister(QuantumRegister):
                        for idx in (key.start, key.stop, key.step) if idx is not None):
                     raise TypeError("Complex slice indices must be purely imaginary integers.")
 
-                return self.qdget(slice(
+                return self.qd_get(slice(
                     *(int(idx.imag) if idx is not None else None
                       for idx in (key.start, key.stop, key.step))
                 ))
 
         return super().__getitem__(key)
 
-    def qditer(self):
+    def qd_iter(self):
         """Iterator for the register."""
-        for idx in range(self._qdsize):
+        for idx in range(self._qd_size):
             yield self._qudits[idx]
 
 
