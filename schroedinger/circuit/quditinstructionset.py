@@ -52,7 +52,7 @@ class QuditInstructionSet(InstructionSet):
 
     def add(self, instruction, qargs, cargs):
         """Add an instruction and its context (where it is attached).
-        Overwritten to append an empty list to qdargs for each added instruction.
+        Appends an empty list to qdargs for each added instruction.
 
         Args:
             instruction (Instruction): Any Instruction instance.
@@ -66,7 +66,7 @@ class QuditInstructionSet(InstructionSet):
         """Add a qudit instruction and its context (where it is attached).
 
         Args:
-            instruction (QuditInstruction): Any Instruction instance.
+            instruction (QuditInstruction): Any QuditInstruction instance.
             qdargs (List): List of d-dimensional quantum bit arguments.
             qargs (List): List of quantum bit arguments.
             cargs (List): List of classical bit arguments.

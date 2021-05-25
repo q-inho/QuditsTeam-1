@@ -204,11 +204,11 @@ class QuditRegister(QuantumRegister):
 
     @property
     def qd_size(self):
-        """Get the register size."""
+        """get the register size in terms of qudits"""
         return self._qd_size
 
     def qd_len(self):
-        """Get the register size."""
+        """get the register size in terms of qudits"""
         return self._qd_size
 
     def qd_get(self, key):
@@ -238,7 +238,6 @@ class QuditRegister(QuantumRegister):
 
     def __getitem__(self, key):
         """
-        Overwritten __getitem__ method of superclass.
         Supports imaginary numbers (e.g. 0j) for indexing into qudits.
 
         Arg:
@@ -277,7 +276,7 @@ class QuditRegister(QuantumRegister):
         return super().__getitem__(key)
 
     def qd_iter(self):
-        """Iterator for the register."""
+        """iterator for the register"""
         for idx in range(self._qd_size):
             yield self._qudits[idx]
 
