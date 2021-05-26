@@ -59,32 +59,33 @@ class QuditCircuitData(QuantumCircuitData):
             raise CircuitError("Circuit of QuditCircuitData must be a QuditCircuit")
         super().__init__(circuit)
 
-        if self._circuit._data != [self._convert(data_tuple)
+        if self._circuit._data != [self.convert(data_tuple)
                                    for data_tuple in self._circuit._qd_data]:
 
             if self._circuit._data and self._circuit._qd_data:
                 raise CircuitError("data and qd_data mismatch due to previous assignments")
 
             if self._circuit._data:
-                self._circuit._qd_data = [self._convert(data_tuple)
+                self._circuit._qd_data = [self.convert(data_tuple)
                                           for data_tuple in self._circuit._data]
 
             if self._circuit._qd_data:
-                self._circuit._data = [self._convert(data_tuple)
+                self._circuit._data = [self.convert(data_tuple)
                                        for data_tuple in self._circuit._qd_data]
 
     @staticmethod
-    def _convert(data_tuple):
+    def convert(data_tuple):
         """
         Converts a qd_data tuple to a data tuple and vice versa.
         Conversion from data to qd_data is lossless.
         Conversion from qd_data to data is lossless if qargs is empty.
 
         Args:
-            data_tuple (tuple): instruction, (qdargs,) qargs, cargs
+            data_tuple (tuple): Tuple (instruction, (qdargs,) qargs, cargs),
+                qdargs / qargs / cargs is a list of qudits / qubits / classical bits.
 
         Returns:
-            data_tuple (tuple): Converted data tuple
+            data_tuple (tuple): Converted data tuple.
 
         """
         if len(data_tuple) == 3:
@@ -207,7 +208,7 @@ class QuditCircuitData(QuantumCircuitData):
 
         # add underlying qubits (of qdargs) and single qubits (qargs) to data
         # here qdargs is a list of qudits
-        self._circuit._data[key] = (self._convert((inst, qdargs, qargs, cargs)))
+        self._circuit._data[key] = (self.convert((inst, qdargs, qargs, cargs)))
         self._circuit._qd_data[key] = (inst, qdargs, qargs, cargs)
 
         self._circuit._update_parameter_table(inst)
@@ -286,7 +287,7 @@ class QuditCircuitData(QuantumCircuitData):
             self._circuit._data += other._circuit._data
         else:
             self._circuit._qd_data += [
-                self._convert(data_tuple) for data_tuple in self.__cast(other)
+                self.convert(data_tuple) for data_tuple in self.__cast(other)
             ]
             self._circuit._data += self.__cast(other)
 

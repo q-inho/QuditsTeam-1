@@ -36,6 +36,7 @@ from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.instructionset import InstructionSet
 
 from .quditinstruction import QuditInstruction
+from .quditcircuitdata import QuditCircuitData
 
 
 class QuditInstructionSet(InstructionSet):
@@ -75,5 +76,5 @@ class QuditInstructionSet(InstructionSet):
         """
         if not isinstance(qudit_instruction, QuditInstruction):
             raise CircuitError
-        super().add(qudit_instruction, qargs, cargs)
+        super().add(*QuditCircuitData.convert((qudit_instruction, qdargs, qargs, cargs)))
         self.qdargs.append(qdargs)
