@@ -42,8 +42,6 @@ from qiskit.circuit.classicalregister import ClassicalRegister
 from .quditcircuit import QuditCircuit
 from .quditregister import QuditRegister
 
-_CUTOFF_PRECISION = 1e-10
-
 
 class QuditInstruction(Instruction):
     """Qudit quantum instruction."""
