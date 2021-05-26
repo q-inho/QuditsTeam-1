@@ -34,7 +34,6 @@ Qudit instructions additionally hold the dimensions of affected qudits and
 single (non-qudit) qubits. A QuditCircuit can be used to define the instruction.
 """
 import warnings
-import numpy as np
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.quantumregister import QuantumRegister
@@ -78,7 +77,7 @@ class QuditInstruction(Instruction):
         self.num_single_qubits = num_single_qubits
 
         # map qudits to qubits for underlying Instruction
-        num_qubits = int(sum(np.ceil(np.log2(dimension)) for dimension in qudit_dimensions))
+        num_qubits = QuditRegister(qudit_dimensions).size
         num_qubits += num_single_qubits
         # Direct superclass instantiation without super() to solve multiple inheritance issue
         # of QuditGate (see diamond inheritance problem). Otherwise super() will call Gate
