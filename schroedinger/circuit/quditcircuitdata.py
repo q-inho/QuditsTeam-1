@@ -53,7 +53,7 @@ class QuditCircuitData(QuantumCircuitData):
             circuit: Associated QuditCircuit instance.
         Raises:
             CircuitError: If circuit is not a QuditCircuit.
-            CircuitError: If data and qd_data were both previously assigned but mismatch
+            CircuitError: If data and qd_data were both previously assigned but mismatch.
         """
         if not isinstance(circuit, QuditCircuit):
             raise CircuitError("Circuit of QuditCircuitData must be a QuditCircuit")
