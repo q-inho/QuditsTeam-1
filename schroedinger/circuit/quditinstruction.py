@@ -32,15 +32,17 @@
 A qudit quantum instruction.
 Qudit instructions additionally hold the dimensions of affected qudits and
 single (non-qudit) qubits. A QuditCircuit can be used to define the instruction.
+Each instruction must either be defined on a qubit level i.e. accessing qubits
+behind qudits, or be composed of other qudit instructions.
 """
-import warnings
+from warnings import warn
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.quantumregister import QuantumRegister
 from qiskit.circuit.classicalregister import ClassicalRegister
 
 from .quditcircuit import QuditCircuit
-from .quditregister import QuditRegister
+from .quditregister import QuditRegister, Qudit
 
 
 class QuditInstruction(Instruction):
@@ -52,8 +54,8 @@ class QuditInstruction(Instruction):
 
         Args:
             name (str): instruction name
-            qudit_dimensions (list[int]): A list of int with dimensions of
-                multiple qudits in order.
+            qudit_dimensions (list[int]): A list of int with dimensions of multiple
+            qudits in order (the order is relevant for validation and broadcasting).
             num_single_qubits (int): number of single (non-qudit) qubits
             num_clbits (int): instruction's clbit width
             params (list[int|float|complex|str|ndarray|list|ParameterExpression]):
@@ -95,7 +97,7 @@ class QuditInstruction(Instruction):
         """
         # strict type comparison in superclass, this allows accessing other.qudit_dimensions
         if not isinstance(other, QuditInstruction) or \
-                sorted(self.qudit_dimensions) != sorted(other.qudit_dimensions):
+                self.qudit_dimensions != other.qudit_dimensions:
             return False
         return super().__eq__(other)
 
@@ -114,13 +116,13 @@ class QuditInstruction(Instruction):
         """
         # strict type comparison in superclass, this allows accessing other.qudit_dimensions
         if not isinstance(other, QuditInstruction) or \
-                sorted(self.qudit_dimensions) != sorted(other.qudit_dimensions):
+                self.qudit_dimensions != other.qudit_dimensions:
             return False
         return super().soft_compare(other)
 
     def assemble(self):
         """Assemble a QasmQobjInstruction"""
-        warnings.warn(
+        warn(
             "Assembly of QasmQobjInstruction not supported for qudits, "
             "defaulting to assembly without qudits."
         )
@@ -226,20 +228,20 @@ class QuditInstruction(Instruction):
             CircuitError: If the input is not valid. For example, the number of
                 arguments does not match the gate expectation.
         """
-        if sorted([qudit.dimension for qudit in qdargs]) != sorted(self.qudit_dimensions):
-            raise CircuitError(
-                f"The amount and dimensions of qudit arguments "
-                f"{[qudit.dimension for qudit in qdargs]} does not match "
-                f"the instruction expectation ({self.qudit_dimensions})."
-            )
         if len(qargs) != self.num_single_qubits:
             raise CircuitError(
                 f"The amount of single qubit arguments {len(qargs)} does not match "
                 f"the instruction expectation ({self.num_single_qubits})."
             )
 
-        #  [[qd[0], qd[1]], [q[0], q[1]], [c[0], c[1]]] -> [qd[0], q[0], c[0]], [qd[1], q[1], c[1]]
         flat_qdargs = [qdarg for sublist in qdargs for qdarg in sublist]
+        if any(not isinstance(qdarg, Qudit) for qdarg in flat_qdargs) or \
+                [qdarg.dimension for qdarg in flat_qdargs] != self.qudit_dimensions:
+            raise CircuitError(
+                f"The amount and dimensions of qudit arguments {qdargs} does "
+                f"not match the instruction expectation ({self.qudit_dimensions})."
+            )
+
         flat_qargs = [qarg for sublist in qargs for qarg in sublist]
         flat_cargs = [carg for sublist in cargs for carg in sublist]
         yield flat_qdargs, flat_qargs, flat_cargs
