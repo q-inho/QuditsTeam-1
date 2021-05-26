@@ -37,12 +37,42 @@ from qiskit.circuit.quantumcircuitdata import QuantumCircuitData
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 
+from .quditcircuit import QuditCircuit
 from .quditinstruction import QuditInstruction
 
 
 class QuditCircuitData(QuantumCircuitData):
     """A wrapper class for the purposes of validating modifications to QuditCircuit.data
     and QuditCircuit.qd_data while maintaining the interface of a python list."""
+
+    def __init__(self, circuit):
+        """
+        Attempts to synchronize data with qd_data in case one of them was directly assigned.
+
+        Args:
+            circuit: Associated QuditCircuit instance.
+        Raises:
+            CircuitError: If circuit is not a QuditCircuit.
+            CircuitError: If data and qd_data were both previously assigned but mismatch
+        """
+        if not isinstance(circuit, QuditCircuit):
+            raise CircuitError("Circuit of QuditCircuitData must be a QuditCircuit")
+        super().__init__(circuit)
+
+        if self._circuit._data != self._circuit._qd_data:
+            if self._circuit._data and self._circuit._qd_data:
+                raise CircuitError("data and qd_data mismatch due to previous assignments")
+
+            if self._circuit._data:
+                self._circuit._qd_data = [
+                    (inst, [], qargs, cargs) for inst, qargs, cargs in self._circuit._data
+                ]
+
+            if self._circuit._qd_data:
+                self._circuit._data = [
+                    (inst, [qubit for qudit in qdargs for qubit in qudit] + qargs, cargs)
+                    for inst, qdargs, qargs, cargs in self._circuit._qd_data
+                ]
 
     def qd_get(self, key):
         """Returns data tuple including qudit context at index key or
@@ -102,7 +132,7 @@ class QuditCircuitData(QuantumCircuitData):
             CircuitError: If the instruction is not a QuditInstruction but `value` includes qdargs.
             CircuitError: If `value` cannot be interpreted without broadcasting.
         """
-        instruction, qargs, cargs = value[0], value[-2], value[-1]
+        inst, qargs, cargs = value[0], value[-2], value[-1]
 
         if len(value) == 4:
             qdargs = value[2]
@@ -117,29 +147,29 @@ class QuditCircuitData(QuantumCircuitData):
                           for carg in cargs or []]
 
         if qdargs:
-            if not isinstance(instruction, QuditInstruction) and \
-                    hasattr(instruction, "to_qd_instruction"):
-                instruction = instruction.to_qd_instruction()
+            if not isinstance(inst, QuditInstruction) and \
+                    hasattr(inst, "to_qd_instruction"):
+                inst = inst.to_qd_instruction()
 
-            if not isinstance(instruction, QuditInstruction):
+            if not isinstance(inst, QuditInstruction):
                 raise CircuitError(
                     "Instruction argument is not an QuditInstruction, "
                     "but value includes qdargs."
                 )
 
-            broadcast_args = list(instruction.qd_broadcast_arguments(
+            broadcast_args = list(inst.qd_broadcast_arguments(
                 expanded_qdargs, expanded_qargs, expanded_cargs)
             )
             qdargs, qargs, cargs = broadcast_args[0]
         else:
-            if not isinstance(instruction, Instruction) \
-                    and hasattr(instruction, 'to_instruction'):
-                instruction = instruction.to_instruction()
+            if not isinstance(inst, Instruction) \
+                    and hasattr(inst, 'to_instruction'):
+                inst = inst.to_instruction()
 
-            if not isinstance(instruction, Instruction):
+            if not isinstance(inst, Instruction):
                 raise CircuitError('Instruction argument is not an Instruction.')
 
-            broadcast_args = list(instruction.broadcast_arguments(
+            broadcast_args = list(inst.broadcast_arguments(
                 expanded_qargs, expanded_cargs)
             )
             qargs, cargs = broadcast_args[0]
@@ -157,12 +187,12 @@ class QuditCircuitData(QuantumCircuitData):
 
         # add underlying qubits (of qdargs) and single qubits (qargs) to data
         # here qdargs is a list of qudits
-        self._circuit._data[key] = (instruction,
-                                    [qubit for qudit in qdargs for qubit in qudit] + qargs,
-                                    cargs)
-        self._circuit._qd_data[key] = (instruction, qdargs, qargs, cargs)
+        self._circuit._data[key] = (
+            inst, [qubit for qudit in qdargs for qubit in qudit] + qargs, cargs
+        )
+        self._circuit._qd_data[key] = (inst, qdargs, qargs, cargs)
 
-        self._circuit._update_parameter_table(instruction)
+        self._circuit._update_parameter_table(inst)
 
     def insert(self, index, value):
         """inserts value for data and qd_data at index"""
@@ -230,6 +260,22 @@ class QuditCircuitData(QuantumCircuitData):
 
             return int(n.imag) * self._circuit._qd_data
         return n * self._circuit._data
+
+    def __iadd__(self, other):
+        """In-place adding of data and qd_data with other data and qd_data."""
+        if isinstance(other, QuditCircuitData):
+            self._circuit._qd_data += other._circuit._qd_data
+            self._circuit._data += other._circuit._data
+        else:
+            self._circuit._qd_data += [(inst, [], qargs, cargs)
+                                       for inst, qargs, cargs in self.__cast(other)]
+            self._circuit._data += self.__cast(other)
+
+    def __imul__(self, n):
+        """In-place multiplication of data and qd_data with `n`."""
+        self._circuit._qd_data *= n
+        self._circuit._data *= n
+
 
     def sort(self, *args, **kwargs):
         """In-place stable sort of both data and qd_data. Accepts arguments of list.sort."""
