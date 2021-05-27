@@ -43,6 +43,8 @@ from .quditregister import Qudit, QuditRegister
 class QuditReset(FlexibleQuditInstruction):
     """Qudit reset."""
 
+    num_qudits = 1
+
     def __init__(self, qudit_dimension):
         """Create new qudit reset instruction."""
         super().__init__("qudit reset", [qudit_dimension], 0, 0, [])
