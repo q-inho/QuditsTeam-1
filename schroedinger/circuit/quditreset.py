@@ -34,14 +34,13 @@ While qudits could be reset by simply calling reset(qdc, qudit[:]),
 this can not be properly visualized in terms of qudits.
 """
 from qiskit.circuit.reset import Reset, reset
-from qiskit.circuit.exceptions import CircuitError
 
 from .quditcircuit import QuditCircuit
-from .quditinstruction import QuditInstruction
+from .flexiblequditinstruction import FlexibleQuditInstruction, flex_qd_broadcast_arguments
 from .quditregister import Qudit, QuditRegister
 
 
-class QuditReset(QuditInstruction):
+class QuditReset(FlexibleQuditInstruction):
     """Qudit reset."""
 
     def __init__(self, qudit_dimension):
@@ -62,21 +61,17 @@ class QuditReset(QuditInstruction):
 
     def qd_broadcast_arguments(self, qdargs, qargs, cargs):
         for qdarg in qdargs[0]:
-            yield [qdarg], [], []
+            yield [qdarg], [], [], []
 
 
 def qd_reset(self, qdargs):
     """Reset a qudit or a qudit. Qudits are reset by resetting all underlying qubits"""
-    if isinstance(qdargs, Qudit):
-        return self.append(QuditReset(qdargs.dimension), [[qdargs]], [], [])
-    if isinstance(qdargs, QuditRegister):
-        qdargs = qdargs[0j:]
-    if isinstance(qdargs, (list, tuple)) and all(isinstance(qdarg, Qudit) for qdarg in qdargs):
-        if any(qdarg.dimension != qdargs[0].dimension for qdarg in qdargs):
-            raise CircuitError(
-                "Resetting a group of qudits requires all qudits to have the same dimension"
-            )
-        return self.append(QuditReset(qdargs[0].dimension), [qdargs], [], [])
+    if isinstance(qdargs, (Qudit, QuditRegister)) or \
+            isinstance(qdargs, (list, tuple)) and all(isinstance(qdarg, Qudit) for qdarg in qdargs):
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QuditReset, qdargs):
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            self.append(QuditReset(qudit_dimensions), qdargs, qargs, cargs)
 
     # in case qdargs are qubits
     return reset(self, qdargs)
