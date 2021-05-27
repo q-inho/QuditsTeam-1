@@ -31,7 +31,7 @@
 """
 Qudit reset to computational zero by resetting all underlying qubits.
 While qudits could be reset by simply calling reset(qdc, qudit[:]),
-this can not be properly visualized in terms of qudits.
+QuditReset can not be properly visualized in terms of qudits.
 """
 from qiskit.circuit.reset import Reset, reset
 
@@ -45,25 +45,21 @@ class QuditReset(FlexibleQuditInstruction):
 
     num_qudits = 1
 
-    def __init__(self, qudit_dimension):
+    def __init__(self, qudit_dimensions):
         """Create new qudit reset instruction."""
-        super().__init__("qudit reset", [qudit_dimension], 0, 0, [])
+        super().__init__("qudit reset", qudit_dimensions, 0, 0, [])
 
     def _define(self):
         """Reset each underlying qubit."""
-        qd = QuditRegister(self.qudit_dimensions[0], 'qd')
+        qd = QuditRegister(self.qudit_dimensions, 'qd')
         qdc = QuditCircuit(qd, name=self.name)
         rules = [
             (Reset(), [qd[:]], [])
         ]
-        for instr, qargs, cargs in rules:
-            qdc._append(instr, qargs, cargs)
+        for inst, qargs, cargs in rules:
+            qdc._append(inst, qargs, cargs)
 
         self.definition = qdc
-
-    def qd_broadcast_arguments(self, qdargs, qargs, cargs):
-        for qdarg in qdargs[0]:
-            yield [qdarg], [], [], []
 
 
 def qd_reset(self, qdargs):
@@ -71,7 +67,7 @@ def qd_reset(self, qdargs):
     if isinstance(qdargs, (Qudit, QuditRegister)) or \
             isinstance(qdargs, (list, tuple)) and all(isinstance(qdarg, Qudit) for qdarg in qdargs):
 
-        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QuditReset, qdargs):
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QuditReset, qdargs=qdargs):
             qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
             self.append(QuditReset(qudit_dimensions), qdargs, qargs, cargs)
 
