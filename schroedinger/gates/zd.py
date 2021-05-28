@@ -27,11 +27,11 @@ class ZD(FlexibleQuditGate):
     num_qudits = 1
 
     def __init__(self, qudit_dimensions, label=None):
-        """Create new qudit reset instruction."""
+        """Create new general Z gate for a single qudit."""
         super().__init__("ZD", qudit_dimensions, 0, [], label=label)
 
     def _define(self):
-        """Reset each underlying qubit."""
+        """gate zd()"""
         qd = QuditRegister(self.qudit_dimensions, 'qd')
         qdc = QuditCircuit(qd, name=self.name)
 
@@ -43,7 +43,7 @@ class ZD(FlexibleQuditGate):
 
 
 def zd(self, qdargs):
-    """Broadcasts qudits to each general Z gate."""
+    """Broadcasts qudits to one general Z gate each."""
     for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, ZD, qdargs=qdargs):
         qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
         self.append(ZD(qudit_dimensions), qdargs, qargs, cargs)
