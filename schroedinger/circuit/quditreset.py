@@ -63,7 +63,7 @@ class QuditReset(FlexibleQuditInstruction):
 
 
 def qd_reset(self, qdargs):
-    """Reset a qudit or a qudit. Qudits are reset by resetting all underlying qubits"""
+    """Reset a qudit or a qudit. Qudits are reset by resetting all underlying qubits."""
     if isinstance(qdargs, (Qudit, QuditRegister)) or \
             isinstance(qdargs, (list, tuple)) and all(isinstance(qdarg, Qudit) for qdarg in qdargs):
 
