@@ -40,7 +40,7 @@ from qiskit.circuit.exceptions import CircuitError
 from .quditcircuit import QuditCircuit
 from .quditinstruction import QuditInstruction
 
-
+# TODO: check if sync may mean qd_len1 <= len2
 class QuditCircuitData(QuantumCircuitData):
     """A wrapper class for the purposes of validating modifications to QuditCircuit.data
     and QuditCircuit.qd_data while maintaining the interface of a python list."""

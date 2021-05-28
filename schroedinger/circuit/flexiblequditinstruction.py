@@ -109,7 +109,7 @@ class FlexibleQuditGate(QuditGate):
 def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, cargs=None):
     """
     Broadcasts qudit arguments for flexible qudit instructions before instantiating these
-    instructions and appending them with their context.
+    instructions (in general multiple inst. are created) and appending them with their context.
     Broadcasting only works if the arguments are integer multiples of the expected arguments.
 
     E.g. broadcast_factor = 2, num_qudits = 2, num_single_qubits = 3, num_clbits = 0:
