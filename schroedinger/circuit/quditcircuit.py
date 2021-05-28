@@ -64,92 +64,58 @@ from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQu
 
 
 class QuditCircuit(QuantumCircuit):
-    """Implement a new circuit with qudits."""
-
-    __slots__ = ["_qddata"]
+    """Implement a new circuit with qudits. Additionally saves QuditRegisters and Qudits.
+    Each QuditRegister is also added as an QuantumRegister and each qudit also adds its qubits
+    for transparency (each QuditCircuit behaves like a QuantumCircuit)."""
 
     prefix = "quditcircuit"
 
-    def __init__(self, *regs, **kwargs):
+    def __init__(self, *regs, name=None, global_phase=0, metadata=None):
         """Create a new circuit capable of handling qudits.
 
         Args:
-            regs (list(:class:`Register`|``ìnt``|``list``|``dict``) + list(...)):
-                Registers to be included in the circuit. The first register will be
-                interpreted as an QuditRegister. The other registers will be
-                passed on to the superclass QuantumCircuit.
-            kwargs: Additional keyword arguments passed on to the superclass Quantumcircuit.
+            regs (list(:class:`Register`|``ìnt``): Registers to be included in the circuit.
+                If the registers are described with integers, the first integer will be
+                interpreted as an QuditRegister. If only two integers are handed, the
+                second one will be interpreted as an ClassicalRegister. For three integers
+                the order is qudit register, qubit register, classical register.
+            name (str): the name of the quantum circuit. If not set, an
+                automatically generated string will be assigned.
+            global_phase (float or ParameterExpression): The global phase of the circuit in radians.
+            metadata (dict): Arbitrary key value metadata to associate with the
+                circuit. This gets stored as free-form data in a dict in the
+                :attr:`~qiskit.circuit.QuantumCircuit.metadata` attribute. It will
+                not be directly used in the circuit.
 
         Raises:
             CircuitError: If first register of regs cannot be interpreted as a QuditRegister.
         """
-
-        # Only check if first register is a valid qudit register, others will be handed superclass.
-        qdreg = regs[0]
-        if not isinstance(qdreg, (list, dict, QuditRegister)):
-            try:
-                valid_reg_size = qdreg == int(qdreg)
-            except (ValueError, TypeError):
-                valid_reg_size = False
-
-            if not valid_reg_size:
-                raise CircuitError(
-                    "Circuit args must be Registers or valid arguments to pass on to registers. "
-                    "(%s '%s' was provided)" % ([type(reg).__name__ for reg in regs], regs)
-                )
-
-            qdreg = int(qdreg)
-
-        # QD-Data contains a list of instructions applied to qudits and their contexts,
-        # in the order they were applied.
-        self._qddata = []
+        # overwritten _data to change property setter and getter
+        self._data = []
+        # _qd_data additionally contains qudit context [(inst, qdargs, qargs, cargs), ...]
+        self._qd_data = []
 
         # Map of qudits and qudit registers bound to this circuit, by name.
         self.qdregs = []
         self._qudits = []
         self._qudit_set = set()
-        self._qdancillas = []
-        self.add_qdregister(qdreg)
+        self._qd_ancillas = []
 
-        super().__init__(*regs[1:], **kwargs)
-
+        super().__init__(*regs, name=name, global_phase=global_phase, metadata=metadata)
 
     @property
-    def qddata(self):
+    def data(self):
         """Return the qudit circuit data (instructions applied to qudits and context).
 
         Returns:
             QuditQuantumCircuitData: A list-like object containing the tuples
-                for the circuit's data regarding qudits. Each tuple is in the format
-                 ``(instruction, qdargs, qargs, cargs)``, where instruction
-                is an Instruction (or subclass) object, qdargs is a list of Qudit objects,
-                qargs is a list of Qubit objects and cargs is a list of Clbit objects.
+                for the circuit's data. Each tuple is in the format
+                ``(instruction, qargs, cargs)`` (when accessed with real keys) or
+                ``(instruction, qdargs, qargs, cargs)`` (when accessed with imaginary keys),
+                where instruction is an Instruction (or subclass)  object, qdrgs is a list of Qudit
+                objects, qargs is a list of Qubit objects and cargs is a list of Clbit objects.
         """
         return QuditCircuitData(self)
-
-    # TODO: work progress up to here
-    # TODO: overwrite methods or rename to qd... (also in QuditInstruction, QuditQuantumCircuitData?
-    # TODO: comment where qd... is needed and why (per class basis)
-    # TODO: (ancilla)qubits <-> (ancilla)qudits with d=2
-
-    @property
-    def calibrations(self):
-        """Return calibration dictionary.
-
-        The custom pulse definition of a given gate is of the form
-            {'gate_name': {(qubits, params): schedule}}
-        """
-        return dict(self._calibrations)
-
-    @calibrations.setter
-    def calibrations(self, calibrations):
-        """Set the circuit calibration data from a dictionary of calibration definition.
-
-        Args:
-            calibrations (dict): A dictionary of input in the format
-                {'gate_name': {(qubits, gate_params): schedule}}
-        """
-        self._calibrations = defaultdict(dict, calibrations)
 
     @data.setter
     def data(self, data_input):
@@ -157,467 +123,181 @@ class QuditCircuit(QuantumCircuit):
 
         Args:
             data_input (list): A list of instructions with context
-                in the format (instruction, qargs, cargs), where Instruction
-                is an Instruction (or subclass) object, qargs is a list of
-                Qubit objects, and cargs is a list of Clbit objects.
+                in the format (instruction, qargs, cargs) or (instruction, qdargs, qargs, cargs),
+                where instruction is an Instruction (or subclass)  object, qdrgs is a list of Qudit
+                objects, qargs is a list of Qubit objects and cargs is a list of Clbit objects.
         """
 
-        # If data_input is QuantumCircuitData(self), clearing self._data
+        # If data_input is QuditCircuitData, use qd_data
+        if isinstance(data_input, QuditCircuitData):
+            data_input = QuditCircuitData[0j:]
+        # If data_input is QuantumCircuitData(self), clearing self._data and self._qd_data
         # below will also empty data_input, so make a shallow copy first.
         data_input = data_input.copy()
         self._data = []
+        self._qd_data = []
         self._parameter_table = ParameterTable()
 
-        for inst, qargs, cargs in data_input:
-            self.append(inst, qargs, cargs)
-
-    @property
-    def metadata(self):
-        """The user provided metadata associated with the circuit
-
-        The metadata for the circuit is a user provided ``dict`` of metadata
-        for the circuit. It will not be used to influence the execution or
-        operation of the circuit, but it is expected to be passed between
-        all transforms of the circuit (ie transpilation) and that providers will
-        associate any circuit metadata with the results it returns from
-        execution of that circuit.
-        """
-        return self._metadata
-
-    @metadata.setter
-    def metadata(self, metadata):
-        """Update the circuit metadata"""
-        if not isinstance(metadata, dict) and metadata is not None:
-            raise TypeError("Only a dictionary or None is accepted for circuit metadata")
-        self._metadata = metadata
+        for data_tuple in data_input:
+            self.append(*data_tuple)
 
     def __str__(self):
         return str(self.draw(output="text"))
 
     def __eq__(self, other):
-        if not isinstance(other, QuantumCircuit):
+        if not isinstance(other, QuditCircuit):
             return False
-
-        # TODO: remove the DAG from this function
-        from qiskit.converters import circuit_to_dag
-
-        return circuit_to_dag(self) == circuit_to_dag(other)
-
-    @classmethod
-    def _increment_instances(cls):
-        cls.instances += 1
-
-    @classmethod
-    def cls_instances(cls):
-        """Return the current number of instances of this class,
-        useful for auto naming."""
-        return cls.instances
-
-    @classmethod
-    def cls_prefix(cls):
-        """Return the prefix to use for auto naming."""
-        return cls.prefix
-
-    def _name_update(self):
-        """update name of instance using instance number"""
-        if not is_main_process():
-            pid_name = f"-{mp.current_process().pid}"
-        else:
-            pid_name = ""
-
-        self.name = f"{self._base_name}-{self.cls_instances()}{pid_name}"
+        return super().__eq__(other)
 
     def has_register(self, register):
         """
         Test if this circuit has the register r.
 
         Args:
-            register (Register): a quantum or classical register.
+            register (Register): a qudit or qubit or classical register.
 
         Returns:
             bool: True if the register is contained in this circuit.
         """
-        has_reg = False
-        if isinstance(register, QuantumRegister) and register in self.qregs:
-            has_reg = True
-        elif isinstance(register, ClassicalRegister) and register in self.cregs:
-            has_reg = True
-        return has_reg
+        has_reg = isinstance(register, QuditRegister) and register in self.qdregs
+        return has_reg or super().has_register(register)
 
     def reverse_ops(self):
-        """Reverse the circuit by reversing the order of instructions.
-
-        This is done by recursively reversing all instructions.
-        It does not invert (adjoint) any gate.
+        """Reverse the qudit circuit by reversing the order of instructions.
 
         Returns:
-            QuantumCircuit: the reversed circuit.
-
-        Examples:
-
-            input:
-                 ┌───┐
-            q_0: ┤ H ├─────■──────
-                 └───┘┌────┴─────┐
-            q_1: ─────┤ RX(1.57) ├
-                      └──────────┘
-
-            output:
-                             ┌───┐
-            q_0: ─────■──────┤ H ├
-                 ┌────┴─────┐└───┘
-            q_1: ┤ RX(1.57) ├─────
-                 └──────────┘
+            QuditCircuit: the reversed circuit.
         """
-        reverse_circ = QuantumCircuit(
-            self.qubits, self.clbits, *self.qregs, *self.cregs, name=self.name + "_reverse"
+        reverse_circ = QuditCircuit(
+            *self.qdregs,
+            *self.qregs,
+            *self.cregs,
+            name=self.name + "_reverse"
         )
 
-        for inst, qargs, cargs in reversed(self.data):
-            reverse_circ._append(inst.reverse_ops(), qargs, cargs)
+        for inst, qdargs, qargs, cargs in reversed(self._qd_data):
+            reverse_circ._append(inst.reverse_ops(), qdargs, qargs, cargs)
 
         reverse_circ.duration = self.duration
         reverse_circ.unit = self.unit
         return reverse_circ
 
     def reverse_bits(self):
-        """Return a circuit with the opposite order of wires.
-
-        The circuit is "vertically" flipped. If a circuit is
-        defined over multiple registers, the resulting circuit will have
-        the same registers but with their order flipped.
-
-        This method is useful for converting a circuit written in little-endian
-        convention to the big-endian equivalent, and vice versa.
+        """Return a qudit circuit with the opposite order of wires.
 
         Returns:
-            QuantumCircuit: the circuit with reversed bit order.
-
-        Examples:
-
-            input:
-                 ┌───┐
-            q_0: ┤ H ├─────■──────
-                 └───┘┌────┴─────┐
-            q_1: ─────┤ RX(1.57) ├
-                      └──────────┘
-
-            output:
-                      ┌──────────┐
-            q_0: ─────┤ RX(1.57) ├
-                 ┌───┐└────┬─────┘
-            q_1: ┤ H ├─────■──────
-                 └───┘
+            QuditCircuit: the circuit with reversed bit order.
         """
-        circ = QuantumCircuit(
+        circ = QuditCircuit(
+            *reversed(self.qdregs),
             *reversed(self.qregs),
             *reversed(self.cregs),
             name=self.name,
             global_phase=self.global_phase,
         )
+        num_qudits = self.num_qudits
         num_qubits = self.num_qubits
         num_clbits = self.num_clbits
+        old_qudits = self.qudits
         old_qubits = self.qubits
         old_clbits = self.clbits
+        new_qudits = circ.qudits
         new_qubits = circ.qubits
         new_clbits = circ.clbits
 
-        for inst, qargs, cargs in self.data:
+        for inst, qdargs, qargs, cargs in self._qd_data:
+            new_qdargs = [new_qudits[num_qudits - old_qudits.index(qd) - 1] for qd in qdargs]
             new_qargs = [new_qubits[num_qubits - old_qubits.index(q) - 1] for q in qargs]
             new_cargs = [new_clbits[num_clbits - old_clbits.index(c) - 1] for c in cargs]
-            circ._append(inst, new_qargs, new_cargs)
+            circ._append(inst, new_qdargs, new_qargs, new_cargs)
         return circ
 
     def inverse(self):
-        """Invert (take adjoint of) this circuit.
+        """Invert (take adjoint of) this qudit circuit.
 
         This is done by recursively inverting all gates.
 
         Returns:
-            QuantumCircuit: the inverted circuit
+            QuditCircuit: the inverted circuit
 
         Raises:
             CircuitError: if the circuit cannot be inverted.
-
-        Examples:
-
-            input:
-                 ┌───┐
-            q_0: ┤ H ├─────■──────
-                 └───┘┌────┴─────┐
-            q_1: ─────┤ RX(1.57) ├
-                      └──────────┘
-
-            output:
-                              ┌───┐
-            q_0: ──────■──────┤ H ├
-                 ┌─────┴─────┐└───┘
-            q_1: ┤ RX(-1.57) ├─────
-                 └───────────┘
         """
         inverse_circ = QuantumCircuit(
-            self.qubits,
-            self.clbits,
+            *self.qdregs,
             *self.qregs,
             *self.cregs,
-            name=self.name + "_dg",
-            global_phase=-self.global_phase,
+            name=self.name + '_dg',
+            global_phase=-self.global_phase
         )
 
-        for inst, qargs, cargs in reversed(self._data):
-            inverse_circ._append(inst.inverse(), qargs, cargs)
+        for inst, qdargs, qargs, cargs in reversed(self._qd_data):
+            inverse_circ._append(inst.inverse(), qdargs, qargs, cargs)
         return inverse_circ
 
     def repeat(self, reps):
-        """Repeat this circuit ``reps`` times.
+        """Repeat this qudit circuit ``reps`` times.
 
         Args:
             reps (int): How often this circuit should be repeated.
 
         Returns:
-            QuantumCircuit: A circuit containing ``reps`` repetitions of this circuit.
+            QuditCircuit: A circuit containing ``reps`` repetitions of this circuit.
         """
-        repeated_circ = QuantumCircuit(
-            self.qubits, self.clbits, *self.qregs, *self.cregs, name=self.name + "**{}".format(reps)
+        repeated_circ = QuditCircuit(
+            *self.qdregs,
+            *self.qregs,
+            *self.cregs,
+            name=self.name + "**{}".format(reps)
         )
 
         # benefit of appending instructions: decomposing shows the subparts, i.e. the power
         # is actually `reps` times this circuit, and it is currently much faster than `compose`.
         if reps > 0:
             try:  # try to append as gate if possible to not disallow to_gate
-                inst = self.to_gate()
+                inst = self.to_quditgate()
             except QiskitError:
-                inst = self.to_instruction()
+                inst = self.to_quditinstruction()
             for _ in range(reps):
-                repeated_circ._append(inst, self.qubits, self.clbits)
+                repeated_circ._append(inst, self.qudits, self.qubits, self.clbits)
 
         return repeated_circ
 
     def power(self, power, matrix_power=False):
-        """Raise this circuit to the power of ``power``.
-
+        """Raise this qudit circuit to the power of ``power``.
         If ``power`` is a positive integer and ``matrix_power`` is ``False``, this implementation
         defaults to calling ``repeat``. Otherwise, if the circuit is unitary, the matrix is
-        computed to calculate the matrix power.
-
-        Args:
-            power (int): The power to raise this circuit to.
-            matrix_power (bool): If True, the circuit is converted to a matrix and then the
-                matrix power is computed. If False, and ``power`` is a positive integer,
-                the implementation defaults to ``repeat``.
-
-        Raises:
-            CircuitError: If the circuit needs to be converted to a gate but it is not unitary.
-
-        Returns:
-            QuantumCircuit: A circuit implementing this circuit raised to the power of ``power``.
-        """
-        if power >= 0 and isinstance(power, numbers.Integral) and not matrix_power:
-            return self.repeat(power)
-
-        # attempt conversion to gate
-        if self.num_parameters > 0:
-            raise CircuitError(
-                "Cannot raise a parameterized circuit to a non-positive power "
-                "or matrix-power, please bind the free parameters: "
-                "{}".format(self.parameters)
-            )
-
-        try:
-            gate = self.to_gate()
-        except QiskitError as ex:
-            raise CircuitError(
-                "The circuit contains non-unitary operations and cannot be "
-                "controlled. Note that no qiskit.circuit.Instruction objects may "
-                "be in the circuit for this operation."
-            ) from ex
-
-        power_circuit = QuantumCircuit(self.qubits, self.clbits, *self.qregs, *self.cregs)
-        power_circuit.append(gate.power(power), list(range(gate.num_qubits)))
-        return power_circuit
+        computed to calculate the matrix power and will only return a QuantumCircuit,
+        not a QuditCircuit."""
+        return super().power(power, matrix_power=matrix_power)
 
     def control(self, num_ctrl_qubits=1, label=None, ctrl_state=None):
         """Control this circuit on ``num_ctrl_qubits`` qubits.
+        This implementation will only return a QuantumCircuit, not a QuditCircuit."""
+        return super().control(num_ctrl_qubits=num_ctrl_qubits, label=label, ctrl_state=ctrl_state)
 
-        Args:
-            num_ctrl_qubits (int): The number of control qubits.
-            label (str): An optional label to give the controlled operation for visualization.
-            ctrl_state (str or int): The control state in decimal or as a bitstring
-                (e.g. '111'). If None, use ``2**num_ctrl_qubits - 1``.
-
-        Returns:
-            QuantumCircuit: The controlled version of this circuit.
-
-        Raises:
-            CircuitError: If the circuit contains a non-unitary operation and cannot be controlled.
-        """
-        try:
-            gate = self.to_gate()
-        except QiskitError as ex:
-            raise CircuitError(
-                "The circuit contains non-unitary operations and cannot be "
-                "controlled. Note that no qiskit.circuit.Instruction objects may "
-                "be in the circuit for this operation."
-            ) from ex
-
-        controlled_gate = gate.control(num_ctrl_qubits, label, ctrl_state)
-        control_qreg = QuantumRegister(num_ctrl_qubits)
-        controlled_circ = QuantumCircuit(
-            control_qreg, self.qubits, *self.qregs, name="c_{}".format(self.name)
-        )
-        controlled_circ.append(controlled_gate, controlled_circ.qubits)
-
-        return controlled_circ
-
-    @deprecate_function(
-        "The QuantumCircuit.combine() method is being deprecated. "
-        "Use the compose() method which is more flexible w.r.t "
-        "circuit register compatibility."
-    )
-    def combine(self, rhs):
-        """DEPRECATED - Returns rhs appended to self if self contains compatible registers.
-
-        Two circuits are compatible if they contain the same registers
-        or if they contain different registers with unique names. The
-        returned circuit will contain all unique registers between both
-        circuits.
-
-        Return self + rhs as a new object.
-
-        Args:
-            rhs (QuantumCircuit): The quantum circuit to append to the right hand side.
-
-        Returns:
-            QuantumCircuit: Returns a new QuantumCircuit object
-
-        Raises:
-            QiskitError: if the rhs circuit is not compatible
-        """
-        # Check registers in LHS are compatible with RHS
-        self._check_compatible_regs(rhs)
-
-        # Make new circuit with combined registers
-        combined_qregs = copy.deepcopy(self.qregs)
-        combined_cregs = copy.deepcopy(self.cregs)
-
-        for element in rhs.qregs:
-            if element not in self.qregs:
-                combined_qregs.append(element)
-        for element in rhs.cregs:
-            if element not in self.cregs:
-                combined_cregs.append(element)
-        circuit = QuantumCircuit(*combined_qregs, *combined_cregs)
-        for instruction_context in itertools.chain(self.data, rhs.data):
-            circuit._append(*instruction_context)
-        circuit.global_phase = self.global_phase + rhs.global_phase
-
-        for gate, cals in rhs.calibrations.items():
-            for key, sched in cals.items():
-                circuit.add_calibration(gate, qubits=key[0], schedule=sched, params=key[1])
-
-        for gate, cals in self.calibrations.items():
-            for key, sched in cals.items():
-                circuit.add_calibration(gate, qubits=key[0], schedule=sched, params=key[1])
-
-        return circuit
-
-    @deprecate_function(
-        "The QuantumCircuit.extend() method is being deprecated. Use the "
-        "compose() (potentially with the inplace=True argument) and tensor() "
-        "methods which are more flexible w.r.t circuit register compatibility."
-    )
-    def extend(self, rhs):
-        """DEPRECATED - Append QuantumCircuit to the RHS if it contains compatible registers.
-
-        Two circuits are compatible if they contain the same registers
-        or if they contain different registers with unique names. The
-        returned circuit will contain all unique registers between both
-        circuits.
-
-        Modify and return self.
-
-        Args:
-            rhs (QuantumCircuit): The quantum circuit to append to the right hand side.
-
-        Returns:
-            QuantumCircuit: Returns this QuantumCircuit object (which has been modified)
-
-        Raises:
-            QiskitError: if the rhs circuit is not compatible
-        """
-        # Check registers in LHS are compatible with RHS
-        self._check_compatible_regs(rhs)
-
-        # Add new registers
-        for element in rhs.qregs:
-            if element not in self.qregs:
-                self.qregs.append(element)
-                self._qubits += element[:]
-                self._qubit_set.update(element[:])
-        for element in rhs.cregs:
-            if element not in self.cregs:
-                self.cregs.append(element)
-                self._clbits += element[:]
-                self._clbit_set.update(element[:])
-
-        # Copy the circuit data if rhs and self are the same, otherwise the data of rhs is
-        # appended to both self and rhs resulting in an infinite loop
-        data = rhs.data.copy() if rhs is self else rhs.data
-
-        # Add new gates
-        for instruction_context in data:
-            self._append(*instruction_context)
-        self.global_phase += rhs.global_phase
-
-        for gate, cals in rhs.calibrations.items():
-            for key, sched in cals.items():
-                self.add_calibration(gate, qubits=key[0], schedule=sched, params=key[1])
-
-        return self
-
-    def compose(self, other, qubits=None, clbits=None, front=False, inplace=False):
+    def compose(self, other, qudits=None, qubits=None, clbits=None, front=False, inplace=False):
         """Compose circuit with ``other`` circuit or instruction, optionally permuting wires.
 
         ``other`` can be narrower or of equal width to ``self``.
 
         Args:
-            other (qiskit.circuit.Instruction or QuantumCircuit or BaseOperator):
-                (sub)circuit to compose onto self.
+            other (Instruction or QuditInstruction or QuantumCircuit or QuditCircuit
+            or BaseOperator): (sub)circuit to compose onto self.
+            qudits (list[Qudit]|int]): qudits of self to compose onto.
             qubits (list[Qubit|int]): qubits of self to compose onto.
             clbits (list[Clbit|int]): clbits of self to compose onto.
             front (bool): If True, front composition will be performed (not implemented yet).
             inplace (bool): If True, modify the object. Otherwise return composed circuit.
 
         Returns:
-            QuantumCircuit: the composed circuit (returns None if inplace==True).
+            QuditCircuit: the composed circuit (returns None if inplace==True).
 
         Raises:
+            CircuitError:
             CircuitError: if composing on the front.
-            QiskitError: if ``other`` is wider or there are duplicate edge mappings.
-
-        Examples::
-
-            lhs.compose(rhs, qubits=[3, 2], inplace=True)
-
-            .. parsed-literal::
-
-                            ┌───┐                   ┌─────┐                ┌───┐
-                lqr_1_0: ───┤ H ├───    rqr_0: ──■──┤ Tdg ├    lqr_1_0: ───┤ H ├───────────────
-                            ├───┤              ┌─┴─┐└─────┘                ├───┤
-                lqr_1_1: ───┤ X ├───    rqr_1: ┤ X ├───────    lqr_1_1: ───┤ X ├───────────────
-                         ┌──┴───┴──┐           └───┘                    ┌──┴───┴──┐┌───┐
-                lqr_1_2: ┤ U1(0.1) ├  +                     =  lqr_1_2: ┤ U1(0.1) ├┤ X ├───────
-                         └─────────┘                                    └─────────┘└─┬─┘┌─────┐
-                lqr_2_0: ─────■─────                           lqr_2_0: ─────■───────■──┤ Tdg ├
-                            ┌─┴─┐                                          ┌─┴─┐        └─────┘
-                lqr_2_1: ───┤ X ├───                           lqr_2_1: ───┤ X ├───────────────
-                            └───┘                                          └───┘
-                lcr_0: 0 ═══════════                           lcr_0: 0 ═══════════════════════
-
-                lcr_1: 0 ═══════════                           lcr_1: 0 ═══════════════════════
-
+            CircuitError: if ``other`` is wider or there are duplicate edge mappings.
         """
-
         if inplace:
             dest = self
         else:
@@ -625,54 +305,60 @@ class QuditCircuit(QuantumCircuit):
 
         if not isinstance(other, QuantumCircuit):
             if front:
-                dest.data.insert(0, (other, qubits, clbits))
+                dest.data.insert(0, (other, qudits, qubits, clbits))
             else:
-                dest.append(other, qargs=qubits, cargs=clbits)
+                dest.append(other, qdargs=qudits, qargs=qubits, cargs=clbits)
 
             if inplace:
                 return None
             return dest
 
-        instrs = other.data
-
         if other.num_qubits > self.num_qubits or other.num_clbits > self.num_clbits:
             raise CircuitError(
-                "Trying to compose with another QuantumCircuit " "which has more 'in' edges."
+                "Trying to compose with another QuantumCircuit which has more 'in' edges."
             )
 
-        # number of qubits and clbits must match number in circuit or None
-        identity_qubit_map = dict(zip(other.qubits, self.qubits))
-        identity_clbit_map = dict(zip(other.clbits, self.clbits))
+        bit_list = [("qubits", qubits, other.qubits, self.qubits),
+                    ("clbits", clbits, other.clbits, self.clbits)]
 
-        if qubits is None:
-            qubit_map = identity_qubit_map
-        elif len(qubits) != len(other.qubits):
-            raise CircuitError(
-                "Number of items in qubits parameter does not"
-                " match number of qubits in the circuit."
-            )
+        if isinstance(other, QuditCircuit):
+            bit_list.append(("qudits", qudits, other.qudits, self.qudits))
         else:
-            qubit_map = {
-                other.qubits[i]: (self.qubits[q] if isinstance(q, int) else q)
-                for i, q in enumerate(qubits)
-            }
-        if clbits is None:
-            clbit_map = identity_clbit_map
-        elif len(clbits) != len(other.clbits):
-            raise CircuitError(
-                "Number of items in clbits parameter does not"
-                " match number of clbits in the circuit."
-            )
+            if qudits is not None:
+                raise CircuitError(
+                    f"Other circuit is not a Quditcircuit and can not be mapped to {qudits}."
+                )
+
+        edge_map = {}
+
+        for bit_name, arg_bits, other_bits, self_bits in bit_list:
+            # number of qudits, qubits and clbits must match number in circuit or None
+            identity_bit_map = dict(zip(other_bits, self_bits))
+
+            if arg_bits is None:
+                bit_map = identity_bit_map
+            elif len(arg_bits) != len(other_bits):
+                raise CircuitError(
+                    f"Number of items in {bit_name} parameter does not "
+                    f"match number of {bit_name} in the circuit."
+                )
+            else:
+                bit_map = {
+                    other_bits[i]: (self_bits[q] if isinstance(q, int) else q)
+                    for i, q in enumerate(arg_bits)
+                } or identity_bit_map
+
+            edge_map.update(**bit_map)
+
+        if isinstance(other, QuditCircuit):
+            qd_data = other.data[0j:]
         else:
-            clbit_map = {
-                other.clbits[i]: (self.clbits[c] if isinstance(c, int) else c)
-                for i, c in enumerate(clbits)
-            }
+            qd_data = [QuditCircuitData.convert(data_tuple) for data_tuple in other.data]
 
-        edge_map = {**qubit_map, **clbit_map} or {**identity_qubit_map, **identity_clbit_map}
+        mapped_qd_instrs = []
 
-        mapped_instrs = []
-        for instr, qargs, cargs in instrs:
+        for instr, qdargs, qargs, cargs in qd_data:
+            n_qdargs = [edge_map[qdarg] for qdarg in qdargs]
             n_qargs = [edge_map[qarg] for qarg in qargs]
             n_cargs = [edge_map[carg] for carg in cargs]
             n_instr = instr.copy()
@@ -682,20 +368,24 @@ class QuditCircuit(QuantumCircuit):
 
                 n_instr.condition = DAGCircuit._map_condition(edge_map, instr.condition, self.cregs)
 
-            mapped_instrs.append((n_instr, n_qargs, n_cargs))
+            mapped_qd_instrs.append((n_instr, n_qdargs, n_qargs, n_cargs))
+
+        mapped_instrs = [QuditCircuitData.convert(data_tuple) for data_tuple in mapped_qd_instrs]
 
         if front:
             dest._data = mapped_instrs + dest._data
+            dest._qd_data = mapped_qd_instrs + dest._qd_data
         else:
             dest._data += mapped_instrs
+            dest._qd_data += mapped_qd_instrs
 
         if front:
             dest._parameter_table.clear()
-            for instr, _, _ in dest._data:
+            for instr, _, _, _ in dest._qd_data:
                 dest._update_parameter_table(instr)
         else:
             # just append new parameters
-            for instr, _, _ in mapped_instrs:
+            for instr, _, _, _ in mapped_qd_instrs:
                 dest._update_parameter_table(instr)
 
         for gate, cals in other.calibrations.items():
@@ -708,6 +398,7 @@ class QuditCircuit(QuantumCircuit):
 
         return dest
 
+    #TODO
     def tensor(self, other, inplace=False):
         """Tensor ``self`` with ``other``.
 
@@ -798,25 +489,18 @@ class QuditCircuit(QuantumCircuit):
         return dest
 
     @property
-    def qubits(self):
+    def qudits(self):
         """
-        Returns a list of quantum bits in the order that the registers were added.
+        Returns a list of d-dimensional quantum bits in the order that the registers were added.
         """
-        return self._qubits
+        return self._qudits
 
     @property
-    def clbits(self):
-        """
-        Returns a list of classical bits in the order that the registers were added.
-        """
-        return self._clbits
-
-    @property
-    def ancillas(self):
+    def qd_ancillas(self):
         """
         Returns a list of ancilla bits in the order that the registers were added.
         """
-        return self._ancillas
+        return self._qd_ancillas
 
     @deprecate_function(
         "The QuantumCircuit.__add__() method is being deprecated."
@@ -836,31 +520,14 @@ class QuditCircuit(QuantumCircuit):
         """Overload += to implement self.extend."""
         return self.extend(rhs)
 
-    def __and__(self, rhs):
-        """Overload & to implement self.compose."""
-        return self.compose(rhs)
-
-    def __iand__(self, rhs):
-        """Overload &= to implement self.compose in place."""
-        self.compose(rhs, inplace=True)
-        return self
-
-    def __xor__(self, top):
-        """Overload ^ to implement self.tensor."""
-        return self.tensor(top)
-
-    def __ixor__(self, top):
-        """Overload ^= to implement self.tensor in place."""
-        self.tensor(top, inplace=True)
-        return self
-
+    #TODO: check if len(data) == len(qd_data)
     def __len__(self):
         """Return number of operations in circuit."""
         return len(self._data)
 
-    def __getitem__(self, item):
+    def __getitem__(self, key):
         """Return indexed operation."""
-        return self._data[item]
+        return self.data[key]
 
     @staticmethod
     def cast(value, _type):
@@ -1048,6 +715,26 @@ class QuditCircuit(QuantumCircuit):
         return False
 
     def add_register(self, *regs):
+        # check if first register is a valid qudit register
+        # check and ignore multiple qubits due to qudit overlap
+        qdreg = regs[0]
+        if not isinstance(qdreg, (list, dict, QuditRegister)):
+            try:
+                valid_reg_size = qdreg == int(qdreg)
+            except (ValueError, TypeError):
+                valid_reg_size = False
+
+            if not valid_reg_size:
+                raise CircuitError(
+                    "Circuit args must be Registers or valid arguments to pass on to registers. "
+                    "(%s '%s' was provided)" % ([type(reg).__name__ for reg in regs], regs)
+                )
+
+            qdreg = int(qdreg)
+
+        # reorder classical register
+        if len(regs) == 2:
+            regs = [0, regs[1]]
         """Add registers."""
         if not regs:
             return
@@ -1416,104 +1103,12 @@ class QuditCircuit(QuantumCircuit):
         else:
             return string_temp
 
-    def draw(
-        self,
-        output=None,
-        scale=None,
-        filename=None,
-        style=None,
-        interactive=False,
-        plot_barriers=True,
-        reverse_bits=False,
-        justify=None,
-        vertical_compression="medium",
-        idle_wires=True,
-        with_layout=True,
-        fold=None,
-        ax=None,
-        initial_state=False,
-        cregbundle=True,
-    ):
-        """Draw the quantum circuit. Use the output parameter to choose the drawing format:
-
-        **text**: ASCII art TextDrawing that can be printed in the console.
-
-        **matplotlib**: images with color rendered purely in Python.
-
-        **latex**: high-quality images compiled via latex.
-
-        **latex_source**: raw uncompiled latex output.
+    def draw(self, show_qudits=True, **kwargs):
+        """Draw the quantum circuit.
 
         Args:
-            output (str): select the output method to use for drawing the circuit.
-                Valid choices are ``text``, ``mpl``, ``latex``, ``latex_source``.
-                By default the `text` drawer is used unless the user config file
-                (usually ``~/.qiskit/settings.conf``) has an alternative backend set
-                as the default. For example, ``circuit_drawer = latex``. If the output
-                kwarg is set, that backend will always be used over the default in
-                the user config file.
-            scale (float): scale of image to draw (shrink if < 1.0). Only used by
-                the `mpl`, `latex` and `latex_source` outputs. Defaults to 1.0.
-            filename (str): file path to save image to. Defaults to None.
-            style (dict or str): dictionary of style or file name of style json file.
-                This option is only used by the `mpl` output type.
-                If `style` is a str, it is used as the path to a json file
-                which contains a style dict. The file will be opened, parsed, and
-                then any style elements in the dict will replace the default values
-                in the input dict. A file to be loaded must end in ``.json``, but
-                the name entered here can omit ``.json``. For example,
-                ``style='iqx.json'`` or ``style='iqx'``.
-                If `style` is a dict and the ``'name'`` key is set, that name
-                will be used to load a json file, followed by loading the other
-                items in the style dict. For example, ``style={'name': 'iqx'}``.
-                If `style` is not a str and `name` is not a key in the style dict,
-                then the default value from the user config file (usually
-                ``~/.qiskit/settings.conf``) will be used, for example,
-                ``circuit_mpl_style = iqx``.
-                If none of these are set, the `default` style will be used.
-                The search path for style json files can be specified in the user
-                config, for example,
-                ``circuit_mpl_style_path = /home/user/styles:/home/user``.
-                See: :class:`~qiskit.visualization.qcstyle.DefaultStyle` for more
-                information on the contents.
-            interactive (bool): when set to true, show the circuit in a new window
-                (for `mpl` this depends on the matplotlib backend being used
-                supporting this). Note when used with either the `text` or the
-                `latex_source` output type this has no effect and will be silently
-                ignored. Defaults to False.
-            reverse_bits (bool): when set to True, reverse the bit order inside
-                registers for the output visualization. Defaults to False.
-            plot_barriers (bool): enable/disable drawing barriers in the output
-                circuit. Defaults to True.
-            justify (string): options are ``left``, ``right`` or ``none``. If
-                anything else is supplied, it defaults to left justified. It refers
-                to where gates should be placed in the output circuit if there is
-                an option. ``none`` results in each gate being placed in its own
-                column.
-            vertical_compression (string): ``high``, ``medium`` or ``low``. It
-                merges the lines generated by the `text` output so the drawing
-                will take less vertical room.  Default is ``medium``. Only used by
-                the `text` output, will be silently ignored otherwise.
-            idle_wires (bool): include idle wires (wires with no circuit elements)
-                in output visualization. Default is True.
-            with_layout (bool): include layout information, with labels on the
-                physical layout. Default is True.
-            fold (int): sets pagination. It can be disabled using -1. In `text`,
-                sets the length of the lines. This is useful when the drawing does
-                not fit in the console. If None (default), it will try to guess the
-                console width using ``shutil.get_terminal_size()``. However, if
-                running in jupyter, the default line length is set to 80 characters.
-                In `mpl`, it is the number of (visual) layers before folding.
-                Default is 25.
-            ax (matplotlib.axes.Axes): Only used by the `mpl` backend. An optional
-                Axes object to be used for the visualization output. If none is
-                specified, a new matplotlib Figure will be created and used.
-                Additionally, if specified there will be no returned Figure since
-                it is redundant.
-            initial_state (bool): optional. Adds ``|0>`` in the beginning of the wire.
-                Default is False.
-            cregbundle (bool): optional. If set True, bundle classical registers.
-                Default is True.
+            show_qudits: if the drawing should be in terms of qudits or underlying qubits
+            kwargs: draw options, see `quantumcircuit.draw()`
 
         Returns:
             :class:`TextDrawing` or :class:`matplotlib.figure` or :class:`PIL.Image` or
@@ -1531,41 +1126,13 @@ class QuditCircuit(QuantumCircuit):
         Raises:
             VisualizationError: when an invalid output method is selected
             ImportError: when the output methods requires non-installed libraries.
-
-        Example:
-            .. jupyter-execute::
-
-                from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
-                from qiskit.tools.visualization import circuit_drawer
-                q = QuantumRegister(1)
-                c = ClassicalRegister(1)
-                qc = QuantumCircuit(q, c)
-                qc.h(q)
-                qc.measure(q, c)
-                qc.draw(output='mpl', style={'backgroundcolor': '#EEEEEE'})
         """
+        if show_qudits:
+            # pylint: disable=cyclic-import
+            #from .visualization import circuit_drawer
+            pass
 
-        # pylint: disable=cyclic-import
-        from qiskit.visualization import circuit_drawer
-
-        return circuit_drawer(
-            self,
-            scale=scale,
-            filename=filename,
-            style=style,
-            output=output,
-            interactive=interactive,
-            plot_barriers=plot_barriers,
-            reverse_bits=reverse_bits,
-            justify=justify,
-            vertical_compression=vertical_compression,
-            idle_wires=idle_wires,
-            with_layout=with_layout,
-            fold=fold,
-            ax=ax,
-            initial_state=initial_state,
-            cregbundle=cregbundle,
-        )
+        super().draw(kwargs)
 
     def size(self):
         """Returns total number of gate operations in circuit.
@@ -1655,19 +1222,14 @@ class QuditCircuit(QuantumCircuit):
         return len(self.qubits) + len(self.clbits)
 
     @property
-    def num_qubits(self):
-        """Return number of qubits."""
-        return len(self.qubits)
+    def num_qudits(self):
+        """Return number of qudits."""
+        return len(self.qudits)
 
     @property
-    def num_ancillas(self):
-        """Return the number of ancilla qubits."""
-        return len(self.ancillas)
-
-    @property
-    def num_clbits(self):
-        """Return number of classical bits."""
-        return len(self.clbits)
+    def num_qd_ancillas(self):
+        """Return the number of ancilla qudits."""
+        return len(self.qd_ancillas)
 
     def count_ops(self):
         """Count each operation kind in the circuit.

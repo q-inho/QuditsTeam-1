@@ -77,8 +77,7 @@ class QuditCircuitData(QuantumCircuitData):
     def convert(data_tuple):
         """
         Converts a qd_data tuple to a data tuple and vice versa.
-        Conversion from data to qd_data is lossless.
-        Conversion from qd_data to data is lossless if qargs is empty.
+        Conversion from qd_data to data should be preferred when both directions are possible.
 
         Args:
             data_tuple (tuple): Tuple (instruction, (qdargs,) qargs, cargs),

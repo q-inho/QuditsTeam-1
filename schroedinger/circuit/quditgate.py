@@ -69,6 +69,11 @@ class QuditGate(QuditInstruction, Gate):
         QuditInstruction.__init__(self, name, qudit_dimensions, num_single_qubits, 0, params)
         Gate.__init__(self, name, num_qubits, params, label=label)
 
+    def power(self, exponent: float):
+        """Creates a unitary gate as gate^exponent.
+        The current implementation will only return a Gate, not a QuditGate."""
+        super().power(exponent)
+
     def _return_repeat(self, exponent: float) -> 'QuditGate':
         return QuditGate(
             name="%s*%s" % (self.name, exponent),
@@ -80,11 +85,8 @@ class QuditGate(QuditInstruction, Gate):
 
     def control(self, num_ctrl_qubits: Optional[int] = 1, label: Optional[str] = None,
                 ctrl_state: Optional[Union[int, str]] = None):
-        """Return controlled version of gate. See :class:`.ControlledGate` for usage."""
-        warn(
-            "Controlled version of qudit gate not supported, "
-            "defaulting to controlled version of qubit gate."
-        )
+        """Return controlled version of gate. See :class:`.ControlledGate` for usage.
+        This implementation will only return  a Gate, not a QuditGate."""
         return super().control(
             num_ctrl_qubits=num_ctrl_qubits,
             label=label,
