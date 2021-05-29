@@ -108,6 +108,11 @@ class Qudit(Qubit):
             )
 
     @property
+    def qubits(self):
+        """Return list of qubits representing this qudit."""
+        return self._qubits
+
+    @property
     def dimension(self):
         """Get the qubit dimension."""
         return self._dimension
