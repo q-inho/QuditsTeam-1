@@ -17,17 +17,6 @@ Subclasses should only leave the qudit_dimensions argument in constructor, i.e.
 def __init__(self, qudit_dimensions): ...
 Since num_qudits is a class variable, it exists before instantiation.
 This allows instancing instructions in response to qudit arguments.
-
-The method flex_qd_broadcast_arguments should be used like the following example,
-with <instruction_name> replaced by the (abbreviated) instruction name and
-<instruction_class> replaced by the subclass. See gates/zd.py for an example.
-# ----------------------------------------------------------------------------------------
-def <instruction_name>(self, qdargs, qargs, cargs):
-    for qdargs, qargs, cargs in \
-            flex_qd_broadcast_arguments(self, <instruction_class>, qdargs, qargs, cargs):
-        qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-        self.append(<instruction_class>(qudit_dimensions), qdargs, qargs, cargs)
-# ----------------------------------------------------------------------------------------
 """
 from typing import List, Optional
 from qiskit.circuit.exceptions import CircuitError

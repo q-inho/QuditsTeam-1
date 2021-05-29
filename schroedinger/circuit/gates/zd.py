@@ -16,12 +16,11 @@ Generalized Z gate for qudits.
 import numpy as np
 
 from schroedinger.circuit.quditcircuit import QuditCircuit
-from schroedinger.circuit.flexiblequditinstruction import \
-    FlexibleQuditGate, flex_qd_broadcast_arguments
+from schroedinger.circuit.flexiblequditinstruction import FlexibleQuditGate
 from schroedinger.circuit.quditregister import QuditRegister
 
 
-class ZD(FlexibleQuditGate):
+class ZDGate(FlexibleQuditGate):
     """General Z gate for Qudits."""
 
     num_qudits = 1
@@ -40,10 +39,3 @@ class ZD(FlexibleQuditGate):
             qdc.rz(w * 2**(qd.size-i+1), qd[qd.size-1-i])
 
         self.definition = qdc
-
-
-def zd(self, qdargs):
-    """Broadcasts qudits to one general Z gate each."""
-    for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, ZD, qdargs=qdargs):
-        qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-        self.append(ZD(qudit_dimensions), qdargs, qargs, cargs)
