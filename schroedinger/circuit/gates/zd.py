@@ -36,6 +36,6 @@ class ZDGate(FlexibleQuditGate):
 
         w = 2*np.pi/self.qudit_dimensions[0]
         for i in range(qd.size):
-            qdc.rz(w * 2**(qd.size-i+1), qd[qd.size-1-i])
+            qdc.rz(w * 2**(qd.size-i+1), qd[0j][qd.size-1-i])
 
         self.definition = qdc
