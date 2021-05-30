@@ -38,6 +38,7 @@ from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.parameterexpression import ParameterExpression
 from qiskit.circuit.quantumregister import QuantumRegister, Qubit, AncillaRegister, AncillaQubit
 from qiskit.circuit.classicalregister import ClassicalRegister, Clbit
+from qiskit.circuit.bit import Bit
 from qiskit.circuit.parametertable import ParameterTable
 from qiskit.circuit.register import Register
 from qiskit.circuit.instruction import Instruction
@@ -95,7 +96,13 @@ class QuditCircuit(QuantumCircuit):
         self._qudit_set = set()
         self._qd_ancillas = []
 
-        super().__init__(*regs, name=name, global_phase=global_phase, metadata=metadata)
+        # Sum of qubits of qudits to offset qubit operations
+        self._qubit_offset = 0
+
+        # If qudit_dimensions is in register argument,
+        # superclass will raise error "Circuit args must be Registers or integers".
+        super().__init__(name=name, global_phase=global_phase, metadata=metadata)
+        self.add_register(*regs)
 
     @staticmethod
     def to_quditcircuit(circuit):
@@ -595,7 +602,8 @@ class QuditCircuit(QuantumCircuit):
                 instruction = copy.deepcopy(instruction)
 
         expanded_qdargs = [self.qdit_argument_conversion(qdarg) for qdarg in qdargs or []]
-        expanded_qargs = [self.qbit_argument_conversion(qarg) for qarg in qargs or []]
+        expanded_qargs = [self.qbit_argument_conversion(self._offset_qubit_representation(qarg))
+                          for qarg in qargs or []]
         expanded_cargs = [self.cbit_argument_conversion(carg) for carg in cargs or []]
 
         instructions = QuditInstructionSet()
@@ -609,6 +617,26 @@ class QuditCircuit(QuantumCircuit):
             for qarg, carg in instruction.broadcast_arguments(expanded_qargs, expanded_cargs):
                 instructions.add(self._append(instruction, qarg, carg), qarg, carg)
         return instructions
+
+    def _offset_qubit_representation(self, qubit_representation):
+        """Offset by qubits of qudits if qubit_representation contains numbers."""
+        ret = qubit_representation
+        try:
+            if isinstance(QuantumCircuit.cast(qubit_representation, int), int):
+                ret = qubit_representation + self._qubit_offset
+            elif isinstance(qubit_representation, slice):
+                ret = slice(
+                    qubit_representation.start + self._qubit_offset,
+                    qubit_representation.stop + self._qubit_offset,
+                    qubit_representation.step
+                )
+            elif isinstance(QuantumCircuit.cast(qubit_representation, list), (range, list)):
+                ret = [index if not isinstance(index, Bit) else
+                       index + self._qubit_offset for index in qubit_representation]
+        except (IndexError, TypeError):
+            # handled in QuantumCircuit._bit_argument_conversion
+            pass
+        return ret
 
     def _append(self, instruction, qargs=None, cargs=None):
         """Calls _qd_append with no qdargs."""
@@ -723,10 +751,15 @@ class QuditCircuit(QuantumCircuit):
             if isinstance(register, AncillaRegister):
                 self._ancillas.extend(register)
             if isinstance(register, QuantumRegister):
-                # QuditRegister is also a QuantumRegister
                 self.qregs.append(register)
                 new_bits = [bit for bit in register if bit not in self._qubit_set]
-                self._qubits.extend(new_bits)
+                if isinstance(register, QuditRegister):
+                    # keep qudit qubits in front
+                    self._qubits = self._qubits[:self._qubit_offset] + \
+                                   new_bits + self._qubits[self._qubit_offset:]
+                    self._qubit_offset += len(new_bits)
+                else:
+                    self._qubits.extend(new_bits)
                 self._qubit_set.update(new_bits)
             elif isinstance(register, ClassicalRegister):
                 self.cregs.append(register)
@@ -755,8 +788,16 @@ class QuditCircuit(QuantumCircuit):
             if isinstance(bit, AncillaQubit):
                 self._ancillas.append(bit)
             if isinstance(bit, Qubit):
-                self._qubits.append(bit)
-                self._qubit_set.add(bit)
+                if isinstance(bit, Qudit):
+                    new_bits = [qubit for qubit in bit]
+                    # keep qudit qubits in front
+                    qubit_qudits = self._qubits[:self._qubit_offset]
+                    self._qubits = new_bits + self._qubits[self._qubit_offset:]
+                    self._qubits = qubit_qudits + self._qubits
+                    self._qubit_offset += len(new_bits)
+                else:
+                    self._qubits.append(bit)
+                    self._qubit_set.add(bit)
             elif isinstance(bit, Clbit):
                 self._clbits.append(bit)
                 self._clbit_set.add(bit)

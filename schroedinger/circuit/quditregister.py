@@ -196,6 +196,8 @@ class QuditRegister(QuantumRegister):
         super().__init__(sum(qubit_nums), name)
 
         self._qd_size = len(qudit_dimensions)
+        # overwrite with qudit size
+        self._repr = "%s(%d, '%s')" % (self.__class__.__qualname__, self._qd_size, self.name)
         self._qudits = []
         for idx in range(self._qd_size):
 
