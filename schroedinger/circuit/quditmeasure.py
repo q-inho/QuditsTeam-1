@@ -33,12 +33,12 @@ Qudit measurement by measureing all underlying qubits.
 While qudits could be mesured by simply calling measure(qdc, qudit[:], cbits),
 QuditMeasure can be properly visualized in terms of qudits.
 """
-from qiskit.circuit.measure import Measure, measure
+from qiskit.circuit.measure import Measure
 from qiskit.circuit.classicalregister import ClassicalRegister
 
 from .quditcircuit import QuditCircuit
-from .flexiblequditinstruction import FlexibleQuditInstruction, flex_qd_broadcast_arguments
-from .quditregister import Qudit, QuditRegister
+from .flexiblequditinstruction import FlexibleQuditInstruction
+from .quditregister import QuditRegister
 
 
 class QuditMeasure(FlexibleQuditInstruction):
@@ -49,7 +49,7 @@ class QuditMeasure(FlexibleQuditInstruction):
     def __init__(self, qudit_dimensions):
         """Create new measurement instruction."""
         num_clbits = QuditRegister(qudit_dimensions).size
-        super().__init__("qudit measure", qudit_dimensions, 0, num_clbits, [])
+        super().__init__("measure", qudit_dimensions, 0, num_clbits, [])
 
     def _define(self):
         """Measure each underlying qubit."""
@@ -63,20 +63,3 @@ class QuditMeasure(FlexibleQuditInstruction):
             qdc._append(inst, qargs, cargs)
 
         self.definition = qdc
-
-
-def qd_measure(self, qdargs, cargs):
-    """Measure qudits or qubits. Qudits are measured by measureing all underlying qubits."""
-    if isinstance(qdargs, (Qudit, QuditRegister)) or \
-            isinstance(qdargs, (list, tuple)) and all(isinstance(qdarg, Qudit) for qdarg in qdargs):
-
-        for qdargs, qargs, cargs in \
-                flex_qd_broadcast_arguments(self, QuditMeasure, qdargs=qdargs, cargs=cargs):
-            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-            self.append(QuditMeasure(qudit_dimensions), qdargs, qargs, cargs)
-
-    # in case qdargs are qubits
-    return measure(self, qdargs, cargs)
-
-
-QuditCircuit.measure = qd_measure

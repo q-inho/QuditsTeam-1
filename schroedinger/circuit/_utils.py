@@ -14,9 +14,10 @@
 """Conversion from QuantumCircuit to QuditCircuit"""
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.quantumcircuit import QuantumCircuit
+from qiskit.circuit.quantumregister import QuantumRegister
 
 from schroedinger.circuit.quditcircuit import QuditCircuit
-
+from schroedinger.circuit.quditregister import QuditRegister
 
 def to_quditcircuit(circuit):
     """Convert a quantum circuit to a qudit quantum circuit.
@@ -50,11 +51,11 @@ def to_quditcircuit(circuit):
 
 def parse_complex_index(index):
     """
-    Parses a index (single number or slice or list) made of 
+    Parses a index (single number or slice or list or range) made of
     either purely imaginary or real number(s).
 
     Arg:
-        index (int or complex or slice or list): Index of to be parsed.
+        index (int or complex or slice or list or range): Index of to be parsed.
     Returns:
         tuple(int or slice or list, bool):  real index and boolean representing if index was real
 
@@ -62,14 +63,14 @@ def parse_complex_index(index):
         TypeError: If the `index` is made of complex but not a purely imaginary integer(s).
         TypeError: If the `index` is a list with different index types.
         TypeError: If the `index` is a slice with different index types (not regarding None).
-        TypeError: If the `index` is neither a int / complex integer nor a list or slice.
+        TypeError: If the `index` is neither a int / complex integer nor a list or slice or range.
     """
     if isinstance(index, complex):
         if index.real != 0 or int(index.imag) != index.imag:
             raise TypeError("Complex indices must be purely imaginary integers.")
         return int(index.imag), False
 
-    if isinstance(index, int):
+    if isinstance(index, (int, range)):
         return index, True
 
     if isinstance(index, list):
@@ -112,4 +113,50 @@ def parse_complex_index(index):
 
         raise TypeError("Indices in a slice must be real or imaginary integers.")
 
-    raise TypeError("Index must be of type int or slice or list.")
+    raise TypeError("Index must be of type int or slice or list or range.")
+
+
+def qargs_to_indices(circuit, qargs):
+    """
+    Parses qargs to indices for qudits and qubits.
+
+    Args:
+        circuit (QuditCircuit): circuit of indexed qudits and qubits
+        qargs: quantum bit (qubit/qubit) representations
+
+    Returns:
+        tuple(List(int), list(int)): Tuple of list of qudit indices and list of qubit indices
+    """
+    qudits = []
+    qubits = []
+
+    if qargs is None:
+        qudits.extend(list(range(circuit.num_qudits)))
+        qudits.extend(list(range(circuit.num_single_qubits)))
+    else:
+        for qarg in qargs:
+            if isinstance(qargs, QuantumRegister):
+                if isinstance(qargs, QuditRegister):
+                    qubits.extend([qarg[j * 1j] for j in range(qarg.size)])
+                else:
+                    qubits.extend([qarg[j] for j in range(qarg.size)])
+
+            qarg, is_real = parse_complex_index(qarg)
+
+            if is_real:
+                bits = qubits
+                array_len = len(circuit.qubits)
+            else:
+                bits = qudits
+                array_len = len(circuit.qudits)
+
+            if isinstance(qarg, list):
+                bits.extend(qarg)
+            elif isinstance(qarg, range):
+                bits.extend(list(qarg))
+            elif isinstance(qarg, slice):
+                bits.extend(list(range(*slice.indices(array_len))))
+            else:
+                bits.append(qarg)
+
+    return qudits, qubits

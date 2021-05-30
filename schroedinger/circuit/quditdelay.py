@@ -70,7 +70,6 @@ class QuditDelay(FlexibleQuditInstruction):
 
         self.definition = qdc
 
-
     def c_if(self, classical, val):
         raise CircuitError('Conditional Delay is not yet implemented.')
 

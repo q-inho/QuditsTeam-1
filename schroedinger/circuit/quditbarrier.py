@@ -45,14 +45,14 @@ class QuditBarrier(FlexibleQuditInstruction):
 
     def __init__(self, qudit_dimensions):
         """Create new barrier instruction."""
-        super().__init__("qudit barrier", qudit_dimensions, 0, 0, [])
+        super().__init__("barrier", qudit_dimensions, 0, 0, [])
 
     def _define(self):
         """Relay barrier to each underlying qubit."""
         qd = QuditRegister(self.qudit_dimensions, 'qd')
         qdc = QuditCircuit(qd, name=self.name)
         rules = [
-            (Barrier(), [qd[:]], [])
+            (Barrier(qd.size), [qd[:]], [])
         ]
         for inst, qargs, cargs in rules:
             qdc._append(inst, qargs, cargs)

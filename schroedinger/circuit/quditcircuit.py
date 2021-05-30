@@ -34,18 +34,16 @@ import copy
 import warnings
 from typing import Union
 from qiskit.circuit.parameter import Parameter
-from qiskit.circuit.instructionset import InstructionSet
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.parameterexpression import ParameterExpression
 from qiskit.circuit.quantumregister import QuantumRegister, Qubit, AncillaRegister, AncillaQubit
 from qiskit.circuit.classicalregister import ClassicalRegister, Clbit
 from qiskit.circuit.parametertable import ParameterTable
 from qiskit.circuit.register import Register
-from qiskit.circuit.delay import Delay
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from ._utils import to_quditcircuit
+from ._utils import to_quditcircuit, qargs_to_indices
 from .quditcircuitdata import QuditCircuitData
 from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQudit
 from .quditinstruction import QuditInstruction
@@ -879,6 +877,64 @@ class QuditCircuit(QuantumCircuit):
             new_qdreg = QuantumRegister(qudit_dimensions, name)
         return new_qdreg
 
+    def reset(self, bits):
+        """Apply :class:`~qiskit.circuit.Reset` if bits are qubits,
+        apply :class:`~.QuditReset` if bits are qudits.
+        Qudits are reset by resetting all underlying qubits.
+
+        Returns:
+            Instruction or QuditInstructionSet: Single Instruction if bits are qudits,
+                multiple instructions if bits are qudits.
+        """
+        if (isinstance(bits, (list, tuple)) and all(isinstance(bit, Qudit) for bit in bits)) \
+                or isinstance(bits, (Qudit, QuditRegister)):
+
+            from .quditreset import QuditReset
+
+            instructions = QuditInstructionSet()
+
+            for qdargs, qargs, cargs in \
+                    flex_qd_broadcast_arguments(self, QuditReset, qdargs=bits):
+
+                qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+                inst = (QuditReset(qudit_dimensions), qdargs, qargs, cargs)
+                self.qd_append(*inst)
+                instructions.qd_add(*inst)
+
+            return instructions
+
+        from qiskit.circuit.reset import reset as _reset
+        return _reset(self, bits)
+
+    def measure(self, bits, clbits):
+        """Apply :class:`~qiskit.circuit.Measure` if bits are qubits,
+        apply :class:`~.QuditMeasure` if bits are qudits.
+        Qudits are measured by measuring all underlying qubits.
+
+        Returns:
+            Instruction or QuditInstructionSet: Single Instruction if bits are qudits,
+                multiple instructions if bits are qudits.
+        """
+        if (isinstance(bits, (list, tuple)) and all(isinstance(bit, Qudit) for bit in bits)) \
+                or isinstance(bits, (Qudit, QuditRegister)):
+
+            from .quditmeasure import QuditMeasure
+
+            instructions = QuditInstructionSet()
+
+            for qdargs, qargs, cargs in \
+                    flex_qd_broadcast_arguments(self, QuditMeasure, qdargs=bits, cargs=clbits):
+
+                qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+                inst = (QuditMeasure(qudit_dimensions), qdargs, qargs, cargs)
+                self.qd_append(*inst)
+                instructions.qd_add(*inst)
+
+            return instructions
+
+        from qiskit.circuit.measure import measure as _measure
+        return _measure(self, bits, clbits)
+
     def measure_active(self, inplace=True):
         """Adds measurement to all non-idle qudits and qubits. Creates a new ClassicalRegister
         with a size equal to the number of non-idle qudits and qubits being measured.
@@ -943,78 +999,93 @@ class QuditCircuit(QuantumCircuit):
             return None
 
     def barrier(self, *qargs):
-        """Apply :class:`~qiskit.circuit.Barrier`. If qargs is None, applies to all."""
-        from qiskit.circuit.barrier import Barrier
+        """Apply :class:`~qiskit.circuit.Barrier` for qubit representations in qargs,
+        apply :class:`~.QuditBarrier` for qudit representations in qargs.
+        If qargs is None, applies to all qudits and qubits.
 
-        qubits = []
+        Returns:
+            Instruction or QuditInstructionSet: Single instruction if all bits are qudits,
+                multiple instructions if some bits are qudits.
+        """
+        qudits, qubits = qargs_to_indices(self, qargs)
 
-        if not qargs:  # None
-            qubits.extend(self.qubits)
+        instructions = QuditInstructionSet()
 
-        for qarg in qargs:
-            if isinstance(qarg, QuantumRegister):
-                qubits.extend([qarg[j] for j in range(qarg.size)])
-            elif isinstance(qarg, list):
-                qubits.extend(qarg)
-            elif isinstance(qarg, range):
-                qubits.extend(list(qarg))
-            elif isinstance(qarg, slice):
-                qubits.extend(self.qubits[qarg])
-            else:
-                qubits.append(qarg)
+        if len(qudits) > 0:
+            from .quditbarrier import QuditBarrier
 
-        return self.append(Barrier(len(qubits)), qubits, [])
+            for qdargs, qargs, cargs in \
+                    flex_qd_broadcast_arguments(self, QuditBarrier, qdargs=qudits):
+
+                qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+                inst = (QuditBarrier(qudit_dimensions), qdargs, qargs, cargs)
+                self.qd_append(*inst)
+                instructions.qd_add(*inst)
+
+        if len(qubits) > 0:
+            from qiskit.circuit.barrier import Barrier
+
+            inst = (Barrier(len(qubits)), qubits, [])
+            ret = self.append(*inst)
+            if len(qudits) == 0:
+                return ret
+            instructions.add(*inst)
+
+        return instructions
 
     def delay(self, duration, qarg=None, unit="dt"):
-        """Apply :class:`~qiskit.circuit.Delay`. If qarg is None, applies to all qubits.
-        When applying to multiple qubits, delays with the same duration will be created.
+        """Apply :class:`~qiskit.circuit.Barrier` for qubit representations in qarg,
+        apply :class:`~.QuditBarrier` for qudit representations in qarg.
+        If qarg is None, applies to all qudits and qubits.
 
         Args:
-            duration (int or float or ParameterExpression): duration of the delay.
-            qarg (Object): qubit argument to apply this delay.
-            unit (str): unit of the duration. Supported units: 's', 'ms', 'us', 'ns', 'ps', 'dt'.
+            duration (int or float or ParameterExpression): Duration of the delay.
+            qarg (Object): Qubit argument to apply this delay.
+            unit (str): Unit of the duration. Supported units: 's', 'ms', 'us', 'ns', 'ps', 'dt'.
                 Default is ``dt``, i.e. integer time unit depending on the target backend.
 
         Returns:
-            qiskit.Instruction: the attached delay instruction.
-
-        Raises:
-            CircuitError: if arguments have bad format.
+            QuditInstructionSet: Multiple Instructions.
         """
-        qubits = []
-        if qarg is None:  # -> apply delays to all qubits
-            for q in self.qubits:
-                qubits.append(q)
-        else:
-            if isinstance(qarg, QuantumRegister):
-                qubits.extend([qarg[j] for j in range(qarg.size)])
-            elif isinstance(qarg, list):
-                qubits.extend(qarg)
-            elif isinstance(qarg, (range, tuple)):
-                qubits.extend(list(qarg))
-            elif isinstance(qarg, slice):
-                qubits.extend(self.qubits[qarg])
-            else:
-                qubits.append(qarg)
+        qudits, qubits = qargs_to_indices(self, qarg)
 
-        instructions = InstructionSet()
-        for q in qubits:
-            inst = (Delay(duration, unit), [q], [])
-            self.append(*inst)
-            instructions.add(*inst)
+        instructions = QuditInstructionSet()
+
+        if len(qudits) > 0:
+            from .quditdelay import QuditDelay
+
+            for qdargs, qargs, cargs in \
+                    flex_qd_broadcast_arguments(self, QuditDelay, qdargs=qudits):
+
+                qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+                inst = (QuditDelay(qudit_dimensions, duration, unit), qdargs, qargs, cargs)
+                self.qd_append(*inst)
+                instructions.qd_add(*inst)
+
+        if len(qudits) > 0:
+            from qiskit.circuit.delay import Delay
+
+            for qubit in qubits:
+                inst = (Delay(duration, unit), [qubit], [])
+                self.append(*inst)
+                instructions.add(*inst)
+
         return instructions
 
     def zd(self, qdargs):
-        """Apply :class:`~schroedinger.circuit.gates.ZDGate`."""
+        """Apply :class:`~.gates.ZDGate`."""
         from .gates.zd import ZDGate
-        ret_data = []
-        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, ZDGate, qdargs=qdargs):
-            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-            data_tuple = (ZDGate(qudit_dimensions), qdargs, qargs, cargs)
-            self._qd_append(*data_tuple)
-            ret_data.append(data_tuple)
 
-        return ret_data
+        instructions = QuditInstructionSet()
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, ZDGate, qdargs=qdargs):
+
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            inst = (ZDGate(qudit_dimensions), qdargs, qargs, cargs)
+            self.qd_append(*inst)
+            instructions.qd_add(*inst)
+
+        return instructions
 
     # Functions only for scheduled circuits
     def qudit_duration(self, *qudits: Union[Qudit, int]) -> Union[int, float]:
