@@ -66,7 +66,7 @@ class QuditMeasure(FlexibleQuditInstruction):
 
 
 def qd_measure(self, qdargs, cargs):
-    """Measure a qudit or a qudit. Qudits are measured by measureing all underlying qubits."""
+    """Measure qudits or qubits. Qudits are measured by measureing all underlying qubits."""
     if isinstance(qdargs, (Qudit, QuditRegister)) or \
             isinstance(qdargs, (list, tuple)) and all(isinstance(qdarg, Qudit) for qdarg in qdargs):
 
