@@ -139,7 +139,7 @@ class Qudit(Qubit):
             CircuitError: If the `key` is not an integer.
             QiskitIndexError: If the `key` is not in the range `(0, self.qubit_count)`.
         """
-        if not isinstance(key, (int, np.integer, slice, list)):
+        if not isinstance(key, (int, slice, list)):
             raise CircuitError("expected integer or slice index into qubits")
         if isinstance(key, slice):
             return self._qubits[key]
@@ -192,8 +192,8 @@ class QuditRegister(QuantumRegister):
         if any(d < 2 for d in qudit_dimensions):
             raise CircuitError("qudit dimension must be 2 or higher")
 
-        qubit_counts = [int(np.ceil(np.log2(dimension))) for dimension in qudit_dimensions]
-        super().__init__(sum(qubit_counts), name)
+        qubit_nums = list(int(np.ceil(np.log2(dimension))) for dimension in qudit_dimensions)
+        super().__init__(sum(qubit_nums), name)
 
         self._qd_size = len(qudit_dimensions)
         self._qudits = []
@@ -203,7 +203,7 @@ class QuditRegister(QuantumRegister):
                 # Each qudit gets a partial and disjoint list of
                 # all qubits with the length according to the dimension
                 Qudit(qudit_dimensions[idx],
-                      self[sum(qubit_counts[:idx]): sum(qubit_counts[:idx + 1])],
+                      self[sum(qubit_nums[:idx]): sum(qubit_nums[:idx + 1])],
                       self,
                       idx
                       )
@@ -231,7 +231,7 @@ class QuditRegister(QuantumRegister):
             CircuitError: If the `key` is not an integer.
             CircuitError: If the `key` is not in the range `(0, self.qd_size)`.
         """
-        if not isinstance(key, (int, np.integer, slice, list)):
+        if not isinstance(key, (int, slice, list)):
             raise CircuitError(f"Expected integer or slice index into register, got {type(key)}.")
         if isinstance(key, slice):
             return self._qudits[key]

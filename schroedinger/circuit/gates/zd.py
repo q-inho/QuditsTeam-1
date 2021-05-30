@@ -10,14 +10,16 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+
 """
 Generalized Z gate for qudits.
 """
-import numpy as np
 
-from schroedinger.circuit.quditcircuit import QuditCircuit
+import numpy as np
+from qiskit.circuit.quantumregister import QuantumRegister
+from qiskit.circuit.quantumcircuit import QuantumCircuit
+
 from schroedinger.circuit.flexiblequditinstruction import FlexibleQuditGate
-from schroedinger.circuit.quditregister import QuditRegister
 
 
 class ZDGate(FlexibleQuditGate):
@@ -31,11 +33,11 @@ class ZDGate(FlexibleQuditGate):
 
     def _define(self):
         """gate zd()"""
-        qd = QuditRegister(self.qudit_dimensions, 'qd')
-        qdc = QuditCircuit(qd, name=self.name)
+        q = QuantumRegister(self.num_qubits)
+        qc = QuantumCircuit(q, name=self.name)
 
         w = 2*np.pi/self.qudit_dimensions[0]
-        for i in range(qd.size):
-            qdc.rz(w * 2**(qd.size-i+1), qd[0j][qd.size-1-i])
+        for i in range(q.size):
+            qc.rz(w * 2**(q.size-i+1), q[q.size-1-i])
 
-        self.definition = qdc
+        self.definition = qc

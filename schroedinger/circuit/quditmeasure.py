@@ -34,12 +34,13 @@ While qudits could be mesured by simply calling measure(qdc, qudit[:], cbits),
 QuditMeasure can be properly visualized in terms of qudits.
 """
 
+import numpy as np
 from qiskit.circuit.measure import Measure
 from qiskit.circuit.classicalregister import ClassicalRegister
+from qiskit.circuit.quantumregister import QuantumRegister
+from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from .quditcircuit import QuditCircuit
 from .flexiblequditinstruction import FlexibleQuditInstruction
-from .quditregister import QuditRegister
 
 
 class QuditMeasure(FlexibleQuditInstruction):
@@ -49,18 +50,18 @@ class QuditMeasure(FlexibleQuditInstruction):
 
     def __init__(self, qudit_dimensions):
         """Create new measurement instruction."""
-        num_clbits = QuditRegister(qudit_dimensions).size
+        num_clbits = sum(int(np.ceil(np.log2(dimension))) for dimension in self.qudit_dimensions)
         super().__init__("measure", qudit_dimensions, 0, num_clbits, [])
 
     def _define(self):
         """Measure each underlying qubit."""
-        qd = QuditRegister(self.qudit_dimensions, 'qd')
-        c = ClassicalRegister(qd.size, 'c')
-        qdc = QuditCircuit(qd, c, name=self.name)
+        q = QuantumRegister(self.num_qubits)
+        c = ClassicalRegister(self.num_clbits)
+        qc = QuantumCircuit(q, name=self.name)
         rules = [
-            (Measure(), [qd[:]], [c[:]])
+            (Measure(), [q[:]], [c[:]])
         ]
         for inst, qargs, cargs in rules:
-            qdc._append(inst, qargs, cargs)
+            qc._append(inst, qargs, cargs)
 
-        self.definition = qdc
+        self.definition = qc

@@ -35,10 +35,10 @@ QuditReset can not be properly visualized in terms of qudits.
 """
 
 from qiskit.circuit.reset import Reset
+from qiskit.circuit.quantumregister import QuantumRegister
+from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from .quditcircuit import QuditCircuit
 from .flexiblequditinstruction import FlexibleQuditInstruction
-from .quditregister import QuditRegister
 
 
 class QuditReset(FlexibleQuditInstruction):
@@ -52,12 +52,12 @@ class QuditReset(FlexibleQuditInstruction):
 
     def _define(self):
         """Reset each underlying qubit."""
-        qd = QuditRegister(self.qudit_dimensions, 'qd')
-        qdc = QuditCircuit(qd, name=self.name)
+        q = QuantumRegister(self.num_qubits)
+        qc = QuantumCircuit(q, name=self.name)
         rules = [
-            (Reset(), [qd[:]], [])
+            (Reset(), [q[:]], [])
         ]
         for inst, qargs, cargs in rules:
-            qdc._append(inst, qargs, cargs)
+            qc._append(inst, qargs, cargs)
 
-        self.definition = qdc
+        self.definition = qc

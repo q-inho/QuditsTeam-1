@@ -35,10 +35,10 @@ Delay instruction on qudits (for quditcircuit module).
 import numpy as np
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit import Delay
+from qiskit.circuit.quantumregister import QuantumRegister
+from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from .quditcircuit import QuditCircuit
 from .flexiblequditinstruction import FlexibleQuditInstruction
-from .quditregister import QuditRegister
 
 
 class QuditDelay(FlexibleQuditInstruction):
@@ -61,15 +61,15 @@ class QuditDelay(FlexibleQuditInstruction):
 
     def _define(self):
         """Relay delay to each underlying qubit."""
-        qd = QuditRegister(self.qudit_dimensions, 'qd')
-        qdc = QuditCircuit(qd, name=self.name)
+        q = QuantumRegister(self.num_qubits)
+        qc = QuantumCircuit(q, name=self.name)
         rules = [
-            (Delay(self.params[0], self.unit), [qd[:]], [])
+            (Delay(self.params[0], self.unit), [q[:]], [])
         ]
         for inst, qargs, cargs in rules:
-            qdc._append(inst, qargs, cargs)
+            qc._append(inst, qargs, cargs)
 
-        self.definition = qdc
+        self.definition = qc
 
     def c_if(self, classical, val):
         raise CircuitError('Conditional Delay is not yet implemented.')
@@ -87,7 +87,7 @@ class QuditDelay(FlexibleQuditInstruction):
 
     def __array__(self, dtype=None):
         """Return the identity matrix."""
-        return np.identity(QuditRegister(self.qudit_dimensions).size, dtype=dtype)
+        return np.identity(self.num_qubits, dtype=dtype)
 
     def to_matrix(self) -> np.ndarray:
         """Return a Numpy.array for the unitary matrix. This has been

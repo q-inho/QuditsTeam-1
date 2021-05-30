@@ -32,10 +32,10 @@
 
 from qiskit.exceptions import QiskitError
 from qiskit.circuit import Barrier
+from qiskit.circuit.quantumregister import QuantumRegister
+from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from .quditcircuit import QuditCircuit
 from .flexiblequditinstruction import FlexibleQuditInstruction
-from .quditregister import QuditRegister
 
 
 class QuditBarrier(FlexibleQuditInstruction):
@@ -49,15 +49,16 @@ class QuditBarrier(FlexibleQuditInstruction):
 
     def _define(self):
         """Relay barrier to each underlying qubit."""
-        qd = QuditRegister(self.qudit_dimensions, 'qd')
-        qdc = QuditCircuit(qd, name=self.name)
+        q = QuantumRegister(self.num_qubits)
+        qc = QuantumCircuit(q, name=self.name)
+
         rules = [
-            (Barrier(qd.size), [qd[:]], [])
+            (Barrier(q.size), [q[:]], [])
         ]
         for inst, qargs, cargs in rules:
-            qdc._append(inst, qargs, cargs)
+            qc._append(inst, qargs, cargs)
 
-        self.definition = qdc
+        self.definition = qc
 
     def c_if(self, classical, val):
         raise QiskitError('Barriers are compiler directives and cannot be conditional.')

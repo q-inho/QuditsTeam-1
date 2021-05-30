@@ -610,24 +610,6 @@ class QuditCircuit(QuantumCircuit):
                 instructions.add(self._append(instruction, qarg, carg), qarg, carg)
         return instructions
 
-    def split_qargs(self, qubits):
-        """Splits a list of qubits into associated qudits and single qubits.
-
-        Args:
-            qubits (list(:class:`Qubit`)): list of qubits
-
-        Returns:
-            tuple(list(:class:`Qudit`), list(:class:`Qubit`): list of qudits and single qubits
-        """
-        qudits = [qudit for qudit in self.qudits if any(qubit in qubits for qubit in qudit.qubits)]
-        qudit_qubits = [qubit for qudit in qudits for qubit in qudit.qubits]
-
-        if any(qubit not in qubits for qubit in qudit_qubits):
-            raise CircuitError("Given qubits contain incomplete part of a qudit.")
-
-        single_qubits = [qubit for qubit in qubits if qubit not in qudit_qubits]
-        return qudits, single_qubits
-
     def _append(self, instruction, qargs=None, cargs=None):
         """Calls _qd_append with no qdargs."""
         return self._qd_append(instruction, [], qargs, cargs)
@@ -649,11 +631,23 @@ class QuditCircuit(QuantumCircuit):
             CircuitError: If the gate is of a different shape than the wires
                 it is being attached to.
             CircuitError: If qudits are part of a non-QuditInstruction context.
+            CircuitError: If individual qubits of qudits are part of a context.
         """
         if not isinstance(instruction, Instruction):
             raise CircuitError("object is not an Instruction.")
-        if isinstance(instruction, QuditInstruction) and qdargs:
+        if not isinstance(instruction, QuditInstruction) and qdargs:
             raise CircuitError("Qudits can only be used for a QuditInstruction.")
+
+        try:
+            forbidden_qudit_access = qdargs != self._split_qargs(qargs)[0]
+        except CircuitError:
+            forbidden_qudit_access = True
+
+        if forbidden_qudit_access:
+            raise CircuitError(
+                "Individual underlying qubits of qudits cannot be part of an Instruction, "
+                "only as a whole qudit."
+            )
 
         # do some compatibility checks
         self._check_dups(qdargs)
@@ -817,7 +811,7 @@ class QuditCircuit(QuantumCircuit):
             warnings.warn("Qudit circuit drawer not implemented yet")
             pass
 
-        super().draw(**kwargs)
+        return super().draw(**kwargs)
 
     def qd_width(self):
         """Return number of qudits plus single_qubits plus clbits in circuit.
@@ -907,6 +901,27 @@ class QuditCircuit(QuantumCircuit):
             new_qdreg = QuantumRegister(qudit_dimensions, name)
         return new_qdreg
 
+    def _split_qargs(self, qubits):
+        """Splits a list of qubits into associated qudits and single qubits.
+
+        Args:
+            qubits (list(:class:`Qubit`)): list of qubits
+
+        Returns:
+            tuple(list(:class:`Qudit`), list(:class:`Qubit`): list of qudits and single qubits
+
+        Raise:
+            CircuitError: If only part of a qudits underlying qubits are in given qubits.
+        """
+        qudits = [qudit for qudit in self.qudits if any(qubit in qubits for qubit in qudit.qubits)]
+        qudit_qubits = [qubit for qudit in qudits for qubit in qudit.qubits]
+
+        if any(qubit not in qubits for qubit in qudit_qubits):
+            raise CircuitError("Given qubits contain incomplete part of a qudit.")
+
+        single_qubits = [qubit for qubit in qubits if qubit not in qudit_qubits]
+        return qudits, single_qubits
+
     def reset(self, bits):
         """Apply :class:`~qiskit.circuit.Reset` if bits are qubits,
         apply :class:`~.QuditReset` if bits are qudits.
@@ -986,7 +1001,7 @@ class QuditCircuit(QuantumCircuit):
 
         dag = circuit_to_dag(circ)
         qubits_to_measure = [qubit for qubit in circ.qubits if qubit not in dag.idle_wires()]
-        qudits_to_measure, single_qudits_to_measure = self.split_qargs(qubits_to_measure)
+        qudits_to_measure, single_qudits_to_measure = self._split_qargs(qubits_to_measure)
 
         new_creg = circ._create_creg(len(qubits_to_measure), "measure")
         circ.add_register(new_creg)
