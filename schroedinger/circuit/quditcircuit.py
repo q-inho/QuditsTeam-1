@@ -43,7 +43,7 @@ from qiskit.circuit.register import Register
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from ._utils import to_quditcircuit, qargs_to_indices
+from ._utils import qargs_to_indices
 from .quditcircuitdata import QuditCircuitData
 from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQudit
 from .quditinstruction import QuditInstruction
@@ -1147,3 +1147,33 @@ class QuditCircuit(QuantumCircuit):
         for qudit in self.qdit_argument_conversion(qudits):
             max_stop_time = max(max_stop_time, self.qubit_start_time(*qudit.qubits))
         return max_stop_time
+
+
+def to_quditcircuit(circuit):
+    """Convert a quantum circuit to a qudit quantum circuit.
+
+    Args:
+        circuit (QuantumCircuit): quantum circuit to convert
+
+    Returns:
+        qd_circuit (QuditCircuit): qudit quantum circuit
+
+    Raises:
+        CircuitError: If `circuit` is not a quantum circuit.
+    """
+    if not isinstance(circuit, QuantumCircuit):
+        raise CircuitError("Only a QuantumCircuit can be converted to a QuditCircuit.")
+
+    qd_circuit = QuditCircuit(
+        circuit.qubits,
+        circuit.clbits,
+        *circuit.qregs,
+        *circuit.cregs,
+        name=circuit.name,
+        global_phase=circuit.global_phase,
+        metadata=circuit.metadata
+    )
+    qd_circuit.duration = circuit.duration
+    qd_circuit.unit = circuit.unit
+    qd_circuit.data = circuit.data
+    return qd_circuit

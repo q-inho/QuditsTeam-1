@@ -35,12 +35,12 @@ single (non-qudit) qubits. A QuditCircuit can be used to define the instruction.
 Each instruction must either be defined on a qubit level i.e. accessing qubits
 behind qudits, or be composed of other qudit instructions.
 """
+
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.quantumregister import QuantumRegister
 from qiskit.circuit.classicalregister import ClassicalRegister
 
-from .quditcircuit import QuditCircuit
 from .quditregister import QuditRegister, Qudit
 
 
@@ -132,7 +132,7 @@ class QuditInstruction(Instruction):
         reverse_inst = super().reverse_ops()
 
         # complex slice to access qd_data (see QuditCircuitData)
-        if isinstance(self._definition, QuditCircuit):
+        if hasattr(self._definition, "_qd_data"):
             reverse_inst.definition._qd_data = [
                 (inst.reverse_ops(), qdargs, qargs, cargs)
                 for inst, qdargs, qargs, cargs in reversed(self._definition[0j:])
@@ -159,7 +159,8 @@ class QuditInstruction(Instruction):
             raise CircuitError("inverse() not implemented for %s." % self.name)
 
         from qiskit.circuit.quantumcircuit import QuantumCircuit  # pylint: disable=cyclic-import
-        from qiskit.circuit.quantumcircuit import QuditCircuit  # pylint: disable=cyclic-import
+
+        from .quditcircuit import QuditCircuit  # pylint: disable=cyclic-import
         from .quditgate import QuditGate  # pylint: disable=cyclic-import
 
         if self.num_clbits:

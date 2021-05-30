@@ -28,10 +28,8 @@
 #
 ###############################################################################
 
-
 """Unitary gate for qudits."""
 
-from warnings import warn
 from typing import List, Optional, Union, Tuple
 from itertools import product
 from qiskit.circuit.gate import Gate

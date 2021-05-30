@@ -11,42 +11,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Conversion from QuantumCircuit to QuditCircuit"""
-from qiskit.circuit.exceptions import CircuitError
-from qiskit.circuit.quantumcircuit import QuantumCircuit
+"""Utility function collection"""
+
 from qiskit.circuit.quantumregister import QuantumRegister
-
-from schroedinger.circuit.quditcircuit import QuditCircuit
-from schroedinger.circuit.quditregister import QuditRegister
-
-def to_quditcircuit(circuit):
-    """Convert a quantum circuit to a qudit quantum circuit.
-
-    Args:
-        circuit (QuantumCircuit): quantum circuit to convert
-
-    Returns:
-        qd_circuit (QuditCircuit): qudit quantum circuit
-
-    Raises:
-        CircuitError: If `circuit` is not a quantum circuit.
-    """
-    if not isinstance(circuit, QuantumCircuit):
-        raise CircuitError("Only a QuantumCircuit can be converted to a QuditCircuit.")
-
-    qd_circuit = QuditCircuit(
-        circuit.qubits,
-        circuit.clbits,
-        *circuit.qregs,
-        *circuit.cregs,
-        name=circuit.name,
-        global_phase=circuit.global_phase,
-        metadata=circuit.metadata
-    )
-    qd_circuit.duration = circuit.duration
-    qd_circuit.unit = circuit.unit
-    qd_circuit.data = circuit.data
-    return qd_circuit
 
 
 def parse_complex_index(index):
@@ -121,7 +88,7 @@ def qargs_to_indices(circuit, qargs):
     Parses qargs to indices for qudits and qubits.
 
     Args:
-        circuit (QuditCircuit): circuit of indexed qudits and qubits
+        circuit (~circuit.QuditCircuit): circuit of indexed qudits and qubits
         qargs: quantum bit (qubit/qubit) representations
 
     Returns:
@@ -136,7 +103,7 @@ def qargs_to_indices(circuit, qargs):
     else:
         for qarg in qargs:
             if isinstance(qargs, QuantumRegister):
-                if isinstance(qargs, QuditRegister):
+                if type(qargs) is not QuantumRegister:
                     qubits.extend([qarg[j * 1j] for j in range(qarg.size)])
                 else:
                     qubits.extend([qarg[j] for j in range(qarg.size)])

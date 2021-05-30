@@ -31,6 +31,7 @@
 """
 Delay instruction on qudits (for quditcircuit module).
 """
+
 import numpy as np
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit import Delay

@@ -18,6 +18,7 @@ def __init__(self, qudit_dimensions): ...
 Since num_qudits is a class variable, it exists before instantiation.
 This allows instancing instructions in response to qudit arguments.
 """
+
 from typing import List, Optional
 from qiskit.circuit.exceptions import CircuitError
 

@@ -38,6 +38,7 @@ from qiskit.circuit.exceptions import CircuitError
 
 from ._utils import parse_complex_index
 
+
 class Qudit(Qubit):
     """Implement a higher dimension qudit via multiple qubits.
 

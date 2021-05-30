@@ -28,17 +28,18 @@
 #
 ###############################################################################
 
-"""A wrapper class for the purposes of validating modifications to both QuditCircuit.data
+"""
+A wrapper class for the purposes of validating modifications to both QuditCircuit.data
 and QuditCircuit.qd_data while maintaining the interface of a python list.
 Keeps the data and qd_data synchronized,
-as each item of data is a subset of the item of qd_data at the same index."""
+as each item of data is a subset of the item of qd_data at the same index.
+"""
 
 from qiskit.circuit.quantumcircuitdata import QuantumCircuitData
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 
 from ._utils import parse_complex_index
-from .quditcircuit import QuditCircuit
 from .quditinstruction import QuditInstruction
 
 # TODO: check if sync may mean qd_len1 <= len2
@@ -53,11 +54,8 @@ class QuditCircuitData(QuantumCircuitData):
         Args:
             circuit: Associated QuditCircuit instance.
         Raises:
-            CircuitError: If circuit is not a QuditCircuit.
             CircuitError: If data and qd_data were both previously assigned but mismatch.
         """
-        if not isinstance(circuit, QuditCircuit):
-            raise CircuitError("Circuit of QuditCircuitData must be a QuditCircuit")
         super().__init__(circuit)
 
         if self._circuit._data != [self.convert(data_tuple)
