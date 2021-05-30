@@ -31,26 +31,21 @@
 """Quantum circuit object for qudits."""
 
 import copy
-import functools
 import warnings
 from typing import Union
-import numpy as np
-from qiskit.circuit.gate import Gate
 from qiskit.circuit.parameter import Parameter
-from qiskit.qasm.qasm import Qasm
 from qiskit.circuit.instructionset import InstructionSet
 from qiskit.circuit.exceptions import CircuitError
-from qiskit.utils.deprecation import deprecate_function, deprecate_arguments
 from qiskit.circuit.parameterexpression import ParameterExpression
 from qiskit.circuit.quantumregister import QuantumRegister, Qubit, AncillaRegister, AncillaQubit
 from qiskit.circuit.classicalregister import ClassicalRegister, Clbit
-from qiskit.circuit.parametertable import ParameterTable, ParameterView
-from qiskit.circuit.parametervector import ParameterVector, ParameterVectorElement
+from qiskit.circuit.parametertable import ParameterTable
 from qiskit.circuit.register import Register
 from qiskit.circuit.delay import Delay
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.quantumcircuit import QuantumCircuit
 
+from ._utils import to_quditcircuit
 from .quditcircuitdata import QuditCircuitData
 from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQudit
 from .quditinstruction import QuditInstruction
@@ -587,6 +582,24 @@ class QuditCircuit(QuantumCircuit):
                 instructions.add(self._append(instruction, qarg, carg), qarg, carg)
         return instructions
 
+    def split_qargs(self, qubits):
+        """Splits a list of qubits into associated qudits and single qubits.
+
+        Args:
+            qubits (list(:class:`Qubit`)): list of qubits
+
+        Returns:
+            tuple(list(:class:`Qudit`), list(:class:`Qubit`): list of qudits and single qubits
+        """
+        qudits = [qudit for qudit in self.qudits if any(qubit in qubits for qubit in qudit.qubits)]
+        qudit_qubits = [qubit for qudit in qudits for qubit in qudit.qubits]
+
+        if any(qubit not in qubits for qubit in qudit_qubits):
+            raise CircuitError("Given qubits contain incomplete part of a qudit.")
+
+        single_qubits = [qubit for qubit in qubits if qubit not in qudit_qubits]
+        return qudits, single_qubits
+
     def _append(self, instruction, qargs=None, cargs=None):
         """Calls _qd_append with no qdargs."""
         return self._qd_append(instruction, [], qargs, cargs)
@@ -887,15 +900,15 @@ class QuditCircuit(QuantumCircuit):
 
         dag = circuit_to_dag(circ)
         qubits_to_measure = [qubit for qubit in circ.qubits if qubit not in dag.idle_wires()]
-        qudits_to_measure = [qudit for qudit in circ.qudits
-                             if any(qubit in qubits_to_measure for qubit in qudit.qubits)]
-        num_qubits_of_qudits_to_measure = sum(qudit.size for qudit in qudits_to_measure)
+        qudits_to_measure, single_qudits_to_measure = self.split_qargs(qubits_to_measure)
 
         new_creg = circ._create_creg(len(qubits_to_measure), "measure")
         circ.add_register(new_creg)
         circ.barrier()
-        circ.measure(circ.qudits, new_creg[:num_qubits_of_qudits_to_measure])
-        circ.measure(circ.qubits, new_creg[num_qubits_of_qudits_to_measure:])
+        circ.measure(qudits_to_measure,
+                     new_creg[:new_creg.size - len(single_qudits_to_measure)])
+        circ.measure(single_qudits_to_measure,
+                     new_creg[new_creg.size - len(single_qudits_to_measure):])
         if not inplace:
             return circ
         else:
@@ -928,353 +941,6 @@ class QuditCircuit(QuantumCircuit):
             return circ
         else:
             return None
-
-    # TODO
-    def remove_final_measurements(self, inplace=True):
-        """Removes final measurement on all qubits if they are present.
-        Deletes the ClassicalRegister that was used to store the values from these measurements
-        if it is idle.
-
-        Returns a new circuit without measurements if `inplace=False`.
-
-        Args:
-            inplace (bool): All measurements removed inplace or return new circuit.
-
-        Returns:
-            QuantumCircuit: Returns circuit with measurements removed when `inplace = False`.
-        """
-        # pylint: disable=cyclic-import
-        from qiskit.transpiler.passes import RemoveFinalMeasurements
-        from qiskit.converters import circuit_to_dag
-
-        if inplace:
-            circ = self
-        else:
-            circ = self.copy()
-
-        dag = circuit_to_dag(circ)
-        remove_final_meas = RemoveFinalMeasurements()
-        new_dag = remove_final_meas.run(dag)
-
-        # Set circ cregs and instructions to match the new DAGCircuit's
-        circ.data.clear()
-        circ._parameter_table.clear()
-        circ.cregs = list(new_dag.cregs.values())
-
-        for node in new_dag.topological_op_nodes():
-            # Get arguments for classical condition (if any)
-            inst = node.op.copy()
-            circ.append(inst, node.qargs, node.cargs)
-
-        circ.clbits.clear()
-
-        if not inplace:
-            return circ
-        else:
-            return None
-
-    @staticmethod
-    def from_qasm_file(path):
-        """Take in a QASM file and generate a QuantumCircuit object.
-
-        Args:
-          path (str): Path to the file for a QASM program
-        Return:
-          QuantumCircuit: The QuantumCircuit object for the input QASM
-        """
-        qasm = Qasm(filename=path)
-        return _circuit_from_qasm(qasm)
-
-    @staticmethod
-    def from_qasm_str(qasm_str):
-        """Take in a QASM string and generate a QuantumCircuit object.
-
-        Args:
-          qasm_str (str): A QASM program string
-        Return:
-          QuantumCircuit: The QuantumCircuit object for the input QASM
-        """
-        qasm = Qasm(data=qasm_str)
-        return _circuit_from_qasm(qasm)
-
-    @property
-    def global_phase(self):
-        """Return the global phase of the circuit in radians."""
-        return self._global_phase
-
-    @global_phase.setter
-    def global_phase(self, angle):
-        """Set the phase of the circuit.
-
-        Args:
-            angle (float, ParameterExpression): radians
-        """
-        if isinstance(angle, ParameterExpression) and angle.parameters:
-            self._global_phase = angle
-        else:
-            # Set the phase to the [0, 2π) interval
-            angle = float(angle)
-            if not angle:
-                self._global_phase = 0
-            else:
-                self._global_phase = angle % (2 * np.pi)
-
-    @property
-    def parameters(self):
-        """Convenience function to get the parameters defined in the parameter table."""
-        # parameters from gates
-        if self._parameters is None:
-            unsorted = self._unsorted_parameters()
-            self._parameters = sorted(unsorted, key=functools.cmp_to_key(_compare_parameters))
-
-        # return as parameter view, which implements the set and list interface
-        return ParameterView(self._parameters)
-
-    @property
-    def num_parameters(self):
-        """Convenience function to get the number of parameter objects in the circuit."""
-        return len(self._unsorted_parameters())
-
-    def _unsorted_parameters(self):
-        """Efficiently get all parameters in the circuit, without any sorting overhead."""
-        parameters = set(self._parameter_table)
-        if isinstance(self.global_phase, ParameterExpression):
-            parameters.update(self.global_phase.parameters)
-
-        return parameters
-
-    @deprecate_arguments({"param_dict": "parameters"})
-    def assign_parameters(
-        self, parameters, inplace=False, param_dict=None
-    ):  # pylint: disable=unused-argument
-        """Assign parameters to new parameters or values.
-
-        The keys of the parameter dictionary must be Parameter instances in the current circuit. The
-        values of the dictionary can either be numeric values or new parameter objects.
-        The values can be assigned to the current circuit object or to a copy of it.
-
-        Args:
-            parameters (dict or iterable): Either a dictionary or iterable specifying the new
-                parameter values. If a dict, it specifies the mapping from ``current_parameter`` to
-                ``new_parameter``, where ``new_parameter`` can be a new parameter object or a
-                numeric value. If an iterable, the elements are assigned to the existing parameters
-                in the order they were inserted. You can call ``QuantumCircuit.parameters`` to check
-                this order.
-            inplace (bool): If False, a copy of the circuit with the bound parameters is
-                returned. If True the circuit instance itself is modified.
-            param_dict (dict): Deprecated, use ``parameters`` instead.
-
-        Raises:
-            CircuitError: If parameters is a dict and contains parameters not present in the
-                circuit.
-            ValueError: If parameters is a list/array and the length mismatches the number of free
-                parameters in the circuit.
-
-        Returns:
-            Optional(QuantumCircuit): A copy of the circuit with bound parameters, if
-            ``inplace`` is True, otherwise None.
-
-        Examples:
-
-            Create a parameterized circuit and assign the parameters in-place.
-
-            .. jupyter-execute::
-
-                from qiskit.circuit import QuantumCircuit, Parameter
-
-                circuit = QuantumCircuit(2)
-                params = [Parameter('A'), Parameter('B'), Parameter('C')]
-                circuit.ry(params[0], 0)
-                circuit.crx(params[1], 0, 1)
-
-                print('Original circuit:')
-                print(circuit.draw())
-
-                circuit.assign_parameters({params[0]: params[2]}, inplace=True)
-
-                print('Assigned in-place:')
-                print(circuit.draw())
-
-            Bind the values out-of-place and get a copy of the original circuit.
-
-            .. jupyter-execute::
-
-                from qiskit.circuit import QuantumCircuit, ParameterVector
-
-                circuit = QuantumCircuit(2)
-                params = ParameterVector('P', 2)
-                circuit.ry(params[0], 0)
-                circuit.crx(params[1], 0, 1)
-
-                bound_circuit = circuit.assign_parameters({params[0]: 1, params[1]: 2})
-                print('Bound circuit:')
-                print(bound_circuit.draw())
-
-                print('The original circuit is unchanged:')
-                print(circuit.draw())
-
-        """
-        # replace in self or in a copy depending on the value of in_place
-        if inplace:
-            bound_circuit = self
-        else:
-            bound_circuit = self.copy()
-            self._increment_instances()
-            bound_circuit._name_update()
-
-        if isinstance(parameters, dict):
-            # unroll the parameter dictionary (needed if e.g. it contains a ParameterVector)
-            unrolled_param_dict = self._unroll_param_dict(parameters)
-            unsorted_parameters = self._unsorted_parameters()
-
-            # check that all param_dict items are in the _parameter_table for this circuit
-            params_not_in_circuit = [
-                param_key
-                for param_key in unrolled_param_dict
-                if param_key not in unsorted_parameters
-            ]
-            if len(params_not_in_circuit) > 0:
-                raise CircuitError(
-                    "Cannot bind parameters ({}) not present in the circuit.".format(
-                        ", ".join(map(str, params_not_in_circuit))
-                    )
-                )
-
-            # replace the parameters with a new Parameter ("substitute") or numeric value ("bind")
-            for parameter, value in unrolled_param_dict.items():
-                bound_circuit._assign_parameter(parameter, value)
-        else:
-            if len(parameters) != self.num_parameters:
-                raise ValueError(
-                    "Mismatching number of values and parameters. For partial binding "
-                    "please pass a dictionary of {parameter: value} pairs."
-                )
-            for i, value in enumerate(parameters):
-                bound_circuit._assign_parameter(self.parameters[i], value)
-        return None if inplace else bound_circuit
-
-    @deprecate_arguments({"value_dict": "values"})
-    def bind_parameters(self, values, value_dict=None):  # pylint: disable=unused-argument
-        """Assign numeric parameters to values yielding a new circuit.
-
-        To assign new Parameter objects or bind the values in-place, without yielding a new
-        circuit, use the :meth:`assign_parameters` method.
-
-        Args:
-            values (dict or iterable): {parameter: value, ...} or [value1, value2, ...]
-            value_dict (dict): Deprecated, use ``values`` instead.
-
-        Raises:
-            CircuitError: If values is a dict and contains parameters not present in the circuit.
-            TypeError: If values contains a ParameterExpression.
-
-        Returns:
-            QuantumCircuit: copy of self with assignment substitution.
-        """
-        if isinstance(values, dict):
-            if any(isinstance(value, ParameterExpression) for value in values.values()):
-                raise TypeError(
-                    "Found ParameterExpression in values; use assign_parameters() instead."
-                )
-            return self.assign_parameters(values)
-        else:
-            if any(isinstance(value, ParameterExpression) for value in values):
-                raise TypeError(
-                    "Found ParameterExpression in values; use assign_parameters() instead."
-                )
-            return self.assign_parameters(values)
-
-    def _unroll_param_dict(self, value_dict):
-        unrolled_value_dict = {}
-        for (param, value) in value_dict.items():
-            if isinstance(param, ParameterVector):
-                if not len(param) == len(value):
-                    raise CircuitError(
-                        "ParameterVector {} has length {}, which "
-                        "differs from value list {} of "
-                        "len {}".format(param, len(param), value, len(value))
-                    )
-                unrolled_value_dict.update(zip(param, value))
-            # pass anything else except number through. error checking is done in assign_parameter
-            elif isinstance(param, (ParameterExpression, str)) or param is None:
-                unrolled_value_dict[param] = value
-        return unrolled_value_dict
-
-    def _assign_parameter(self, parameter, value):
-        """Update this circuit where instances of ``parameter`` are replaced by ``value``, which
-        can be either a numeric value or a new parameter expression.
-
-        Args:
-            parameter (ParameterExpression): Parameter to be bound
-            value (Union(ParameterExpression, float, int)): A numeric or parametric expression to
-                replace instances of ``parameter``.
-        """
-        # parameter might be in global phase only
-        if parameter in self._parameter_table.keys():
-            for instr, param_index in self._parameter_table[parameter]:
-                new_param = instr.params[param_index].assign(parameter, value)
-                # if fully bound, validate
-                if len(new_param.parameters) == 0:
-                    instr.params[param_index] = instr.validate_parameter(new_param)
-                else:
-                    instr.params[param_index] = new_param
-
-                self._rebind_definition(instr, parameter, value)
-
-            if isinstance(value, ParameterExpression):
-                entry = self._parameter_table.pop(parameter)
-                for new_parameter in value.parameters:
-                    if new_parameter in self._parameter_table:
-                        self._parameter_table[new_parameter].extend(entry)
-                    else:
-                        self._parameter_table[new_parameter] = entry
-            else:
-                del self._parameter_table[parameter]  # clear evaluated expressions
-
-        if (
-            isinstance(self.global_phase, ParameterExpression)
-            and parameter in self.global_phase.parameters
-        ):
-            self.global_phase = self.global_phase.assign(parameter, value)
-
-        # clear parameter cache
-        self._parameters = None
-        self._assign_calibration_parameters(parameter, value)
-
-    def _assign_calibration_parameters(self, parameter, value):
-        """Update parameterized pulse gate calibrations, if there are any which contain
-        ``parameter``. This updates the calibration mapping as well as the gate definition
-        ``Schedule``s, which also may contain ``parameter``.
-        """
-        for cals in self.calibrations.values():
-            for (qubit, cal_params), schedule in copy.copy(cals).items():
-                if any(
-                    isinstance(p, ParameterExpression) and parameter in p.parameters
-                    for p in cal_params
-                ):
-                    del cals[(qubit, cal_params)]
-                    new_cal_params = []
-                    for p in cal_params:
-                        if isinstance(p, ParameterExpression) and parameter in p.parameters:
-                            new_param = p.assign(parameter, value)
-                            if not new_param.parameters:
-                                new_param = float(new_param)
-                            new_cal_params.append(new_param)
-                        else:
-                            new_cal_params.append(p)
-                    schedule.assign_parameters({parameter: value})
-                    cals[(qubit, tuple(new_cal_params))] = schedule
-
-    def _rebind_definition(self, instruction, parameter, value):
-        if instruction._definition:
-            for op, _, _ in instruction._definition:
-                for idx, param in enumerate(op.params):
-                    if isinstance(param, ParameterExpression) and parameter in param.parameters:
-                        if isinstance(value, ParameterExpression):
-                            op.params[idx] = param.subs({parameter: value})
-                        else:
-                            op.params[idx] = param.bind({parameter: value})
-                        self._rebind_definition(op, parameter, value)
 
     def barrier(self, *qargs):
         """Apply :class:`~qiskit.circuit.Barrier`. If qargs is None, applies to all."""
@@ -1350,174 +1016,63 @@ class QuditCircuit(QuantumCircuit):
 
         return ret_data
 
-    def add_calibration(self, gate, qubits, schedule, params=None):
-        """Register a low-level, custom pulse definition for the given gate.
-
-        Args:
-            gate (Union[Gate, str]): Gate information.
-            qubits (Union[int, Tuple[int]]): List of qubits to be measured.
-            schedule (Schedule): Schedule information.
-            params (Optional[List[Union[float, Parameter]]]): A list of parameters.
-
-        Raises:
-            Exception: if the gate is of type string and params is None.
-        """
-        if isinstance(gate, Gate):
-            self._calibrations[gate.name][(tuple(qubits), tuple(gate.params))] = schedule
-        else:
-            self._calibrations[gate][(tuple(qubits), tuple(params or []))] = schedule
-
     # Functions only for scheduled circuits
-    def qubit_duration(self, *qubits: Union[Qubit, int]) -> Union[int, float]:
+    def qudit_duration(self, *qudits: Union[Qudit, int]) -> Union[int, float]:
         """Return the duration between the start and stop time of the first and last instructions,
-        excluding delays, over the supplied qubits. Its time unit is ``self.unit``.
+        excluding delays, over the supplied qudits. Its time unit is ``self.unit``.
 
         Args:
-            *qubits: Qubits within ``self`` to include.
+            *qudits: Qudits within ``self`` to include.
 
         Returns:
             Return the duration between the first start and last stop time of non-delay instructions
         """
-        return self.qubit_stop_time(*qubits) - self.qubit_start_time(*qubits)
+        return self.qudit_stop_time(*qudits) - self.qudit_start_time(*qudits)
 
-    def qubit_start_time(self, *qubits: Union[Qubit, int]) -> Union[int, float]:
+    def qudit_start_time(self, *qudits: Union[Qubit, int]) -> Union[int, float]:
         """Return the start time of the first instruction, excluding delays,
-        over the supplied qubits. Its time unit is ``self.unit``.
+        over the supplied qudits. Its time unit is ``self.unit``.
 
-        Return 0 if there are no instructions over qubits
+        Return 0 if there are no instructions over qudits
 
         Args:
-            *qubits: Qubits within ``self`` to include. Integers are allowed for qubits, indicating
-            indices of ``self.qubits``.
+            *qudits: Qudits within ``self`` to include. Integers are allowed for qudits, indicating
+            indices of ``self.qudits``.
 
         Returns:
-            Return the start time of the first instruction, excluding delays, over the qubits
+            Return the start time of the first instruction, excluding delays, over the qudits
 
         Raises:
             CircuitError: if ``self`` is a not-yet scheduled circuit.
         """
-        if self.duration is None:
-            # circuit has only delays, this is kind of scheduled
-            for inst, _, _ in self.data:
-                if not isinstance(inst, Delay):
-                    raise CircuitError(
-                        "qubit_start_time undefined. " "Circuit must be scheduled first."
-                    )
+        if not qudits:
             return 0
+        min_start_time = -1
+        for qudit in self.qdit_argument_conversion(qudits):
+            if min_start_time < 0:
+                min_start_time = self.qubit_start_time(*qudit.qubits)
+            min_start_time = min(min_start_time, self.qubit_start_time(*qudit.qubits))
+        return min_start_time
 
-        qubits = [self.qubits[q] if isinstance(q, int) else q for q in qubits]
-
-        starts = {q: 0 for q in qubits}
-        dones = {q: False for q in qubits}
-        for inst, qargs, _ in self.data:
-            for q in qubits:
-                if q in qargs:
-                    if isinstance(inst, Delay):
-                        if not dones[q]:
-                            starts[q] += inst.duration
-                    else:
-                        dones[q] = True
-            if len(qubits) == len([done for done in dones.values() if done]):  # all done
-                return min(start for start in starts.values())
-
-        return 0  # If there are no instructions over bits
-
-    def qubit_stop_time(self, *qubits: Union[Qubit, int]) -> Union[int, float]:
-        """Return the stop time of the last instruction, excluding delays, over the supplied qubits.
+    def qudit_stop_time(self, *qudits: Union[Qubit, int]) -> Union[int, float]:
+        """Return the stop time of the last instruction, excluding delays, over the supplied qudits.
         Its time unit is ``self.unit``.
 
-        Return 0 if there are no instructions over qubits
+        Return 0 if there are no instructions over qudits
 
         Args:
-            *qubits: Qubits within ``self`` to include. Integers are allowed for qubits, indicating
-            indices of ``self.qubits``.
+            *qudits: Qudits within ``self`` to include. Integers are allowed for qudits, indicating
+            indices of ``self.qudits``.
 
         Returns:
-            Return the stop time of the last instruction, excluding delays, over the qubits
+            Return the stop time of the last instruction, excluding delays, over the qudits
 
         Raises:
             CircuitError: if ``self`` is a not-yet scheduled circuit.
         """
-        if self.duration is None:
-            # circuit has only delays, this is kind of scheduled
-            for inst, _, _ in self.data:
-                if not isinstance(inst, Delay):
-                    raise CircuitError(
-                        "qubit_stop_time undefined. " "Circuit must be scheduled first."
-                    )
+        if not qudits:
             return 0
-
-        qubits = [self.qubits[q] if isinstance(q, int) else q for q in qubits]
-
-        stops = {q: self.duration for q in qubits}
-        dones = {q: False for q in qubits}
-        for inst, qargs, _ in reversed(self.data):
-            for q in qubits:
-                if q in qargs:
-                    if isinstance(inst, Delay):
-                        if not dones[q]:
-                            stops[q] -= inst.duration
-                    else:
-                        dones[q] = True
-            if len(qubits) == len([done for done in dones.values() if done]):  # all done
-                return max(stop for stop in stops.values())
-
-        return 0  # If there are no instructions over bits
-
-
-def _circuit_from_qasm(qasm):
-    # pylint: disable=cyclic-import
-    from qiskit.converters import ast_to_dag
-    from qiskit.converters import dag_to_circuit
-
-    ast = qasm.parse()
-    dag = ast_to_dag(ast)
-    return dag_to_circuit(dag)
-
-
-def _standard_compare(value1, value2):
-    if value1 < value2:
-        return -1
-    if value1 > value2:
-        return 1
-    return 0
-
-
-def _compare_parameters(param1, param2):
-    if isinstance(param1, ParameterVectorElement) and isinstance(param2, ParameterVectorElement):
-        # if they belong to a vector with the same name, sort by index
-        if param1.vector.name == param2.vector.name:
-            return _standard_compare(param1.index, param2.index)
-
-    # else sort by name
-    return _standard_compare(param1.name, param2.name)
-
-
-def to_quditcircuit(circuit):
-    """Convert a quantum circuit to a qudit quantum circuit.
-
-    Args:
-        circuit (QuantumCircuit): quantum circuit to convert
-
-    Returns:
-        qd_circuit (QuditCircuit): qudit quantum circuit
-
-    Raises:
-        CircuitError: If `circuit` is not a quantum circuit.
-    """
-    if not isinstance(circuit, QuantumCircuit):
-        raise CircuitError("Only a QuantumCircuit can be converted to a QuditCircuit.")
-
-    qd_circuit = QuditCircuit(
-        circuit.qubits,
-        circuit.clbits,
-        *circuit.qregs,
-        *circuit.cregs,
-        name=circuit.name,
-        global_phase=circuit.global_phase,
-        metadata=circuit.metadata
-    )
-    qd_circuit.duration = circuit.duration
-    qd_circuit.unit = circuit.unit
-    qd_circuit.data = circuit.data
-    return qd_circuit
+        max_stop_time = -1
+        for qudit in self.qdit_argument_conversion(qudits):
+            max_stop_time = max(max_stop_time, self.qubit_start_time(*qudit.qubits))
+        return max_stop_time

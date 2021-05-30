@@ -36,6 +36,7 @@ import numpy as np
 from qiskit.circuit.quantumregister import QuantumRegister, Qubit
 from qiskit.circuit.exceptions import CircuitError
 
+from ._utils import parse_complex_index
 
 class Qudit(Qubit):
     """Implement a higher dimension qudit via multiple qubits.
@@ -227,7 +228,7 @@ class QuditRegister(QuantumRegister):
 
         Raises:
             CircuitError: If the `key` is not an integer.
-            QiskitIndexError: If the `key` is not in the range `(0, self.qd_size)`.
+            CircuitError: If the `key` is not in the range `(0, self.qd_size)`.
         """
         if not isinstance(key, (int, np.integer, slice, list)):
             raise CircuitError(f"Expected integer or slice index into register, got {type(key)}.")
@@ -253,32 +254,15 @@ class QuditRegister(QuantumRegister):
             A Qubit instance / list of Qubits if key is a real integer / slice with real integers.
 
         Raises:
-            TypeError: If the `key` is complex but not a purely imaginary integer.
-            TypeError: If the `key` is a slice with different index types (not regarding None).
+            TypeError: If the `index` is made of complex but not a purely imaginary integer(s).
+            TypeError: If the `index` is a list with different index types.
+            TypeError: If the `index` is a slice with different index types (not regarding None).
+            TypeError: If the `index` is neither a int / complex integer nor a list or slice.
         """
-        if isinstance(key, complex):
-            if key.real != 0 or int(key.imag) != key.imag:
-                raise TypeError("Complex keys must be purely imaginary integers.")
-
-            return self.qd_get(int(key.imag))
-
-        if isinstance(key, slice):
-            slice_types = set(type(i) for i in (key.start, key.stop, key.step) if i is not None)
-            if len(slice_types) > 1:
-                raise TypeError("All slice indices must either have the same type or be None.")
-
-            if any(type(idx) is complex for idx in (key.start, key.stop, key.step)):
-
-                if any(idx.real != 0 or int(idx.imag) != idx.imag
-                       for idx in (key.start, key.stop, key.step) if idx is not None):
-                    raise TypeError("Complex slice indices must be purely imaginary integers.")
-
-                return self.qd_get(slice(
-                    *(int(idx.imag) if idx is not None else None
-                      for idx in (key.start, key.stop, key.step))
-                ))
-
-        return super().__getitem__(key)
+        key, is_real = parse_complex_index(key)
+        if is_real:
+            return super().__getitem__(key)
+        return self.qd_get(key)
 
     def qd_iter(self):
         """iterator for the register"""
