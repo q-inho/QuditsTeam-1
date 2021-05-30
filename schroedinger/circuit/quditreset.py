@@ -76,4 +76,3 @@ def qd_reset(self, qdargs):
 
 
 QuditCircuit.reset = qd_reset
-QuditCircuit.qd_reset = qd_reset

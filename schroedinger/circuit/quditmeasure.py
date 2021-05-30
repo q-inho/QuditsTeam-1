@@ -52,7 +52,7 @@ class QuditMeasure(FlexibleQuditInstruction):
         super().__init__("qudit measure", qudit_dimensions, 0, num_clbits, [])
 
     def _define(self):
-        """Reset each underlying qubit."""
+        """Measure each underlying qubit."""
         qd = QuditRegister(self.qudit_dimensions, 'qd')
         c = ClassicalRegister(qd.size, 'c')
         qdc = QuditCircuit(qd, c, name=self.name)
@@ -80,4 +80,3 @@ def qd_measure(self, qdargs, cargs):
 
 
 QuditCircuit.measure = qd_measure
-QuditCircuit.qd_measure = qd_measure
