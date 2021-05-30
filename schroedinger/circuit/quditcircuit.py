@@ -97,6 +97,36 @@ class QuditCircuit(QuantumCircuit):
 
         super().__init__(*regs, name=name, global_phase=global_phase, metadata=metadata)
 
+    @staticmethod
+    def to_quditcircuit(circuit):
+        """Convert a quantum circuit to a qudit quantum circuit.
+
+        Args:
+            circuit (QuantumCircuit): quantum circuit to convert
+
+        Returns:
+            qd_circuit (QuditCircuit): qudit quantum circuit
+
+        Raises:
+            CircuitError: If `circuit` is not a quantum circuit.
+        """
+        if not isinstance(circuit, QuantumCircuit):
+            raise CircuitError("Only a QuantumCircuit can be converted to a QuditCircuit.")
+
+        qd_circuit = QuditCircuit(
+            circuit.qubits,
+            circuit.clbits,
+            *circuit.qregs,
+            *circuit.cregs,
+            name=circuit.name,
+            global_phase=circuit.global_phase,
+            metadata=circuit.metadata
+        )
+        qd_circuit.duration = circuit.duration
+        qd_circuit.unit = circuit.unit
+        qd_circuit.data = circuit.data
+        return qd_circuit
+
     @property
     def data(self):
         """Return the qudit circuit data (instructions applied to qudits and context).
@@ -312,7 +342,7 @@ class QuditCircuit(QuantumCircuit):
                 return None
             return dest
 
-        other = to_quditcircuit(other)
+        other = QuditCircuit.to_quditcircuit(other)
 
         if other.num_qudits > self.num_qudits or \
                 other.num_qubits > self.num_qubits or other.num_clbits > self.num_clbits:
@@ -400,7 +430,7 @@ class QuditCircuit(QuantumCircuit):
         Returns:
             QuditCircuit: The tensored circuit (returns None if inplace==True).
         """
-        other = to_quditcircuit(other)
+        other = QuditCircuit.to_quditcircuit(other)
 
         qudit_dimensions = self.qudit_dimensions + other.qudit_dimensions
         num_qudits = self.num_qudits + other.num_qudits
@@ -1147,33 +1177,3 @@ class QuditCircuit(QuantumCircuit):
         for qudit in self.qdit_argument_conversion(qudits):
             max_stop_time = max(max_stop_time, self.qubit_start_time(*qudit.qubits))
         return max_stop_time
-
-
-def to_quditcircuit(circuit):
-    """Convert a quantum circuit to a qudit quantum circuit.
-
-    Args:
-        circuit (QuantumCircuit): quantum circuit to convert
-
-    Returns:
-        qd_circuit (QuditCircuit): qudit quantum circuit
-
-    Raises:
-        CircuitError: If `circuit` is not a quantum circuit.
-    """
-    if not isinstance(circuit, QuantumCircuit):
-        raise CircuitError("Only a QuantumCircuit can be converted to a QuditCircuit.")
-
-    qd_circuit = QuditCircuit(
-        circuit.qubits,
-        circuit.clbits,
-        *circuit.qregs,
-        *circuit.cregs,
-        name=circuit.name,
-        global_phase=circuit.global_phase,
-        metadata=circuit.metadata
-    )
-    qd_circuit.duration = circuit.duration
-    qd_circuit.unit = circuit.unit
-    qd_circuit.data = circuit.data
-    return qd_circuit
