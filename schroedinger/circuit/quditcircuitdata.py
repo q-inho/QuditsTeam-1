@@ -72,8 +72,7 @@ class QuditCircuitData(QuantumCircuitData):
                 self._circuit._data = [self.convert(data_tuple)
                                        for data_tuple in self._circuit._qd_data]
 
-    @staticmethod
-    def convert(data_tuple):
+    def convert(self, data_tuple):
         """
         Converts a qd_data tuple to a data tuple and vice versa.
         Conversion from qd_data to data should be preferred when both directions are possible.
@@ -88,7 +87,8 @@ class QuditCircuitData(QuantumCircuitData):
         """
         if len(data_tuple) == 3:
             inst, qargs, cargs = data_tuple
-            return inst, [], qargs, cargs
+            qudits, single_qubits = self._circuit._split_qargs(qargs)
+            return inst, qudits, single_qubits, cargs
 
         inst, qdargs, qargs, cargs = data_tuple
         return inst, [qubit for qudit in qdargs for qubit in qudit] + qargs, cargs

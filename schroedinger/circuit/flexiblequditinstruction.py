@@ -44,11 +44,10 @@ class FlexibleQuditInstruction(QuditInstruction):
             CircuitError: If number of qudits does not equal length of qudit_dimensions.
         """
 
-        if not isinstance(FlexibleQuditInstruction.num_qudits, int) or \
-                len(qudit_dimensions) != FlexibleQuditInstruction.num_qudits:
+        if not isinstance(self.num_qudits, int) or len(qudit_dimensions) != self.num_qudits:
             raise CircuitError(
-                f"Number of flexible qudits ({FlexibleQuditInstruction.num_qudits})"
-                f" does not match qudit_dimensions {self.qudit_dimensions}"
+                f"Number of flexible qudits ({self.num_qudits})"
+                f" does not match number of qudit_dimensions {qudit_dimensions}."
             )
         super().__init__(
             name=name,
@@ -79,11 +78,10 @@ class FlexibleQuditGate(QuditGate):
             CircuitError: If number of qudits does not equal length of qudit_dimensions.
         """
 
-        if not isinstance(FlexibleQuditGate.num_qudits, int) or \
-                len(qudit_dimensions) != FlexibleQuditGate.num_qudits:
+        if not isinstance(self.num_qudits, int) or len(qudit_dimensions) != self.num_qudits:
             raise CircuitError(
-                f"Number of flexible qudits ({FlexibleQuditGate.num_qudits})"
-                f" does not match qudit_dimensions {self.qudit_dimensions}"
+                f"Number of flexible qudits ({self.num_qudits})"
+                f" does not match number of qudit_dimensions {qudit_dimensions}."
             )
         super().__init__(
             name=name,
@@ -116,10 +114,9 @@ def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, car
         CircuitError: If the broadcast factor is not an integer greater than one.
         CircuitError: If the broadcast factor is ambiguous.
     """
-
-    qdargs = qdargs if qdargs else []
-    qargs = qargs if qargs else []
-    cargs = cargs if cargs else []
+    qdargs = qdargs if qdargs is not None else []
+    qargs = qargs if qargs is not None else []
+    cargs = cargs if cargs is not None else []
 
     if not issubclass(instclass, (FlexibleQuditInstruction, FlexibleQuditGate)) or \
             not isinstance(instclass.num_qudits, int) or instclass.num_qudits < 1:
@@ -130,7 +127,6 @@ def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, car
     qdargs = circuit.qdit_argument_conversion(qdargs)
     qargs = circuit.qbit_argument_conversion(qargs)
     cargs = circuit.cbit_argument_conversion(cargs)
-
     broadcast_factor = len(qdargs) / instclass.num_qudits
 
     if int(broadcast_factor) != broadcast_factor or broadcast_factor < 1:
@@ -140,12 +136,17 @@ def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, car
     temp_inst = instclass(
         [qd.dimension for qd in qdargs[:instclass.num_qudits]]
     )
-    if len(qargs) * broadcast_factor != temp_inst.num_single_qubits or \
-            len(cargs) * broadcast_factor != temp_inst.num_clbits:
+    num_qudits = instclass.num_qudits
+    num_qubits = temp_inst.num_single_qubits
+    num_clbits = temp_inst.num_clbits
+
+    if len(qargs) * broadcast_factor != num_qubits or \
+            len(cargs) * broadcast_factor != num_clbits:
         raise CircuitError("Broadcast factor is ambiguous.")
 
-    qdit = zip(*([iter(qdargs)] * instclass.num_qudits))
-    qit = zip(*([iter(qargs)] * temp_inst.num_single_qubits))
-    cit = zip(*([iter(cargs)] * temp_inst.num_clbits))
+    padding = [()] * int(broadcast_factor)
+    qdit = zip(*([iter(qdargs)] * num_qudits)) if num_qudits else padding
+    qit = zip(*([iter(qargs)] * num_qubits)) if num_qubits else padding
+    cit = zip(*([iter(cargs)] * num_clbits)) if num_clbits else padding
     for qds, qs, cs in zip(qdit, qit, cit):
         yield list(qds), list(qs), list(cs)

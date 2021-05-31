@@ -77,5 +77,5 @@ class QuditInstructionSet(InstructionSet):
         """
         if not isinstance(qudit_instruction, QuditInstruction):
             raise CircuitError
-        super().add(*QuditCircuitData.convert((qudit_instruction, qdargs, qargs, cargs)))
+        super().add(qudit_instruction, qargs, cargs)
         self.qdargs.append(qdargs)

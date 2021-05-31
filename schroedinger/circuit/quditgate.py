@@ -118,7 +118,7 @@ class QuditGate(QuditInstruction, Gate):
         """
 
         if all(len(qdarg) == 1 for qdarg in qdargs) and \
-                [qdarg[0].d for qdarg in qdargs] == self.qudit_dimensions:
+                [qdarg[0].dimension for qdarg in qdargs] == self.qudit_dimensions:
             qdargs = [[qdarg[0] for qdarg in qdargs]]
 
         elif not (len(qdargs) != 0 and
