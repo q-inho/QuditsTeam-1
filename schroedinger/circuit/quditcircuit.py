@@ -221,14 +221,15 @@ class QuditCircuit(QuantumCircuit):
             QuditCircuit: the circuit with reversed bit order.
         """
         circ = QuditCircuit(
-            reversed(self.qudits),
-            reversed(self.qubits),
-            reversed(self.clbits),
+            list(qudit for qudit in reversed(self.qudits)),
+            list(qubit for qubit in reversed(self.qubits)),
+            list(clbit for clbit in reversed(self.clbits)),
             *reversed(self.qregs),
             *reversed(self.cregs),
             name=self.name,
             global_phase=self.global_phase,
         )
+        print(circ.qubits)
         num_qudits = self.num_qudits
         num_qubits = self.num_qubits
         num_clbits = self.num_clbits
@@ -241,8 +242,16 @@ class QuditCircuit(QuantumCircuit):
 
         for inst, qdargs, qargs, cargs in self._qd_data:
             new_qdargs = [new_qudits[num_qudits - old_qudits.index(qd) - 1] for qd in qdargs]
-            new_qargs = [new_qubits[num_qubits - old_qubits.index(q) - 1] for q in qargs]
             new_cargs = [new_clbits[num_clbits - old_clbits.index(c) - 1] for c in cargs]
+
+            new_qargs = []
+            offset = self._qubit_offset()
+            for q in qargs:
+                new_index = offset - old_qubits.index(q) - 1
+                if new_index < 0:
+                    new_index += num_qubits
+                new_qargs.append(new_qubits[new_index])
+
             circ._qd_append(inst, new_qdargs, new_qargs, new_cargs)
         return circ
 
@@ -760,9 +769,9 @@ class QuditCircuit(QuantumCircuit):
                 if isinstance(register, QuditRegister):
                     self.qdregs.append(register)
                     # keep qudit qubits in front
-                    qubit_qudits = self._qubits[:self._qubit_offset()]
-                    self._qubits = new_bits + self._qubits[self._qubit_offset():]
-                    self._qubits = qubit_qudits + self._qubits
+                    qubit_offset = self._qubit_offset()
+                    old_qubit_qudits = self._qubits[:qubit_offset]
+                    self._qubits = old_qubit_qudits + new_bits + self._qubits[qubit_offset:]
                     # added afterwards to not affect _qubit_offset()
                     new_qudits = [bit for bit in register[0j:] if bit not in self._qudit_set]
                     self._qudits.extend(new_qudits)
@@ -782,14 +791,14 @@ class QuditCircuit(QuantumCircuit):
 
     def add_bits(self, bits):
         """Add Bits to the circuit."""
+        # filter out new qubits coming from already added qudits
+        _, bits = self._split_qargs(bits)
+
         duplicate_bits = set(self.qudits + self.qubits + self.clbits).intersection(bits)
         if duplicate_bits:
             raise CircuitError(
                 "Attempted to add bits found already in circuit: " "{}".format(duplicate_bits)
             )
-
-        # filter out new qubits coming from already added qudits
-        _, bits = self._split_qargs(bits)
 
         # do not add already added qubits coming from new qudits
         new_qudits = [bit for bit in bits if isinstance(bit, Qudit)]
@@ -805,9 +814,9 @@ class QuditCircuit(QuantumCircuit):
                 if qudit not in added_qudits:
                     # keep qudit qubits in front
                     qubit_offset = self._qubit_offset()
-                    qubit_qudits = self._qubits[:qubit_offset]
-                    self._qubits = [qubit for qubit in qudit.qubits] + self._qubits[qubit_offset:]
-                    self._qubits = qubit_qudits + self._qubits
+                    old_qubit_qudits = self._qubits[:qubit_offset]
+                    self._qubits = old_qubit_qudits + qudit.qubits + self._qubits[qubit_offset:]
+                    self._qubit_set.update(qudit.qubits)
 
         for bit in bits:
             if isinstance(bit, Qudit):
