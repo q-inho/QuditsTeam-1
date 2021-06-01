@@ -136,37 +136,3 @@ def qargs_to_indices(circuit, qargs):
                 bit_indices.append(qarg)
 
     return qudit_indices, qubit_indices
-
-
-def cargs_to_indices(circuit, cargs):
-    """
-    Parses cargs to indices.
-
-    Args:
-        circuit (~circuit.QuditCircuit): circuit of indexed qudits and qubits
-        cargs: classical bit representations
-
-    Returns:
-        tuple(List(int), list(int)): Tuple of list of qudit indices and list of qubit indices
-    """
-    clbit_indices = []
-    if isinstance(cargs, int):
-        cargs = [cargs]
-
-    if not cargs:
-        clbit_indices.extend(list(range(circuit.num_clbits)))
-
-    else:
-        for carg in cargs:
-            if isinstance(carg, ClassicalRegister):
-                clbit_indices.extend(carg[:])
-            if isinstance(carg, list):
-                clbit_indices.extend(carg)
-            elif isinstance(carg, range):
-                clbit_indices.extend(list(carg))
-            elif isinstance(carg, slice):
-                clbit_indices.extend(list(range(circuit.num_clbits))[carg])
-            else:
-                clbit_indices.append(carg)
-
-    return clbit_indices
