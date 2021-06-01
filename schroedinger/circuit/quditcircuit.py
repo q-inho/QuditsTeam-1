@@ -44,7 +44,7 @@ from qiskit.circuit.register import Register
 from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from ._utils import qargs_to_indices
+from ._utils import qargs_to_indices, cargs_to_indices
 from .quditcircuitdata import QuditCircuitData
 from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQudit
 from .quditinstruction import QuditInstruction
@@ -937,33 +937,48 @@ class QuditCircuit(QuantumCircuit):
         single_qubits = [qubit for qubit in qubits if qubit not in qudit_qubits]
         return qudits, single_qubits
 
-    def measure(self, bits, clbits):
+    def measure(self, qargs, cargs):
         """Apply :class:`~qiskit.circuit.Measure` if bits are qubits,
         apply :class:`~.QuditMeasure` if bits are qudits.
         Qudits are measured by measuring all underlying qubits.
+
+        Args:
+            qargs (Object): Qubit and or Qudit representations to measure.
+            cargs (Object): ClassicalBit representations to store measurement result.
 
         Returns:
             Instruction or QuditInstructionSet: Single Instruction if bits are qudits,
                 multiple instructions if bits are qudits.
         """
-        if (isinstance(bits, (list, tuple)) and all(isinstance(bit, Qudit) for bit in bits)) \
-                or isinstance(bits, (Qudit, QuditRegister)):
+        qudit_indices, qubit_indices = qargs_to_indices(self, qargs)
+        clbit_indices = cargs_to_indices(self, cargs)
+        qudit_cargs = clbit_indices[:len(clbit_indices)-len(qubit_indices)]
+        qubit_cargs = clbit_indices[len(clbit_indices)-len(qubit_indices):]
 
+        instructions = QuditInstructionSet()
+
+        if len(qudit_indices) > 0:
             from .quditmeasure import QuditMeasure
 
-            instructions = QuditInstructionSet()
-
-            for qdargs, qargs, cargs in \
-                    flex_qd_broadcast_arguments(self, QuditMeasure, qdargs=bits, cargs=clbits):
+            for qdargs, qargs, cargs in flex_qd_broadcast_arguments(
+                    self, QuditMeasure, qdargs=qudit_indices, cargs=qudit_cargs):
 
                 qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
                 inst = (QuditMeasure(qudit_dimensions), qdargs, qargs, cargs)
                 instructions.qd_extend(self.qd_append(*inst))
 
-            return instructions
+        if len(qubit_indices) > 0:
+            from qiskit.circuit.measure import Measure
 
-        from qiskit.circuit.measure import measure as _measure
-        return _measure(self, bits, clbits)
+            if len(qubit_indices) != len(qubit_cargs):
+                raise CircuitError(
+                    "Measurement needs equal numbers of measured qubits and classical bits."
+                )
+            for qubit_index, carg in zip(qubit_indices, qubit_cargs):
+                inst = (Measure(), [qubit_index], [carg])
+                instructions.extend(self.append(*inst))
+
+        return instructions
 
     def measure_active(self, inplace=True):
         """Adds measurement to all non-idle qudits and qubits. Creates a new ClassicalRegister
@@ -1034,7 +1049,7 @@ class QuditCircuit(QuantumCircuit):
         representations in qargs. If qargs is empty, applies to all qudits and qubits.
 
         Returns:
-            Instruction or QuditInstructionSet: Single Instruction if bits are qudits,
+            QuditInstructionSet: Single Instruction if bits are qudits,
                 multiple instructions if bits are qudits.
         """
         qudit_indices, qubit_indices = qargs_to_indices(self, qargs)
@@ -1065,7 +1080,7 @@ class QuditCircuit(QuantumCircuit):
         representations in qargs. If qargs is empty, applies to all qudits and qubits.
 
         Returns:
-            Instruction or QuditInstructionSet: Single instruction if all bits are qudits,
+            QuditInstructionSet: Single instruction if all bits are qudits,
                 multiple instructions if some bits are qudits.
         """
         qudit_indices, qubit_indices = qargs_to_indices(self, qargs)
@@ -1090,21 +1105,21 @@ class QuditCircuit(QuantumCircuit):
 
         return instructions
 
-    def delay(self, duration, qarg=None, unit="dt"):
-        """Apply :class:`~qiskit.circuit.Delay` for qubit representations in qarg
+    def delay(self, duration, qargs=None, unit="dt"):
+        """Apply :class:`~qiskit.circuit.Delay` for qubit representations in qargs
         (including imaginary integers), apply :class:`~.QuditDelay` for qudit
-        representations in qarg. If qarg is None or empty, applies to all qudits and qubits.
+        representations in qargs. If qargs is None or empty, applies to all qudits and qubits.
 
         Args:
             duration (int or float or ParameterExpression): Duration of the delay.
-            qarg (Object): Qubit argument to apply this delay.
+            qargs (Object): Qubit and or Qudit representations to apply this delay.
             unit (str): Unit of the duration. Supported units: 's', 'ms', 'us', 'ns', 'ps', 'dt'.
                 Default is ``dt``, i.e. integer time unit depending on the target backend.
 
         Returns:
             QuditInstructionSet: Multiple Instructions.
         """
-        qudit_indices, qubit_indices = qargs_to_indices(self, qarg)
+        qudit_indices, qubit_indices = qargs_to_indices(self, qargs)
 
         instructions = QuditInstructionSet()
 

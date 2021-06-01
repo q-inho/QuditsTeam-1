@@ -142,7 +142,7 @@ def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, car
 
     if len(qargs) * broadcast_factor != num_qubits or \
             len(cargs) * broadcast_factor != num_clbits:
-        raise CircuitError("Broadcast factor is ambiguous.")
+        raise CircuitError("Broadcast factor is ambiguous, check number of arguments.")
 
     padding = [()] * int(broadcast_factor)
     qdit = zip(*([iter(qdargs)] * num_qudits)) if num_qudits else padding
