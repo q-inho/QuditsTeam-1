@@ -163,8 +163,8 @@ class QuditRegister(QuantumRegister):
     A QuditRegister acts like a QuantumRegister except when addressed with
     any non-inherited subclass method. As a QuantumRegister it contains Qubits used
     for the quantum circuit. Additionally Qudits are registered and can be accessed
-    via the ``qd_get`` or ``qd_iter`` method. Qudits are layered on top of their
-    associated Qubits and hold references to them.
+    via imaginary indices, ``qd_get`` or the ``qd_iter`` method. Qudits are layered
+    on top of their associated Qubits and hold references to them.
     """
 
     __slots__ = ["_qd_size", "_qudits"]

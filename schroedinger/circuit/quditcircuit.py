@@ -84,11 +84,6 @@ class QuditCircuit(QuantumCircuit):
         Raises:
             CircuitError: If first register of regs cannot be interpreted as a QuditRegister.
         """
-        # overwritten _data to change property setter and getter
-        self._data = []
-        # _qd_data additionally contains qudit context [(inst, qdargs, qargs, cargs), ...]
-        self._qd_data = []
-
         # Map of qudits and qudit registers bound to this circuit, by name.
         # All registers in qdregs will also be in qregs.
         self.qdregs = []
@@ -114,6 +109,8 @@ class QuditCircuit(QuantumCircuit):
         Raises:
             CircuitError: If `circuit` is not a quantum circuit.
         """
+        if isinstance(circuit, QuditCircuit):
+            return circuit
         if not isinstance(circuit, QuantumCircuit):
             raise CircuitError("Only a QuantumCircuit can be converted to a QuditCircuit.")
 
@@ -131,9 +128,9 @@ class QuditCircuit(QuantumCircuit):
         qd_circuit.data = circuit.data
         return qd_circuit
 
-    @property
+    @QuantumCircuit.data.getter
     def data(self):
-        """Return the qudit circuit data (instructions applied to qudits and context).
+        """Return the qudit circuit data (instructions and context).
 
         Returns:
             QuditQuantumCircuitData: A list-like object containing the tuples
@@ -144,32 +141,6 @@ class QuditCircuit(QuantumCircuit):
                 objects, qargs is a list of Qubit objects and cargs is a list of Clbit objects.
         """
         return QuditCircuitData(self)
-
-    @data.setter
-    def data(self, data_input):
-        """Sets the circuit data from a list of instructions and context.
-
-        Args:
-            data_input (list): A list of instructions with context
-                in the format (instruction, qargs, cargs) or (instruction, qdargs, qargs, cargs),
-                where instruction is an Instruction (or subclass)  object, qdrgs is a list of Qudit
-                objects, qargs is a list of Qubit objects and cargs is a list of Clbit objects.
-        """
-
-        # If data_input is QuditCircuitData, use qd_data
-        if isinstance(data_input, QuditCircuitData):
-            data_input = data_input[0j:]
-        # If data_input is QuantumCircuitData(self), clearing self._data and self._qd_data
-        # below will also empty data_input, so make a shallow copy first.
-        data_input = data_input.copy()
-        self._data = []
-        self._qd_data = []
-        self._parameter_table = ParameterTable()
-
-        for data_tuple in data_input:
-            if len(data_tuple) == 3:
-                data_tuple = self.data.convert(data_tuple)
-            self.qd_append(*data_tuple)
 
     def __str__(self):
         return str(self.draw(output="text"))
@@ -207,8 +178,8 @@ class QuditCircuit(QuantumCircuit):
             name=self.name + "_reverse"
         )
 
-        for inst, qdargs, qargs, cargs in reversed(self._qd_data):
-            reverse_circ._qd_append(inst.reverse_ops(), qdargs, qargs, cargs)
+        for inst, qargs, cargs in reversed(self.data):
+            reverse_circ._append(inst.reverse_ops(), qargs, cargs)
 
         reverse_circ.duration = self.duration
         reverse_circ.unit = self.unit
@@ -239,7 +210,7 @@ class QuditCircuit(QuantumCircuit):
         new_qubits = circ.qubits
         new_clbits = circ.clbits
 
-        for inst, qdargs, qargs, cargs in self._qd_data:
+        for inst, qdargs, qargs, cargs in self.data[0j:]:
             new_qdargs = [new_qudits[num_qudits - old_qudits.index(qd) - 1] for qd in qdargs]
             new_cargs = [new_clbits[num_clbits - old_clbits.index(c) - 1] for c in cargs]
 
@@ -251,7 +222,7 @@ class QuditCircuit(QuantumCircuit):
                     new_index += num_qubits
                 new_qargs.append(new_qubits[new_index])
 
-            circ._qd_append(inst, new_qdargs, new_qargs, new_cargs)
+            circ._append(inst, *QuditCircuitData.to_data((new_qdargs, new_qargs, new_cargs)))
         return circ
 
     def inverse(self):
@@ -275,8 +246,8 @@ class QuditCircuit(QuantumCircuit):
             global_phase=-self.global_phase
         )
 
-        for inst, qdargs, qargs, cargs in reversed(self._qd_data):
-            inverse_circ._qd_append(inst.inverse(), qdargs, qargs, cargs)
+        for inst, qargs, cargs in reversed(self.data):
+            inverse_circ._append(inst.inverse(), qargs, cargs)
         return inverse_circ
 
     def repeat(self, reps):
@@ -346,7 +317,7 @@ class QuditCircuit(QuantumCircuit):
 
         if not isinstance(other, QuantumCircuit):
             if front:
-                dest.data.insert(0, (other, qudits, qubits, clbits))
+                dest.data.insert(0, *QuditCircuitData.to_data((other, qudits, qubits, clbits)))
             else:
                 dest.qd_append(other, qdargs=qudits, qargs=qubits, cargs=clbits)
 
@@ -391,7 +362,7 @@ class QuditCircuit(QuantumCircuit):
         if isinstance(other, QuditCircuit):
             qd_data = other.data[0j:]
         else:
-            qd_data = [self.data.convert(data_tuple) for data_tuple in other.data]
+            qd_data = [self.data.to_qd_data(data_tuple) for data_tuple in other.data]
 
         mapped_qd_instrs = []
 
@@ -408,22 +379,20 @@ class QuditCircuit(QuantumCircuit):
 
             mapped_qd_instrs.append((n_instr, n_qdargs, n_qargs, n_cargs))
 
-        mapped_instrs = [self.data.convert(data_tuple) for data_tuple in mapped_qd_instrs]
+        mapped_instrs = [self.data.to_data(data_tuple) for data_tuple in mapped_qd_instrs]
 
         if front:
             dest._data = mapped_instrs + dest._data
-            dest._qd_data = mapped_qd_instrs + dest._qd_data
         else:
             dest._data += mapped_instrs
-            dest._qd_data += mapped_qd_instrs
 
         if front:
             dest._parameter_table.clear()
-            for instr, _, _, _ in dest._qd_data:
+            for instr, _, _ in dest._data:
                 dest._update_parameter_table(instr)
         else:
             # just append new parameters
-            for instr, _, _, _ in mapped_qd_instrs:
+            for instr, _, _ in mapped_instrs:
                 dest._update_parameter_table(instr)
 
         for gate, cals in other.calibrations.items():
@@ -536,7 +505,6 @@ class QuditCircuit(QuantumCircuit):
         """
         return self._qd_ancillas
 
-    # TODO: check if len(data) == len(qd_data)
     def __len__(self):
         """Return number of operations in circuit."""
         return len(self._data)
@@ -571,7 +539,7 @@ class QuditCircuit(QuantumCircuit):
         Args:
             instruction (qiskit.circuit.Instruction): Instruction instance to append
             qdargs (list(argument)): qudits to attach instruction to
-            qargs (list(argument)): qubits to attach instruction to
+            qargs (list(argument)): single qubits to attach instruction to
             cargs (list(argument)): clbits to attach instruction to
 
         Returns:
@@ -582,7 +550,14 @@ class QuditCircuit(QuantumCircuit):
             CircuitError: if object passed is neither subclass nor an instance of Instruction
         """
         # Convert input to instruction
-        if not isinstance(instruction, Instruction) and not hasattr(instruction, "to_instruction"):
+        if not isinstance(instruction, QuditInstruction) and \
+                hasattr(instruction, "to_quditinstruction"):
+            instruction = instruction.to_quditinstruction()
+        if not isinstance(instruction, Instruction) and \
+                hasattr(instruction, "to_instruction"):
+            instruction = instruction.to_instruction()
+
+        if not isinstance(instruction, Instruction):
             if issubclass(instruction, Instruction):
                 raise CircuitError(
                     "Object is a subclass of Instruction, please add () to "
@@ -590,10 +565,11 @@ class QuditCircuit(QuantumCircuit):
                 )
 
             raise CircuitError(
-                "Object to append must be an Instruction or " "have a to_instruction() method."
+                "Object to append must be an Instruction or have a to_instruction() "
+                "or to_quditinstruction() method."
             )
-        if not isinstance(instruction, Instruction) and hasattr(instruction, "to_instruction"):
-            instruction = instruction.to_instruction()
+        if qdargs and not isinstance(instruction, QuditInstruction):
+            raise CircuitError("Qudits can only be used for a QuditInstruction.")
 
         # Make copy of parameterized gate instances
         if hasattr(instruction, "params"):
@@ -606,17 +582,51 @@ class QuditCircuit(QuantumCircuit):
                           for qarg in qargs or []]
         expanded_cargs = [self.cbit_argument_conversion(carg) for carg in cargs or []]
 
+        # All qargs must be single qubits not associated with qudits
+        if any(self._split_qargs(qargs)[0] for qargs in expanded_qargs):
+            raise CircuitError(
+                "Individual underlying qubits of qudits cannot be part of an Instruction, "
+                "only as a whole qudit. ``qargs`` contains qubits from qudits."
+            )
+
         instructions = QuditInstructionSet()
         if isinstance(instruction, QuditInstruction):
             for qdarg, qarg, carg in instruction.qd_broadcast_arguments(
                     expanded_qdargs, expanded_qargs, expanded_cargs):
-                instructions.qd_add(
-                    self._qd_append(instruction, qdarg, qarg, carg), qdarg, qarg, carg
-                )
+                self._qd_append(instruction, qdarg, qarg, carg)
+                instructions.qd_add(instruction, qdarg, qarg, carg)
         else:
             for qarg, carg in instruction.broadcast_arguments(expanded_qargs, expanded_cargs):
                 instructions.add(self._append(instruction, qarg, carg), qarg, carg)
         return instructions
+
+    def _qd_append(self, instruction, qdargs, qargs, cargs):
+        """Append an instruction to the end of the circuit, modifying
+        the circuit in place.
+
+        Args:
+            instruction (Instruction or Operator): Instruction instance to append
+            qdargs (list(tuple)): qudits to attach instruction to
+            qargs (list(tuple)): qubits to attach instruction to
+            cargs (list(tuple)): clbits to attach instruction to
+
+        Returns:
+            Instruction: a handle to the instruction that was just added
+
+        Raises:
+            CircuitError: If the gate is of a different shape than the wires
+                it is being attached to.
+            CircuitError: If qudits are part of a non-QuditInstruction context.
+            CircuitError: If individual qubits of qudits are part of a context.
+        """
+        if not isinstance(instruction, QuditInstruction):
+            raise CircuitError("Qudits can only be used for a QuditInstruction.")
+
+        # do some compatibility checks
+        self._check_dups(qdargs)
+        self._check_qdargs(qdargs)
+
+        return self._append(*QuditCircuitData.to_data((instruction, qdargs, qargs, cargs)))
 
     def _qubit_offset(self):
         return sum(qudit.size for qudit in self.qudits)
@@ -650,61 +660,6 @@ class QuditCircuit(QuantumCircuit):
             # handled in QuantumCircuit._bit_argument_conversion
             pass
         return ret
-
-    def _append(self, instruction, qargs=None, cargs=None):
-        """Calls _qd_append with no qdargs."""
-        return self._qd_append(instruction, [], qargs, cargs)
-
-    def _qd_append(self, instruction, qdargs, qargs, cargs):
-        """Append an instruction to the end of the circuit, modifying
-        the circuit in place.
-
-        Args:
-            instruction (Instruction or Operator): Instruction instance to append
-            qdargs (list(tuple)): qudits to attach instruction to
-            qargs (list(tuple)): qubits to attach instruction to
-            cargs (list(tuple)): clbits to attach instruction to
-
-        Returns:
-            Instruction: a handle to the instruction that was just added
-
-        Raises:
-            CircuitError: If the gate is of a different shape than the wires
-                it is being attached to.
-            CircuitError: If qudits are part of a non-QuditInstruction context.
-            CircuitError: If individual qubits of qudits are part of a context.
-        """
-        if not isinstance(instruction, Instruction):
-            raise CircuitError("object is not an Instruction.")
-        if not isinstance(instruction, QuditInstruction) and qdargs:
-            raise CircuitError("Qudits can only be used for a QuditInstruction.")
-
-        print(qdargs, qargs, cargs)
-        if qargs and not set(self._split_qargs(qargs)[0]).issubset(set(qdargs)):
-            raise CircuitError(
-                "Individual underlying qubits of qudits cannot be part of an Instruction, "
-                "only as a whole qudit."
-            )
-
-        # do some compatibility checks
-        self._check_dups(qdargs)
-        self._check_dups(qargs)
-        self._check_qdargs(qdargs)
-        self._check_qargs(qargs)
-        self._check_cargs(cargs)
-
-        # add the instruction onto the given wires
-        instruction_context = instruction, qdargs, qargs, cargs
-        self._qd_data.append(instruction_context)
-        self._data.append(self.data.convert(instruction_context))
-
-        self._update_parameter_table(instruction)
-
-        # mark as normal circuit if a new instruction is added
-        self.duration = None
-        self.unit = "dt"
-
-        return instruction
 
     def add_register(self, *regs):
         """Add registers."""
@@ -936,12 +891,8 @@ class QuditCircuit(QuantumCircuit):
             }
         )
 
-        cpy._qd_data = [
-            (instr_copies[id(inst)], qdargs.copy(), qargs.copy(), cargs.copy())
-            for inst, qdargs, qargs, cargs in self._qd_data
-        ]
-        cpy._data = [self.data.convert(data_tuple) for data_tuple in cpy._qd_data]
-
+        cpy._data = [(instr_copies[id(inst)], qargs.copy(), cargs.copy())
+                     for inst, qargs, cargs in self._data]
         cpy._calibrations = copy.deepcopy(self._calibrations)
         cpy._metadata = copy.deepcopy(self._metadata)
 

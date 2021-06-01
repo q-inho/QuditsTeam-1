@@ -37,7 +37,6 @@ from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.instructionset import InstructionSet
 
 from .quditinstruction import QuditInstruction
-from .quditcircuitdata import QuditCircuitData
 
 
 class QuditInstructionSet(InstructionSet):

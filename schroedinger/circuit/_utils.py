@@ -112,17 +112,17 @@ def qargs_to_indices(circuit, qargs):
 
             if is_real:
                 bits = qubits
-                array_len = len(circuit.qubits)
+                num_bits = circuit.num_qubits
             else:
                 bits = qudits
-                array_len = len(circuit.qudits)
+                num_bits = circuit.num_qudits
 
             if isinstance(qarg, list):
                 bits.extend(qarg)
             elif isinstance(qarg, range):
                 bits.extend(list(qarg))
             elif isinstance(qarg, slice):
-                bits.extend(list(range(*slice.indices(array_len))))
+                bits.extend(list(range(num_bits))[qarg])
             else:
                 bits.append(qarg)
 

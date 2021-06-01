@@ -29,74 +29,72 @@
 ###############################################################################
 
 """
-A wrapper class for the purposes of validating modifications to both QuditCircuit.data
-and QuditCircuit.qd_data while maintaining the interface of a python list.
-Keeps the data and qd_data synchronized,
-as each item of data is a subset of the item of qd_data at the same index.
+A wrapper class for the purposes of validating modifications to QuditCircuit.data
+while maintaining the interface of a python list.
+Qudit context is stored additionally to the qubit an classical bit context for each
+instruction in the data. There are two forms of each data tuple:
+(instruction, qubits, clbits) where qubits consists of qubits of qudits and single qubits,
+(instruction, qudits, qubits, clbits) where qubits are only single qubits.
+The second variant can be accessed via imaginary indices, ``qd_get`` or the ``qd_iter`` method.
 """
 
 from qiskit.circuit.quantumcircuitdata import QuantumCircuitData
-from qiskit.circuit.instruction import Instruction
 from qiskit.circuit.exceptions import CircuitError
 
 from ._utils import parse_complex_index
 from .quditinstruction import QuditInstruction
 
-# TODO: check if sync may mean qd_len1 <= len2
+
 class QuditCircuitData(QuantumCircuitData):
     """A wrapper class for the purposes of validating modifications to QuditCircuit.data
-    and QuditCircuit.qd_data while maintaining the interface of a python list."""
+    while maintaining the interface of a python list. Allows access to data tuples of the
+    form (instruction, qubits, clbits) or (instruction, qudits, qubits, clbits)."""
 
-    def __init__(self, circuit):
+    @staticmethod
+    def to_data(qd_data_tuple):
         """
-        Attempts to synchronize data with qd_data in case one of them was directly assigned.
+        Converts a data tuple with qudit context to a data tuple without qudit context.
 
         Args:
-            circuit: Associated QuditCircuit instance.
-        Raises:
-            CircuitError: If data and qd_data were both previously assigned but mismatch.
-        """
-        super().__init__(circuit)
-
-        if self._circuit._data != [self.convert(data_tuple)
-                                   for data_tuple in self._circuit._qd_data]:
-
-            if self._circuit._data and self._circuit._qd_data:
-                raise CircuitError("data and qd_data mismatch due to previous assignments")
-
-            if self._circuit._data:
-                self._circuit._qd_data = [self.convert(data_tuple)
-                                          for data_tuple in self._circuit._data]
-
-            if self._circuit._qd_data:
-                self._circuit._data = [self.convert(data_tuple)
-                                       for data_tuple in self._circuit._qd_data]
-
-    def convert(self, data_tuple):
-        """
-        Converts a qd_data tuple to a data tuple and vice versa.
-        Conversion from qd_data to data should be preferred when both directions are possible.
-
-        Args:
-            data_tuple (tuple): Tuple (instruction, (qdargs,) qargs, cargs),
+            qd_data_tuple (tuple): Tuple (instruction, qdargs, qargs, cargs),
                 qdargs / qargs / cargs is a list of qudits / qubits / classical bits.
 
         Returns:
-            data_tuple (tuple): Converted data tuple.
-
+            Tuple: Converted data tuple (instruction, qargs, cargs).
         """
-        if len(data_tuple) == 3:
-            inst, qargs, cargs = data_tuple
-            qudits, single_qubits = self._circuit._split_qargs(qargs)
-            return inst, qudits, single_qubits, cargs
-
-        inst, qdargs, qargs, cargs = data_tuple
+        if len(qd_data_tuple) != 4:
+            raise CircuitError(
+                f"Invalid data form, expected (instruction, qudits, qubits, clbits), "
+                f"got {qd_data_tuple}."
+            )
+        inst, qdargs, qargs, cargs = qd_data_tuple
         return inst, [qubit for qudit in qdargs for qubit in qudit] + qargs, cargs
 
+    def to_qd_data(self, data_tuple):
+        """
+        Converts a data tuple without qudit context to a data tuple with qudit context.
+
+        Args:
+            data_tuple (tuple): Tuple (instruction, qargs, cargs),
+                qargs / cargs is a list of qubits / classical bits.
+
+        Returns:
+            Tuple: Converted data tuple (instruction, qdargs, qargs, cargs).
+        """
+        if len(data_tuple) != 3:
+            raise CircuitError(
+                f"Invalid data form, expected (instruction, qubits, clbits), "
+                f"got {data_tuple}."
+            )
+        inst, qargs, cargs = data_tuple
+        qdargs, qargs = self._circuit._split_qargs(qargs)
+        return inst, qdargs, qargs, cargs
+
     def qd_get(self, key):
-        """Returns data tuple including qudit context at index key or
-         a list of tuples with slice as key."""
-        return self._circuit._qd_data[key]
+        """Returns data tuple including qudit context at index key or a list of tuples
+        with slice as key. Does not relay modifications to original data, please use
+        single item modifications e.g. data[4j] = (inst, qdargs, qargs, cargs) instead."""
+        return [self.to_qd_data(data_tuple) for data_tuple in super().__getitem__(key)]
 
     def __getitem__(self, key):
         """
@@ -123,32 +121,21 @@ class QuditCircuitData(QuantumCircuitData):
 
     def __setitem__(self, key, value):
         """
-        Supports imaginary numbers (e.g. 0j) to get qd_data tuples.
+        Supports imaginary numbers (e.g. 0j) to set data tuples with qudit context.
 
         Arg:
-            key int: Index of the data tuple to set.
-            value tuple: Data tuple containing instruction, qdargs (optional), qargs, cargs.
+            key (int): Index of the data tuple to set.
+            value (tuple): Data tuple containing instruction, qdargs (optional), qargs, cargs.
 
         Raises:
-            CircuitError: If the instruction is not a valid Instruction.
             CircuitError: If the instruction is not a QuditInstruction but `value` includes qdargs.
             CircuitError: If `value` cannot be interpreted without broadcasting.
         """
-        inst, qargs, cargs = value[0], value[-2], value[-1]
+        key, is_real = parse_complex_index(key)
 
-        if len(value) == 4:
-            qdargs = value[2]
-        else:
-            qdargs = []
+        if not is_real:
+            inst, qdargs, qargs, cargs = value
 
-        expanded_qdargs = [self._circuit.qdit_argument_conversion(qdarg)
-                           for qdarg in qdargs or []]
-        expanded_qargs = [self._circuit.qbit_argument_conversion(qarg)
-                          for qarg in qargs or []]
-        expanded_cargs = [self._circuit.cbit_argument_conversion(carg)
-                          for carg in cargs or []]
-
-        if qdargs:
             if not isinstance(inst, QuditInstruction) and \
                     hasattr(inst, "to_qd_instruction"):
                 inst = inst.to_qd_instruction()
@@ -159,77 +146,30 @@ class QuditCircuitData(QuantumCircuitData):
                     "but value includes qdargs."
                 )
 
+            expanded_qdargs = [self._circuit.qdit_argument_conversion(qdarg)
+                               for qdarg in qdargs or []]
+            expanded_qargs = [self._circuit.qbit_argument_conversion(qarg)
+                              for qarg in qargs or []]
+            expanded_cargs = [self._circuit.cbit_argument_conversion(carg)
+                              for carg in cargs or []]
+
             broadcast_args = list(inst.qd_broadcast_arguments(
                 expanded_qdargs, expanded_qargs, expanded_cargs)
             )
             qdargs, qargs, cargs = broadcast_args[0]
-        else:
-            if not isinstance(inst, Instruction) \
-                    and hasattr(inst, 'to_instruction'):
-                inst = inst.to_instruction()
 
-            if not isinstance(inst, Instruction):
-                raise CircuitError('Instruction argument is not an Instruction.')
+            if len(broadcast_args) > 1:
+                raise CircuitError(
+                    "Circuit data modification does not support argument broadcasting."
+                )
 
-            broadcast_args = list(inst.broadcast_arguments(
-                expanded_qargs, expanded_cargs)
-            )
-            qargs, cargs = broadcast_args[0]
+            value = self.to_data((inst, qdargs, qargs, cargs))
 
-        if len(broadcast_args) > 1:
-            raise CircuitError(
-                "Circuit data modification does not support argument broadcasting."
-            )
-
-        self._circuit._check_dups(qdargs)
-        self._circuit._check_dups(qargs)
-        self._circuit._check_qdargs(qdargs)
-        self._circuit._check_qargs(qargs)
-        self._circuit._check_cargs(cargs)
-
-        # add underlying qubits (of qdargs) and single qubits (qargs) to data
-        # here qdargs is a list of qudits
-        self._circuit._data[key] = (self.convert((inst, qdargs, qargs, cargs)))
-        self._circuit._qd_data[key] = (inst, qdargs, qargs, cargs)
-
-        self._circuit._update_parameter_table(inst)
-
-    def insert(self, index, value):
-        """inserts value for data and qd_data at index"""
-        self._circuit._data.insert(index, None)
-        self._circuit._qd_data.insert(index, None)
-        self[index] = value
-
-    def __delitem__(self, i):
-        """deletes data and qd_data at index"""
-        del self._circuit._data[i]
-        del self._circuit._qd_data[i]
-
-    def __cast(self, other):
-        """casts to QuditCircuitData if possible"""
-        if isinstance(other, QuditCircuitData):
-            return other._circuit._qd_data
-        if isinstance(other, QuantumCircuitData):
-            return other._circuit._data
-        return other
+        super().__setitem__(key, value)
 
     def __repr__(self):
-        """returns qd_data representation"""
-        return repr(self._circuit._qd_data)
-
-    def __add__(self, other):
-        """Adds qd_data to other qd_data if possible.
-        Otherwise defaults to adding data to other data."""
-        if isinstance(other, QuditCircuitData):
-            return self._circuit._qd_data + self.__cast(other)
-        return self._circuit._data + self.__cast(other)
-
-    def __radd__(self, other):
-        """Adds other qd_data to qd_data if possible.
-        Otherwise defaults to adding other data to data."""
-        if isinstance(other, QuditCircuitData):
-            return self.__cast(other) + self._circuit._qd_data
-        return self.__cast(other) + self._circuit._data
+        """returns qudit data representation"""
+        return repr(self[0j:])
 
     def __mul__(self, n):
         """
@@ -243,8 +183,8 @@ class QuditCircuitData(QuantumCircuitData):
             if n.real != 0 or int(n.imag) != n.imag:
                 raise TypeError("Complex factors must be purely imaginary integers.")
 
-            return self._circuit._qd_data * int(n.imag)
-        return self._circuit._data * n
+            return self[0j:] * int(n.imag)
+        return super().__mul__(n)
 
     def __rmul__(self, n):
         """
@@ -258,31 +198,5 @@ class QuditCircuitData(QuantumCircuitData):
             if n.real != 0 or int(n.imag) != n.imag:
                 raise TypeError("Complex factors must be purely imaginary integers.")
 
-            return int(n.imag) * self._circuit._qd_data
-        return n * self._circuit._data
-
-    def __iadd__(self, other):
-        """In-place adding of data and qd_data with other data and qd_data."""
-        if isinstance(other, QuditCircuitData):
-            self._circuit._qd_data += other._circuit._qd_data
-            self._circuit._data += other._circuit._data
-        else:
-            self._circuit._qd_data += [
-                self.convert(data_tuple) for data_tuple in self.__cast(other)
-            ]
-            self._circuit._data += self.__cast(other)
-
-    def __imul__(self, n):
-        """In-place multiplication of data and qd_data with `n`."""
-        self._circuit._qd_data *= n
-        self._circuit._data *= n
-
-
-    def sort(self, *args, **kwargs):
-        """In-place stable sort of both data and qd_data. Accepts arguments of list.sort."""
-        self._circuit._data.sort(*args, **kwargs)
-        self._circuit._qd_data.sort(*args, **kwargs)
-
-    def qd_copy(self):
-        """Returns a shallow copy of qudit instruction list."""
-        return self._circuit._qd_data.copy()
+            return int(n.imag) * self[0j:]
+        return super().__rmul__(n)

@@ -31,9 +31,10 @@
 """
 A qudit quantum instruction.
 Qudit instructions additionally hold the dimensions of affected qudits and
-single (non-qudit) qubits. A QuditCircuit can be used to define the instruction.
+single (non-qudit) qubits.
 Each instruction must either be defined on a qubit level i.e. accessing qubits
-behind qudits, or be composed of other qudit instructions.
+behind qudits (definition via QuantumCircuit or equivalent),
+or be composed of other qudit instructions (definition via QuditCircuit).
 """
 
 from qiskit.circuit.instruction import Instruction
@@ -119,26 +120,6 @@ class QuditInstruction(Instruction):
             return False
         return super().soft_compare(other)
 
-    def reverse_ops(self):
-        """For a composite instruction, reverse the order of sub-instructions.
-
-        This is done by recursively reversing all sub-instructions.
-        It does not invert any gate. The method can handle sub-instructions of
-        both QuditInstruction and Instruction type.
-
-        Returns:
-            QuditInstruction: a new instruction with sub-instructions reversed.
-        """
-        reverse_inst = super().reverse_ops()
-
-        # complex slice to access qd_data (see QuditCircuitData)
-        if hasattr(self._definition, "_qd_data"):
-            reverse_inst.definition._qd_data = [
-                (inst.reverse_ops(), qdargs, qargs, cargs)
-                for inst, qdargs, qargs, cargs in reversed(self._definition[0j:])
-            ]
-        return reverse_inst
-
     def inverse(self):
         """Invert this instruction.
 
@@ -187,12 +168,6 @@ class QuditInstruction(Instruction):
                 *self.definition.cregs,
                 global_phase=-self.definition.global_phase
             )
-
-            # complex slice to access qd_data (see QuditCircuitData)
-            inverse_gate.definition._qd_data = [
-                (inst.inverse(), qdargs, qargs, cargs)
-                for inst, qdargs, qargs, cargs in reversed(self._definition[0j:])
-            ]
         else:
             inverse_gate.definition = QuantumCircuit(
                 *self.definition.qregs,
@@ -276,19 +251,13 @@ class QuditInstruction(Instruction):
 
         if qdargs:
             qc = QuditCircuit(qdargs)
-            if qargs:
-                qc.add_register(qargs)
-            if cargs:
-                qc.add_register(cargs)
-
-            # imaginary index to access qudits instead of qubits in qdargs (QuditRegister)
-            qc.qd_data = [(self, qdargs[0j:], qargs[:], cargs[:])] * n
         else:
             qc = QuantumCircuit()
-            if qargs:
-                qc.add_register(qargs)
-            if cargs:
-                qc.add_register(cargs)
+
+        if qargs:
+            qc.add_register(qargs)
+        if cargs:
+            qc.add_register(cargs)
 
         # access underlying qubits of qdargs (QuditRegister or empty list)
         qc.data = [(self, qdargs[:] + qargs[:], cargs[:])] * n
