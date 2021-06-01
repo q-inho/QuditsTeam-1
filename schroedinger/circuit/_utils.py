@@ -85,7 +85,7 @@ def parse_complex_index(index):
 
 def qargs_to_indices(circuit, qargs):
     """
-    Parses qargs to indices for qudits and qubits.
+    Parses qargs to indices for qudits and qubits. Imaginary indices are used for qudits.
 
     Args:
         circuit (~circuit.QuditCircuit): circuit of indexed qudits and qubits
@@ -94,36 +94,44 @@ def qargs_to_indices(circuit, qargs):
     Returns:
         tuple(List(int), list(int)): Tuple of list of qudit indices and list of qubit indices
     """
-    qudits = []
-    qubits = []
+    qudit_indices = []
+    qubit_indices = []
 
-    if qargs is None:
-        qudits.extend(list(range(circuit.num_qudits)))
-        qudits.extend(list(range(circuit.num_single_qubits)))
+    if isinstance(qargs, (int, complex)):
+        qargs = [qargs]
+
+    if not qargs:
+        qudit_indices.extend(list(range(circuit.num_qudits)))
+        qubit_indices.extend(list(range(circuit.num_single_qubits)))
+
     else:
         for qarg in qargs:
-            if isinstance(qargs, QuantumRegister):
-                if type(qargs) is not QuantumRegister:
-                    qubits.extend([qarg[j * 1j] for j in range(qarg.size)])
+            if isinstance(qarg, QuantumRegister):
+                if type(qarg) is not QuantumRegister:
+                    qudit_indices.extend(
+                        [circuit.qudits.index(qd) for qd in qarg[0j:]]
+                    )
                 else:
-                    qubits.extend([qarg[j] for j in range(qarg.size)])
+                    qubit_indices.extend(
+                        [circuit.qubits.index(q) - circuit._qubit_offset() for q in qarg[:]]
+                    )
 
             qarg, is_real = parse_complex_index(qarg)
 
             if is_real:
-                bits = qubits
+                bit_indices = qubit_indices
                 num_bits = circuit.num_qubits
             else:
-                bits = qudits
+                bit_indices = qudit_indices
                 num_bits = circuit.num_qudits
 
             if isinstance(qarg, list):
-                bits.extend(qarg)
+                bit_indices.extend(qarg)
             elif isinstance(qarg, range):
-                bits.extend(list(qarg))
+                bit_indices.extend(list(qarg))
             elif isinstance(qarg, slice):
-                bits.extend(list(range(num_bits))[qarg])
+                bit_indices.extend(list(range(num_bits))[qarg])
             else:
-                bits.append(qarg)
+                bit_indices.append(qarg)
 
-    return qudits, qubits
+    return qudit_indices, qubit_indices

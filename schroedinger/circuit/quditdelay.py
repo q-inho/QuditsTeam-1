@@ -46,7 +46,7 @@ class QuditDelay(FlexibleQuditInstruction):
 
     num_qudits = 1
 
-    def __init__(self, qudit_dimensions, duration, unit='dt'):
+    def __init__(self, qudit_dimensions, duration=1, unit='dt'):
         """Create new delay instruction for qudits."""
         if not isinstance(duration, (float, int)):
             raise CircuitError('Unsupported duration type.')

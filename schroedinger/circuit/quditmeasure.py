@@ -50,7 +50,7 @@ class QuditMeasure(FlexibleQuditInstruction):
 
     def __init__(self, qudit_dimensions):
         """Create new measurement instruction."""
-        num_clbits = sum(int(np.ceil(np.log2(dimension))) for dimension in self.qudit_dimensions)
+        num_clbits = sum(int(np.ceil(np.log2(dimension))) for dimension in qudit_dimensions)
         super().__init__("measure", qudit_dimensions, 0, num_clbits, [])
 
     def _define(self):

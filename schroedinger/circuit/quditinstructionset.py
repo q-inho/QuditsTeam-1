@@ -75,6 +75,30 @@ class QuditInstructionSet(InstructionSet):
             CircuitError: If the instruction is not a QuditInstruction.
         """
         if not isinstance(qudit_instruction, QuditInstruction):
-            raise CircuitError
+            raise CircuitError("attempt to add non-QuditInstruction with qudit context")
         super().add(qudit_instruction, qargs, cargs)
         self.qdargs.append(qdargs)
+
+    def extend(self, other):
+        """Adds all entries of the given InstructionSet to self, pads qdargs.
+
+        Args:
+            other (QuditInstructionSet): other qudit instruction set
+        """
+        self.instructions.extend(other.instructions)
+        self.qdargs.extend([[]] * len(other))
+        self.qargs.extend(other.qargs)
+        self.cargs.extend(other.cargs)
+
+    def qd_extend(self, other):
+        """Adds all entries of the given QuditInstructionSet to self.
+
+        Args:
+            other (QuditInstructionSet): other qudit instruction set
+        """
+        if not isinstance(other, QuditInstructionSet):
+            raise CircuitError("attempt to extend with non-QuditInstructionSet")
+        self.instructions.extend(other.instructions)
+        self.qdargs.extend(other.qdargs)
+        self.qargs.extend(other.qargs)
+        self.cargs.extend(other.cargs)
