@@ -50,7 +50,7 @@ def parse_complex_index(index):
         if isinstance(index[0], complex):
             if any(idx.real != 0 or int(idx.imag) != idx.imag for idx in index):
                 raise TypeError("Complex indices must be purely imaginary integers.")
-            return [idx.imag for idx in index], False
+            return [int(idx.imag) for idx in index], False
 
         if isinstance(index[0], int):
             return index, True
@@ -61,7 +61,10 @@ def parse_complex_index(index):
         slice_types = set(
             type(idx) for idx in (index.start, index.stop, index.step) if idx is not None
         )
-        if len(slice_types) != 1:
+
+        if len(slice_types) == 0:
+            return index, True
+        elif len(slice_types) > 1:
             raise TypeError("All slice indices must either have the same type or be None.")
 
         if any(isinstance(idx, complex) for idx in (index.start, index.stop, index.step)):

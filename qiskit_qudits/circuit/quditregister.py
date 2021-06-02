@@ -83,6 +83,8 @@ class Qudit(Qubit):
             raise TypeError(
                 "only a list of Qubit instances is accepted for qubits argument"
             )
+        if len(qubits) != np.ceil(np.log2(dimension)):
+            raise CircuitError("number of qubits does not match dimension")
         self._size = len(qubits)
         self._qubits = qubits
 
