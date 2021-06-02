@@ -32,7 +32,7 @@
 A wrapper class for the purposes of validating modifications to QuditCircuit.data
 while maintaining the interface of a python list.
 Qudit context is stored additionally to the qubit an classical bit context for each
-instruction in the data. There are two forms of each data tuple:
+instruction in the data. There are two forms of each rule in the data:
 (instruction, qubits, clbits) where qubits consists of qubits of qudits and single qubits,
 (instruction, qudits, qubits, clbits) where qubits are only single qubits.
 The second variant can be accessed via imaginary indices, ``qd_get`` or the ``qd_iter`` method.
@@ -47,67 +47,67 @@ from .quditinstruction import QuditInstruction
 
 class QuditCircuitData(QuantumCircuitData):
     """A wrapper class for the purposes of validating modifications to QuditCircuit.data
-    while maintaining the interface of a python list. Allows access to data tuples of the
+    while maintaining the interface of a python list. Allows access to rules of the
     form (instruction, qubits, clbits) or (instruction, qudits, qubits, clbits)."""
 
     @staticmethod
-    def to_data(qd_data_tuple):
+    def to_rule(qd_rule):
         """
-        Converts a data tuple with qudit context to a data tuple without qudit context.
+        Converts a rule with qudit context to a rule without qudit context.
 
         Args:
-            qd_data_tuple (tuple): Tuple (instruction, qdargs, qargs, cargs),
+            qd_rule (tuple): Tuple (instruction, qdargs, qargs, cargs),
                 qdargs / qargs / cargs is a list of qudits / qubits / classical bits.
 
         Returns:
-            Tuple: Converted data tuple (instruction, qargs, cargs).
+            Tuple: Converted rule (instruction, qargs, cargs).
         """
-        if len(qd_data_tuple) != 4:
+        if len(qd_rule) != 4:
             raise CircuitError(
-                f"Invalid data form, expected (instruction, qudits, qubits, clbits), "
-                f"got {qd_data_tuple}."
+                f"Invalid rule form, expected (instruction, qudits, qubits, clbits), "
+                f"got {qd_rule}."
             )
-        inst, qdargs, qargs, cargs = qd_data_tuple
+        inst, qdargs, qargs, cargs = qd_rule
         return inst, [qubit for qudit in qdargs for qubit in qudit] + qargs, cargs
 
-    def to_qd_data(self, data_tuple):
+    def to_qd_rule(self, rule):
         """
-        Converts a data tuple without qudit context to a data tuple with qudit context.
+        Converts a rule without qudit context to a rule with qudit context.
 
         Args:
-            data_tuple (tuple): Tuple (instruction, qargs, cargs),
+            rule (tuple): Tuple (instruction, qargs, cargs),
                 qargs / cargs is a list of qubits / classical bits.
 
         Returns:
-            Tuple: Converted data tuple (instruction, qdargs, qargs, cargs).
+            Tuple: Converted rule (instruction, qdargs, qargs, cargs).
         """
-        if len(data_tuple) != 3:
+        if len(rule) != 3:
             raise CircuitError(
-                f"Invalid data form, expected (instruction, qubits, clbits), "
-                f"got {data_tuple}."
+                f"Invalid rule form, expected (instruction, qubits, clbits), "
+                f"got {rule}."
             )
-        inst, qargs, cargs = data_tuple
+        inst, qargs, cargs = rule
         qdargs, qargs = self._circuit._split_qargs(qargs)
         return inst, qdargs, qargs, cargs
 
     def qd_get(self, key):
-        """Returns data tuple including qudit context at index key or a list of tuples
+        """Returns rule including qudit context at index key or a list of tuples
         with slice as key. Does not relay modifications to original data, please use
         single item modifications e.g. data[4j] = (inst, qdargs, qargs, cargs) instead."""
         if isinstance(key, int):
-            return self.to_qd_data(super().__getitem__(key))
-        return [self.to_qd_data(data_tuple) for data_tuple in super().__getitem__(key)]
+            return self.to_qd_rule(super().__getitem__(key))
+        return [self.to_qd_rule(rule) for rule in super().__getitem__(key)]
 
     def __getitem__(self, key):
         """
-        Supports imaginary numbers (e.g. 0j) for indexing into qd_data tuples.
+        Supports imaginary numbers (e.g. 0j) for indexing into rules with qudit context.
 
         Arg:
-            key (int or complex or slice or list): Index of the data tuple to be retrieved.
+            key (int or complex or slice or list): Index of the rule to be retrieved.
         Returns:
-            Data tuple / list of data tuples with qudit context if key is a purely imaginary
+            Rule / list of rules with qudit context if key is a purely imaginary
             integer / slice with purely imaginary integers.
-            Data tuple / list of data tuples without qudit context if key is a real
+            Rule / list of rules without qudit context if key is a real
             integer / slice with real integers.
 
         Raises:
@@ -123,11 +123,11 @@ class QuditCircuitData(QuantumCircuitData):
 
     def __setitem__(self, key, value):
         """
-        Supports imaginary numbers (e.g. 0j) to set data tuples with qudit context.
+        Supports imaginary numbers (e.g. 0j) to set rules with qudit context.
 
         Arg:
-            key (int): Index of the data tuple to set.
-            value (tuple): Data tuple containing instruction, qdargs (optional), qargs, cargs.
+            key (int): Index of the rule to set.
+            value (tuple): Rule containing instruction, qdargs (optional), qargs, cargs.
 
         Raises:
             CircuitError: If the instruction is not a QuditInstruction but `value` includes qdargs.
@@ -168,7 +168,7 @@ class QuditCircuitData(QuantumCircuitData):
             qargs = single_qubits
             cargs = [carg for cargs in expanded_cargs for carg in cargs]
 
-            inst, qargs, cargs = self.to_data((inst, qdargs, qargs, cargs))
+            inst, qargs, cargs = self.to_rule((inst, qdargs, qargs, cargs))
 
         elif qdargs:
             raise CircuitError(

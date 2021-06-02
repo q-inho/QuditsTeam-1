@@ -116,7 +116,7 @@ def qargs_to_indices(circuit, qargs):
                     )
                 else:
                     qubit_indices.extend(
-                        [circuit.qubits.index(q) - circuit._qubit_offset() for q in qarg[:]]
+                        [circuit.qubits.index(q) - circuit.qubit_offset for q in qarg[:]]
                     )
 
             qarg, is_real = parse_complex_index(qarg)

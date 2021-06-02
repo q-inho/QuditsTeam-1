@@ -33,6 +33,7 @@
 import copy
 import warnings
 from typing import Union
+from qiskit.exceptions import QiskitError
 from qiskit.circuit.parameter import Parameter
 from qiskit.circuit.exceptions import CircuitError
 from qiskit.circuit.parameterexpression import ParameterExpression
@@ -159,15 +160,17 @@ class QuditCircuit(QuantumCircuit):
         """
         # If data_input is QuantumCircuitData(self), clearing self._data
         # below will also empty data_input, so make a shallow copy first.
-        qudit_circuit_data_inst = QuditCircuitData(self)
         data_input = data_input.copy()
         self._data = []
         self._parameter_table = ParameterTable()
 
-        for data_tuple in data_input:
-            if len(data_tuple) == 3:
-                data_tuple = qudit_circuit_data_inst.to_qd_data(data_tuple)
-            self.qd_append(*data_tuple)
+        # QuditCircuitData instance to call the conversion to_qd_data
+        qc_data_inst = QuditCircuitData(self)
+
+        for rule in data_input:
+            if len(rule) == 3:
+                rule = qc_data_inst.to_qd_rule(rule)
+            self.qd_append(*rule)
 
     def __str__(self):
         return str(self.draw(output="text"))
@@ -242,14 +245,14 @@ class QuditCircuit(QuantumCircuit):
             new_cargs = [new_clbits[num_clbits - old_clbits.index(c) - 1] for c in cargs]
 
             new_qargs = []
-            offset = self._qubit_offset()
+            offset = self.qubit_offset
             for q in qargs:
                 new_index = offset - old_qubits.index(q) - 1
                 if new_index < 0:
                     new_index += num_qubits
                 new_qargs.append(new_qubits[new_index])
 
-            circ._append(inst, *QuditCircuitData.to_data((new_qdargs, new_qargs, new_cargs)))
+            circ._append(inst, *QuditCircuitData.to_rule((new_qdargs, new_qargs, new_cargs)))
         return circ
 
     def inverse(self):
@@ -295,9 +298,13 @@ class QuditCircuit(QuantumCircuit):
             name=self.name + "**{}".format(reps)
         )
 
-        # currently composed is used, using to_quditgate and to_quditinstruction would be faster
-        for _ in range(reps):
-            repeated_circ.compose(self, self.qudits, self.qubits, self.clbits, inplace=True)
+        if reps > 0:
+            try:
+                inst = self.to_gate()
+            except QiskitError:
+                inst = self.to_instruction()
+            for _ in range(reps):
+                repeated_circ._append(inst, self.qubits, self.clbits)
 
         return repeated_circ
 
@@ -344,7 +351,7 @@ class QuditCircuit(QuantumCircuit):
 
         if not isinstance(other, QuantumCircuit):
             if front:
-                dest.data.insert(0, *QuditCircuitData.to_data((other, qudits, qubits, clbits)))
+                dest.data.insert(0, *QuditCircuitData.to_rule((other, qudits, qubits, clbits)))
             else:
                 dest.qd_append(other, qdargs=qudits, qargs=qubits, cargs=clbits)
 
@@ -389,7 +396,7 @@ class QuditCircuit(QuantumCircuit):
         if isinstance(other, QuditCircuit):
             qd_data = other.data[0j:]
         else:
-            qd_data = [self.data.to_qd_data(data_tuple) for data_tuple in other.data]
+            qd_data = [self.data.to_qd_rule(rule) for rule in other.data]
 
         mapped_qd_instrs = []
 
@@ -406,7 +413,7 @@ class QuditCircuit(QuantumCircuit):
 
             mapped_qd_instrs.append((n_instr, n_qdargs, n_qargs, n_cargs))
 
-        mapped_instrs = [self.data.to_data(data_tuple) for data_tuple in mapped_qd_instrs]
+        mapped_instrs = [self.data.to_rule(qd_rule) for qd_rule in mapped_qd_instrs]
 
         if front:
             dest._data = mapped_instrs + dest._data
@@ -654,15 +661,12 @@ class QuditCircuit(QuantumCircuit):
         self._check_dups(qdargs)
         self._check_qdargs(qdargs)
 
-        return self._append(*QuditCircuitData.to_data((instruction, qdargs, qargs, cargs)))
-
-    def _qubit_offset(self):
-        return sum(qudit.size for qudit in self.qudits)
+        return self._append(*QuditCircuitData.to_rule((instruction, qdargs, qargs, cargs)))
 
     def _offset_qubit_representation(self, qubit_representation):
         """Offset by qubits of qudits if qubit_representation contains numbers."""
         ret = qubit_representation
-        offset = self._qubit_offset()
+        offset = self.qubit_offset
         size = self.num_qubits
 
         def _offset(n):
@@ -747,10 +751,10 @@ class QuditCircuit(QuantumCircuit):
                 if isinstance(register, QuditRegister):
                     self.qdregs.append(register)
                     # keep qudit qubits in front
-                    qubit_offset = self._qubit_offset()
+                    qubit_offset = self.qubit_offset
                     old_qubit_qudits = self._qubits[:qubit_offset]
                     self._qubits = old_qubit_qudits + new_bits + self._qubits[qubit_offset:]
-                    # added afterwards to not affect _qubit_offset()
+                    # added afterwards to not affect qubit_offset
                     new_qudits = [bit for bit in register[0j:] if bit not in self._qudit_set]
                     self._qudits.extend(new_qudits)
                     self._qudit_set.update(new_qudits)
@@ -790,7 +794,7 @@ class QuditCircuit(QuantumCircuit):
 
                 if qudit not in added_qudits:
                     # keep qudit qubits in front
-                    qubit_offset = self._qubit_offset()
+                    qubit_offset = self.qubit_offset
                     old_qubit_qudits = self._qubits[:qubit_offset]
                     self._qubits = old_qubit_qudits + qudit.qubits + self._qubits[qubit_offset:]
                     self._qubit_set.update(qudit.qubits)
@@ -825,7 +829,36 @@ class QuditCircuit(QuantumCircuit):
         if not set(qdargs).issubset(self._qudit_set):
             raise CircuitError("qdargs not in this circuit")
 
-    # TODO to_quditinstruction, to_quditgate, decompose (quditdag_to_quditcircuit)
+    def to_quditinstruction(self, parameter_map=None):
+        """Create a QuditInstruction out of this circuit.
+
+        Args:
+            parameter_map(dict): For parameterized circuits, a mapping from
+               parameters in the circuit to parameters to be used in the
+               instruction. If None, existing circuit parameters will also
+               parameterize the instruction.
+
+        Returns:
+            QuditInstruction: A composite instruction encapsulating this circuit.
+        """
+        from qiskit_qudits.converters.circuit_to_quditinstruction import circuit_to_quditinstruction
+        return circuit_to_quditinstruction(self, parameter_map)
+
+    def to_quditgate(self, parameter_map=None, label=None):
+        """Create a QuditGate out of this circuit.
+
+        Args:
+            parameter_map(dict): For parameterized circuits, a mapping from
+               parameters in the circuit to parameters to be used in the
+               gate. If None, existing circuit parameters will also
+               parameterize the gate.
+            label (str): Optional gate label.
+
+        Returns:
+            QuditGate: A composite qudit gate encapsulating this circuit.
+        """
+        from qiskit_qudits.converters.circuit_to_quditgate import circuit_to_quditgate
+        return circuit_to_quditgate(self, parameter_map, label=label)
 
     def draw(self, show_qudits=True, **kwargs):
         """Draw the quantum circuit.
@@ -860,17 +893,12 @@ class QuditCircuit(QuantumCircuit):
         return super().draw(**kwargs)
 
     def qd_width(self):
-        """Return number of qudits plus single_qubits plus clbits in circuit.
-
-        Returns:
-            int: Qudit width of circuit.
-
-        """
+        """Return number of qudits plus single_qubits plus clbits in circuit."""
         return self.num_qudits + self.num_single_qubits + self.num_clbits
 
     @property
     def qudit_dimensions(self):
-        """Dimensions of contained qudits as a list"""
+        """Dimensions of contained qudits as a list."""
         return [qudit.dimension for qudit in self.qudits]
 
     @property
@@ -879,9 +907,14 @@ class QuditCircuit(QuantumCircuit):
         return len(self.qudits)
 
     @property
+    def qubit_offset(self):
+        """Return number of qubits associated with qudits"""
+        return sum(qudit.size for qudit in self.qudits)
+
+    @property
     def num_single_qubits(self):
-        """Return number of qubits not associated with qudits"""
-        return self.num_qubits - sum(qudit.size for qudit in self.qudits)
+        """Return number of qubits not associated with qudits."""
+        return self.num_qubits - self.qubit_offset
 
     @property
     def num_qd_ancillas(self):
@@ -1093,7 +1126,7 @@ class QuditCircuit(QuantumCircuit):
         """
         if qdargs is None and qargs is None:
             qdargs = self.qudits
-            qargs = self.qubits[self._qubit_offset():]
+            qargs = self.qubits[self.qubit_offset:]
 
         instructions = QuditInstructionSet()
 
@@ -1128,7 +1161,7 @@ class QuditCircuit(QuantumCircuit):
         """
         if qdargs is None and qargs is None:
             qdargs = self.qudits
-            qargs = self.qubits[self._qubit_offset():]
+            qargs = self.qubits[self.qubit_offset:]
 
         instructions = QuditInstructionSet()
 
@@ -1168,7 +1201,7 @@ class QuditCircuit(QuantumCircuit):
         """
         if qdargs is None and qargs is None:
             qdargs = self.qudits
-            qargs = self.qubits[self._qubit_offset():]
+            qargs = self.qubits[self.qubit_offset:]
 
         instructions = QuditInstructionSet()
 
