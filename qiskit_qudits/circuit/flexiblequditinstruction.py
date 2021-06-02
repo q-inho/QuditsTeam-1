@@ -92,7 +92,8 @@ class FlexibleQuditGate(QuditGate):
             )
 
 
-def flex_qd_broadcast_arguments(circuit, instr_class, qdargs=None, qargs=None, cargs=None):
+def flex_qd_broadcast_arguments(circuit, instr_class, qdargs=None, qargs=None, cargs=None,
+                                num_single_qubits=None, num_clbits=None):
     """
     Broadcasts qudit arguments for flexible qudit instructions before instantiating these
     instructions (in general multiple inst. are created) and appending them with their context.
@@ -109,6 +110,8 @@ def flex_qd_broadcast_arguments(circuit, instr_class, qdargs=None, qargs=None, c
         qdargs (Object): Representation of d-dimensional quantum bit arguments.
         qargs (Object): Representation of quantum bit arguments.
         cargs (Object): Representation of classical bit arguments.
+        num_single_qubits (int): Optional. number of single qubits used by the gate.
+        num_clbits (int): Optional. Number of single classical bits used by the gate.
 
     Raises:
         CircuitError: If the broadcast factor is not an integer greater than one.
@@ -132,21 +135,24 @@ def flex_qd_broadcast_arguments(circuit, instr_class, qdargs=None, qargs=None, c
     if int(broadcast_factor) != broadcast_factor or broadcast_factor < 1:
         raise CircuitError("Invalid broadcast factor.")
 
-    # temporary instruction to look up expected num_single_qubits and num_clbits
-    temp_inst = instr_class(
-        [qd.dimension for qd in qdargs[:instr_class.num_qudits]]
-    )
-    num_qudits = instr_class.num_qudits
-    num_qubits = temp_inst.num_single_qubits
-    num_clbits = temp_inst.num_clbits
+    if issubclass(instr_class, FlexibleQuditGate):
+        num_clbits = 0
 
-    if len(qargs) * broadcast_factor != num_qubits or \
+    if num_single_qubits is None or num_clbits is None:
+        # temporary instruction to look up expected num_single_qubits and num_clbits
+        temp_inst = instr_class(
+            [qd.dimension for qd in qdargs[:instr_class.num_qudits]]
+        )
+        num_single_qubits = temp_inst.num_single_qubits
+        num_clbits = temp_inst.num_clbits
+
+    if len(qargs) * broadcast_factor != num_single_qubits or \
             len(cargs) * broadcast_factor != num_clbits:
         raise CircuitError("Broadcast factor is ambiguous, check number of arguments.")
 
     padding = [()] * int(broadcast_factor)
-    qdit = zip(*([iter(qdargs)] * num_qudits)) if num_qudits else padding
-    qit = zip(*([iter(qargs)] * num_qubits)) if num_qubits else padding
+    qdit = zip(*([iter(qdargs)] * instr_class.num_qudits)) if instr_class.num_qudits else padding
+    qit = zip(*([iter(qargs)] * num_single_qubits)) if num_single_qubits else padding
     cit = zip(*([iter(cargs)] * num_clbits)) if num_clbits else padding
     for qds, qs, cs in zip(qdit, qit, cit):
         yield list(qds), list(qs), list(cs)
