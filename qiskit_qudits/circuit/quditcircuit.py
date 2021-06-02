@@ -60,7 +60,7 @@ class QuditCircuit(QuantumCircuit):
 
     prefix = "quditcircuit"
 
-    def __init__(self, *regs, name=None, global_phase=0, metadata=None):
+    def __init__(self, *regs, name=None, global_phase=0, metadata=None, modular_qudits=False):
         """Create a new circuit capable of handling qudits.
 
         Args:
@@ -75,17 +75,21 @@ class QuditCircuit(QuantumCircuit):
                 list(int), int -> QuditRegister, ClassicalRegister
                 list(int), int, int -> QuditRegister, QuantumRegister, ClassicalRegister.
                 Also allows 0 and [] as arguments, resulting in no Register created.
-            name (str): the name of the quantum circuit. If not set, an
+            name (str): Optional. The name of the quantum circuit. If not set, an
                 automatically generated string will be assigned.
-            global_phase (float or ParameterExpression): The global phase of the circuit in radians.
-            metadata (dict): Arbitrary key value metadata to associate with the
+            global_phase (float or ParameterExpression): Optional.
+                The global phase of the circuit in radians.
+            metadata (dict): Optional. Arbitrary key value metadata to associate with the
                 circuit. This gets stored as free-form data in a dict in the
                 :attr:`~qiskit.circuit.QuantumCircuit.metadata` attribute. It will
                 not be directly used in the circuit.
+            modular_qudits (bool): Optional. Allows using individual underlying qubits of qudits
+                in instructions.
 
         Raises:
             CircuitError: If first register of regs cannot be interpreted as a QuditRegister.
         """
+        self._modular_qudits = modular_qudits
         # Overwritten data for new getter and setter methods
         self._data = []
 
@@ -626,10 +630,11 @@ class QuditCircuit(QuantumCircuit):
         expanded_cargs = [self.cbit_argument_conversion(carg) for carg in cargs or []]
 
         # All qargs must be single qubits not associated with qudits
-        if any(self._split_qargs(qargs)[0] for qargs in expanded_qargs):
+        if not self._modular_qudits and \
+                any(self._split_qargs(qargs)[0] for qargs in expanded_qargs):
             raise CircuitError(
-                "Individual underlying qubits of qudits cannot be part of an Instruction, "
-                "only as a whole qudit. ``qargs`` contains qubits from qudits."
+                "Individual underlying qubits of qudits cannot be used by instructions, "
+                "only whole qudits can. ``qargs`` contains qubits from qudits."
             )
 
         instructions = QuditInstructionSet()

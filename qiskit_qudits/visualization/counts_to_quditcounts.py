@@ -18,7 +18,7 @@ from qiskit.exceptions import QiskitError
 from qiskit_qudits.circuit.quditmeasure import QuditMeasure
 
 
-def to_qudit_counts(circuit_list, count_dict_list, fillchar='#'):
+def counts_to_quditcounts(circuit_list, count_dict_list, fillchar='#'):
     """
     Converts each qudit measurement result in the count dict list
     of the qasm_simulator from a bit string to decimal representation,
@@ -72,14 +72,14 @@ def to_qudit_counts(circuit_list, count_dict_list, fillchar='#'):
             rev_bit_list = list(reversed(bit_string.replace(" ", "")))
 
             for clbit_indices in measured_clbit_indices:
-                value = sum(rev_bit_list[idx] * 2**num for num, idx in enumerate(clbit_indices))
+                value = sum(
+                    int(rev_bit_list[idx]) * 2**num for num, idx in enumerate(clbit_indices)
+                )
                 str_value = str(value)
                 str_value = fillchar * (len(clbit_indices) - len(str_value)) + str_value
                 rev_list_value = list(reversed(str_value))
 
-                start = len(rev_bit_list) - max(clbit_indices)
-                stop = start + len(clbit_indices)
-                rev_bit_list[start:stop] = rev_list_value
+                rev_bit_list[min(clbit_indices): max(clbit_indices) + 1] = rev_list_value
 
             short_bit_list = list(reversed(rev_bit_list))
             for idx in separator_indices:
@@ -87,6 +87,8 @@ def to_qudit_counts(circuit_list, count_dict_list, fillchar='#'):
             new_bit_string = "".join(short_bit_list)
 
             new_count_dict[new_bit_string] = count_dict[bit_string]
+
+        new_count_dict_list.append(new_count_dict)
 
     if len(new_count_dict_list) == 1:
         return new_count_dict_list[0]
