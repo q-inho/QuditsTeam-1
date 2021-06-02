@@ -224,7 +224,7 @@ class QuditInstruction(Instruction):
         )
 
     def repeat(self, n):
-        """Creates an QuditInstruction with `quditgate` repeated `n` amount of times.
+        """Creates an QuditInstruction with this instruction repeated `n` amount of times.
 
         Args:
             n (int): Number of times to repeat the instruction

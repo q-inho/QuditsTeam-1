@@ -29,8 +29,8 @@
 ###############################################################################
 
 """
-Qudit measurement by measureing all underlying qubits.
-While qudits could be mesured by simply calling measure(qdc, qudit[:], cbits),
+Qudit measurement by measuring all underlying qubits.
+While qudits could be measured by simply calling measure(qdc, qudit[:], clbits),
 QuditMeasure can be properly visualized in terms of qudits.
 """
 

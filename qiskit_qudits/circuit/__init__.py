@@ -11,10 +11,11 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from .quditcircuit import QuditCircuit
 from .quditregister import QuditRegister, Qudit, AncillaQuditRegister, AncillaQudit
-from .quditgate import QuditGate
 from .quditinstruction import QuditInstruction
+from .quditgate import QuditGate
+from .flexiblequditinstruction import FlexibleQuditInstruction, FlexibleQuditGate
+from .quditcircuit import QuditCircuit
 from .quditinstructionset import QuditInstructionSet
 from .quditbarrier import QuditBarrier
 from .quditdelay import QuditDelay

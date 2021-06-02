@@ -69,7 +69,7 @@ class Qudit(Qubit):
             dimension = int(dimension)
         except Exception as ex:
             raise TypeError(
-                "dimension needs to be castable to an int: "
+                "dimension needs to be interpretable as an int: "
                 f"type {type(dimension)} was provided"
             ) from ex
         if dimension < 2:

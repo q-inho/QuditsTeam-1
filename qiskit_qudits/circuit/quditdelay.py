@@ -29,7 +29,7 @@
 ###############################################################################
 
 """
-Delay instruction on qudits (for quditcircuit module).
+Delay instruction on qudits.
 """
 
 import numpy as np

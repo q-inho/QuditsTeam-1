@@ -137,7 +137,7 @@ class QuditCircuit(QuantumCircuit):
                 for the circuit's data. Each tuple is in the format
                 ``(instruction, qargs, cargs)`` (when accessed with real keys) or
                 ``(instruction, qdargs, qargs, cargs)`` (when accessed with imaginary keys),
-                where instruction is an Instruction (or subclass)  object, qdrgs is a list of Qudit
+                where instruction is an Instruction (or subclass)  object, qdargs is a list of Qudit
                 objects, qargs is a list of Qubit objects and cargs is a list of Clbit objects.
         """
         return QuditCircuitData(self)
@@ -787,8 +787,8 @@ class QuditCircuit(QuantumCircuit):
 
     def _check_dups(self, bits):
         """Raise exception if list of bits contains duplicates."""
-        sbits = set(bits)
-        if len(sbits) != len(bits):
+        bit_set = set(bits)
+        if len(bit_set) != len(bits):
             raise CircuitError("duplicate bit arguments")
 
     def _check_qdargs(self, qdargs):

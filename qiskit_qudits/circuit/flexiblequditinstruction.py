@@ -92,7 +92,7 @@ class FlexibleQuditGate(QuditGate):
             )
 
 
-def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, cargs=None):
+def flex_qd_broadcast_arguments(circuit, instr_class, qdargs=None, qargs=None, cargs=None):
     """
     Broadcasts qudit arguments for flexible qudit instructions before instantiating these
     instructions (in general multiple inst. are created) and appending them with their context.
@@ -105,7 +105,7 @@ def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, car
 
     Args:
         circuit: (QuditCircuit): circuit for the instruction
-        instclass (type(FlexibleQuditInstruction) or type(FlexibleQuditGate)): type of instruction
+        instr_class (type(FlexibleQuditInstruction) or type(FlexibleQuditGate)): type of instruction
         qdargs (Object): Representation of d-dimensional quantum bit arguments.
         qargs (Object): Representation of quantum bit arguments.
         cargs (Object): Representation of classical bit arguments.
@@ -118,8 +118,8 @@ def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, car
     qargs = qargs if qargs is not None else []
     cargs = cargs if cargs is not None else []
 
-    if not issubclass(instclass, (FlexibleQuditInstruction, FlexibleQuditGate)) or \
-            not isinstance(instclass.num_qudits, int) or instclass.num_qudits < 1:
+    if not issubclass(instr_class, (FlexibleQuditInstruction, FlexibleQuditGate)) or \
+            not isinstance(instr_class.num_qudits, int) or instr_class.num_qudits < 1:
         raise CircuitError(
             "Only flexible instructions with num_qudits > 0 can be pre-broadcast."
         )
@@ -127,16 +127,16 @@ def flex_qd_broadcast_arguments(circuit, instclass, qdargs=None, qargs=None, car
     qdargs = circuit.qdit_argument_conversion(qdargs)
     qargs = circuit.qbit_argument_conversion(qargs)
     cargs = circuit.cbit_argument_conversion(cargs)
-    broadcast_factor = len(qdargs) / instclass.num_qudits
+    broadcast_factor = len(qdargs) / instr_class.num_qudits
 
     if int(broadcast_factor) != broadcast_factor or broadcast_factor < 1:
         raise CircuitError("Invalid broadcast factor.")
 
     # temporary instruction to look up expected num_single_qubits and num_clbits
-    temp_inst = instclass(
-        [qd.dimension for qd in qdargs[:instclass.num_qudits]]
+    temp_inst = instr_class(
+        [qd.dimension for qd in qdargs[:instr_class.num_qudits]]
     )
-    num_qudits = instclass.num_qudits
+    num_qudits = instr_class.num_qudits
     num_qubits = temp_inst.num_single_qubits
     num_clbits = temp_inst.num_clbits
 
