@@ -74,6 +74,7 @@ class QuditCircuit(QuantumCircuit):
                 list(int) -> QuditRegister
                 list(int), int -> QuditRegister, ClassicalRegister
                 list(int), int, int -> QuditRegister, QuantumRegister, ClassicalRegister.
+                Also allows 0 and [] as arguments, resulting in no Register created.
             name (str): the name of the quantum circuit. If not set, an
                 automatically generated string will be assigned.
             global_phase (float or ParameterExpression): The global phase of the circuit in radians.
@@ -526,6 +527,13 @@ class QuditCircuit(QuantumCircuit):
         return dest
 
     @property
+    def single_qubits(self):
+        """
+        Returns a list of d-dimensional quantum bits in the order that the registers were added.
+        """
+        return self._qubits[self.qubit_offset:]
+
+    @property
     def qudits(self):
         """
         Returns a list of d-dimensional quantum bits in the order that the registers were added.
@@ -698,7 +706,7 @@ class QuditCircuit(QuantumCircuit):
         return ret
 
     def add_register(self, *regs):
-        """Add registers."""
+        """Add registers. Also allows 0 as an integer argument and [] as an list argument."""
         if not regs:
             return
 
@@ -706,21 +714,34 @@ class QuditCircuit(QuantumCircuit):
                 any(isinstance(reg, list) and all(isinstance(d, int) for d in reg) for reg in regs):
             # QuantumCircuit defined without registers / with anonymous wires
             if len(regs) == 1:
+                if not regs[0]:
+                    return
                 if isinstance(regs[0], int):
                     regs = (QuantumRegister(regs[0], "q"),)
                 else:
                     regs = (QuditRegister(regs[0], "qd"),)
             elif len(regs) == 2:
+                new_regs = []
                 if all(isinstance(reg, int) for reg in regs):
-                    regs = (QuantumRegister(regs[0], "q"), ClassicalRegister(regs[1], "c"))
+                    if regs[0]:
+                        new_regs.append(QuantumRegister(regs[0], "q"))
+                    if regs[1]:
+                        new_regs.append(ClassicalRegister(regs[0], "c"))
                 else:
-                    regs = (QuditRegister(regs[0], "qd"), ClassicalRegister(regs[1], "c"))
+                    if regs[0]:
+                        new_regs.append(QuditRegister(regs[0], "qd"))
+                    if regs[1]:
+                        new_regs.append(ClassicalRegister(regs[0], "c"))
+                regs = tuple(new_regs)
             elif len(regs) == 3:
-                regs = (
-                    QuditRegister(regs[0], "qd"),
-                    QuantumRegister(regs[1], "q"),
-                    ClassicalRegister(regs[2], "c")
-                )
+                new_regs = []
+                if regs[0]:
+                    new_regs.append(QuditRegister(regs[0], "qd"))
+                if regs[1]:
+                    new_regs.append(QuantumRegister(regs[1], "q"))
+                if regs[2]:
+                    new_regs.append(ClassicalRegister(regs[2], "c"))
+                regs = tuple(new_regs)
             else:
                 raise CircuitError(
                     "QuditCircuit parameters can be Registers or a list of qudit dimensions"

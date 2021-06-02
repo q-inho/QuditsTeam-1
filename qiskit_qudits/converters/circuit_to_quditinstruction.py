@@ -101,7 +101,7 @@ def circuit_to_quditinstruction(circuit, parameter_map=None, equivalence_library
 
     regs = []
     new_qubits = []
-    if instruction.qudit_dimensions > 0:
+    if instruction.qudit_dimensions:
         qd = QuditRegister(instruction.qudit_dimensions, 'qd')
         regs.append(qd)
         new_qubits.extend(qd[:])
