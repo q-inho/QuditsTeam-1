@@ -38,6 +38,7 @@ from qiskit_qudits.circuit.quditgate import QuditGate
 from qiskit_qudits.circuit.quditregister import QuditRegister
 
 
+# noinspection DuplicatedCode,DuplicatedCode,DuplicatedCode
 def circuit_to_quditgate(circuit, parameter_map=None, equivalence_library=None, label=None):
     """Build a ``QuditGate`` object from a ``QuantumCircuit`` or ``QuditCircuit``.
 
