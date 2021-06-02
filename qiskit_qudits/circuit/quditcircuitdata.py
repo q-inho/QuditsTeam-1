@@ -94,6 +94,8 @@ class QuditCircuitData(QuantumCircuitData):
         """Returns data tuple including qudit context at index key or a list of tuples
         with slice as key. Does not relay modifications to original data, please use
         single item modifications e.g. data[4j] = (inst, qdargs, qargs, cargs) instead."""
+        if isinstance(key, int):
+            return self.to_qd_data(super().__getitem__(key))
         return [self.to_qd_data(data_tuple) for data_tuple in super().__getitem__(key)]
 
     def __getitem__(self, key):
@@ -133,39 +135,49 @@ class QuditCircuitData(QuantumCircuitData):
         """
         key, is_real = parse_complex_index(key)
 
-        if not is_real:
+        if is_real:
+            inst, qargs, cargs = value
+            qdargs = []
+        else:
             inst, qdargs, qargs, cargs = value
 
-            if not isinstance(inst, QuditInstruction) and \
-                    hasattr(inst, "to_qd_instruction"):
-                inst = inst.to_qd_instruction()
+        if hasattr(inst, "to_qd_instruction"):
+            inst = inst.to_qd_instruction()
 
-            if not isinstance(inst, QuditInstruction):
-                raise CircuitError(
-                    "Instruction argument is not an QuditInstruction, "
-                    "but value includes qdargs."
-                )
+        if isinstance(inst, QuditInstruction):
+            expanded_partial_qdargs = [
+                self._circuit.qdit_argument_conversion(qdarg) for qdarg in qdargs or []
+            ]
+            flat_partial_qdargs = [
+                qdarg for mixed_qdargs in expanded_partial_qdargs for qdarg in mixed_qdargs
+            ]
+            expanded_mixed_qargs = [
+                self._circuit.qbit_argument_conversion(
+                    self._circuit._offset_qubit_representation(qarg)
+                ) for qarg in qargs or []
+            ]
+            flat_mixed_qargs = [
+                qarg for mixed_qargs in expanded_mixed_qargs for qarg in mixed_qargs
+            ]
+            expanded_cargs = [
+                self._circuit.cbit_argument_conversion(carg) for carg in cargs or []
+            ]
 
-            expanded_qdargs = [self._circuit.qdit_argument_conversion(qdarg)
-                               for qdarg in qdargs or []]
-            expanded_qargs = [self._circuit.qbit_argument_conversion(qarg)
-                              for qarg in qargs or []]
-            expanded_cargs = [self._circuit.cbit_argument_conversion(carg)
-                              for carg in cargs or []]
+            qudits, single_qubits = self._circuit._split_qargs(flat_mixed_qargs)
+            qdargs = qudits + flat_partial_qdargs
+            qargs = single_qubits
+            cargs = [carg for cargs in expanded_cargs for carg in cargs]
 
-            broadcast_args = list(inst.qd_broadcast_arguments(
-                expanded_qdargs, expanded_qargs, expanded_cargs)
+            inst, qargs, cargs = self.to_data((inst, qdargs, qargs, cargs))
+
+        elif qdargs:
+            raise CircuitError(
+                "Instruction argument is not an QuditInstruction, "
+                "but value includes qdargs."
             )
-            qdargs, qargs, cargs = broadcast_args[0]
 
-            if len(broadcast_args) > 1:
-                raise CircuitError(
-                    "Circuit data modification does not support argument broadcasting."
-                )
-
-            value = self.to_data((inst, qdargs, qargs, cargs))
-
-        super().__setitem__(key, value)
+        print(inst, qargs, cargs)
+        super().__setitem__(key, (inst, qargs, cargs))
 
     def __repr__(self):
         """returns qudit data representation"""

@@ -84,6 +84,9 @@ class QuditCircuit(QuantumCircuit):
         Raises:
             CircuitError: If first register of regs cannot be interpreted as a QuditRegister.
         """
+        # Overwritten data for new getter and setter methods
+        self._data = []
+
         # Map of qudits and qudit registers bound to this circuit, by name.
         # All registers in qdregs will also be in qregs.
         self.qdregs = []
@@ -128,7 +131,7 @@ class QuditCircuit(QuantumCircuit):
         qd_circuit.data = circuit.data
         return qd_circuit
 
-    @QuantumCircuit.data.getter
+    @property
     def data(self):
         """Return the qudit circuit data (instructions and context).
 
@@ -141,6 +144,30 @@ class QuditCircuit(QuantumCircuit):
                 objects, qargs is a list of Qubit objects and cargs is a list of Clbit objects.
         """
         return QuditCircuitData(self)
+
+    @data.setter
+    def data(self, data_input):
+        """Sets the qudit circuit data from a list of instructions and context.
+
+        Args:
+            data_input (list): A list of instructions with context
+                in the format ``(instruction, qargs, cargs)`` or
+                 ``(instruction, qdargs, qargs, cargs)``,
+                where instruction is an Instruction (or subclass)  object,
+                qdargs is a list of Qudit objects, qargs is a list of
+                Qubit objects and cargs is a list of Clbit objects.
+        """
+        # If data_input is QuantumCircuitData(self), clearing self._data
+        # below will also empty data_input, so make a shallow copy first.
+        qudit_circuit_data_inst = QuditCircuitData(self)
+        data_input = data_input.copy()
+        self._data = []
+        self._parameter_table = ParameterTable()
+
+        for data_tuple in data_input:
+            if len(data_tuple) == 3:
+                data_tuple = qudit_circuit_data_inst.to_qd_data(data_tuple)
+            self.qd_append(*data_tuple)
 
     def __str__(self):
         return str(self.draw(output="text"))
@@ -1018,11 +1045,8 @@ class QuditCircuit(QuantumCircuit):
 
         new_creg = circ._create_creg(len(qubits_to_measure), "measure")
         circ.add_register(new_creg)
-        circ.barrier()
-        circ.measure(qudits_to_measure,
-                     new_creg[:new_creg.size - len(single_qudits_to_measure)])
-        circ.measure(single_qudits_to_measure,
-                     new_creg[new_creg.size - len(single_qudits_to_measure):])
+        circ.barrier(qudits_to_measure, single_qudits_to_measure)
+        circ.measure(qudits_to_measure, single_qudits_to_measure, new_creg)
         if not inplace:
             return circ
         else:
@@ -1048,8 +1072,7 @@ class QuditCircuit(QuantumCircuit):
         new_creg = circ._create_creg(circ.num_qubits, "meas")
         circ.add_register(new_creg)
         circ.barrier()
-        circ.measure(circ.qudits, new_creg[:new_creg.size-circ.num_single_qubits])
-        circ.measure(circ.qubits, new_creg[new_creg.sizecirc.num_single_qubits:])
+        circ.measure(circ.qudits, circ.qubits, new_creg)
 
         if not inplace:
             return circ
@@ -1120,10 +1143,11 @@ class QuditCircuit(QuantumCircuit):
                 instructions.qd_extend(self.qd_append(*inst))
 
         if qargs is not None:
+            print(qargs)
             try:
-                instructions.add(*super().barrier(*iter(qargs)))
+                instructions.extend(super().barrier(*iter(qargs)))
             except TypeError:
-                instructions.add(*super().barrier(qargs))
+                instructions.extend(super().barrier(qargs))
 
         return instructions
 
