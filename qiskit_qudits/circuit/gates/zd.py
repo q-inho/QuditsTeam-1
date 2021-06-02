@@ -19,7 +19,7 @@ import numpy as np
 from qiskit.circuit.quantumregister import QuantumRegister
 from qiskit.circuit.quantumcircuit import QuantumCircuit
 
-from schroedinger.circuit.flexiblequditinstruction import FlexibleQuditGate
+from qiskit_qudits.circuit import FlexibleQuditGate
 
 
 class ZDGate(FlexibleQuditGate):

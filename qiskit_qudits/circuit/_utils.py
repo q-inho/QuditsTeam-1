@@ -14,7 +14,6 @@
 """Utility function collection"""
 
 from qiskit.circuit.quantumregister import QuantumRegister
-from qiskit.circuit.classicalregister import ClassicalRegister
 
 
 def parse_complex_index(index):

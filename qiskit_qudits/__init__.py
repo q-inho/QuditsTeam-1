@@ -11,6 +11,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from schroedinger.circuit import QuditRegister
-from schroedinger.circuit import AncillaQuditRegister
-from schroedinger.circuit import QuditCircuit
+from qiskit_qudits.circuit import QuditRegister
+from qiskit_qudits.circuit import AncillaQuditRegister
+from qiskit_qudits.circuit import QuditCircuit
