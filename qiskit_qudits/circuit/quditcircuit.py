@@ -726,12 +726,12 @@ class QuditCircuit(QuantumCircuit):
                     if regs[0]:
                         new_regs.append(QuantumRegister(regs[0], "q"))
                     if regs[1]:
-                        new_regs.append(ClassicalRegister(regs[0], "c"))
+                        new_regs.append(ClassicalRegister(regs[1], "c"))
                 else:
                     if regs[0]:
                         new_regs.append(QuditRegister(regs[0], "qd"))
                     if regs[1]:
-                        new_regs.append(ClassicalRegister(regs[0], "c"))
+                        new_regs.append(ClassicalRegister(regs[1], "c"))
                 regs = tuple(new_regs)
             elif len(regs) == 3:
                 new_regs = []
@@ -1057,7 +1057,7 @@ class QuditCircuit(QuantumCircuit):
                 f"amount needed ({num_qudit_qubits + num_single_qudits})."
             )
 
-        if qdargs is not None:
+        if qdargs is not None and qdargs != []:
             from .quditmeasure import QuditMeasure
 
             for qudits, qubits, clbits in flex_qd_broadcast_arguments(
@@ -1066,7 +1066,7 @@ class QuditCircuit(QuantumCircuit):
                 inst = (QuditMeasure(qudit_dimensions), qudits, qubits, clbits)
                 instructions.qd_extend(self.qd_append(*inst))
 
-        if qargs is not None:
+        if qargs is not None and qargs != []:
             from qiskit.circuit.measure import measure as _measure
 
             instructions.extend(_measure(self, qargs, cargs[num_qudit_qubits:]))
@@ -1126,7 +1126,7 @@ class QuditCircuit(QuantumCircuit):
         new_creg = circ._create_creg(circ.num_qubits, "meas")
         circ.add_register(new_creg)
         circ.barrier()
-        circ.measure(circ.qudits, circ.qubits, new_creg)
+        circ.measure(circ.qudits, circ.single_qubits, new_creg)
 
         if not inplace:
             return circ
@@ -1151,7 +1151,7 @@ class QuditCircuit(QuantumCircuit):
 
         instructions = QuditInstructionSet()
 
-        if qdargs is not None:
+        if qdargs is not None and qdargs != []:
             from .quditreset import QuditReset
 
             for qudits, qubits, clbits in \
@@ -1161,7 +1161,7 @@ class QuditCircuit(QuantumCircuit):
                 inst = (QuditReset(qudit_dimensions), qudits, qubits, clbits)
                 instructions.qd_extend(self.qd_append(*inst))
 
-        if qargs is not None:
+        if qargs is not None and qargs != []:
             from qiskit.circuit.reset import reset as _reset
 
             instructions.extend(_reset(self, qargs))
@@ -1186,7 +1186,7 @@ class QuditCircuit(QuantumCircuit):
 
         instructions = QuditInstructionSet()
 
-        if qdargs is not None:
+        if qdargs is not None and qdargs != []:
             from .quditbarrier import QuditBarrier
 
             for qudits, qubits, clbits in \
@@ -1196,8 +1196,7 @@ class QuditCircuit(QuantumCircuit):
                 inst = (QuditBarrier(qudit_dimensions), qudits, qubits, clbits)
                 instructions.qd_extend(self.qd_append(*inst))
 
-        if qargs is not None:
-            print(qargs)
+        if qargs is not None and qargs != []:
             try:
                 instructions.extend(super().barrier(*iter(qargs)))
             except TypeError:
@@ -1226,7 +1225,7 @@ class QuditCircuit(QuantumCircuit):
 
         instructions = QuditInstructionSet()
 
-        if qdargs is not None:
+        if qdargs is not None and qdargs != []:
             from .quditdelay import QuditDelay
 
             for qudits, qubits, clbits in \
@@ -1239,7 +1238,7 @@ class QuditCircuit(QuantumCircuit):
                 )
                 instructions.qd_extend(self.qd_append(*inst))
 
-        if qargs is not None:
+        if qargs is not None and qargs != []:
             instructions.extend(super().delay(duration, qarg=qargs, unit=unit))
 
         return instructions
@@ -1249,6 +1248,9 @@ class QuditCircuit(QuantumCircuit):
         from .gates.zd import ZDGate
 
         instructions = QuditInstructionSet()
+
+        if qdargs is None or qdargs == []:
+            return instructions
 
         for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, ZDGate, qdargs=qdargs):
             qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
