@@ -17,7 +17,7 @@ from qiskit import QuantumCircuit, QuantumRegister
 from qiskit.exceptions import QiskitError
 
 
-#Dephasing to m level    
+#Dephasing to m level. The inverse of the dephasing function would be giving the opposite phase Dephasing(m,-phase,dimension)
 def Dephasing(m,phase,dimension):
     if dimension < m :
         raise QiskitError('The level is higher than the dimension')
@@ -47,10 +47,10 @@ def Dephasing(m,phase,dimension):
         circuit.mcx(control_qubits,target_qubit)
         circuit.x(marray)
     return circuit
-    
 
 
-#Pi coupling between m and l level
+
+#Pi coupling between m and l level. The inverse of the LevelsSwitch fucntion is itself
 def LevelsSwitch(m,l,dimension):
     if dimension < m or dimension < l:
         raise QiskitError('The level is higher than the dimension')
