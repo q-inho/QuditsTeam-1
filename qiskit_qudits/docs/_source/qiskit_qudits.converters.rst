@@ -4,6 +4,7 @@ qiskit\_qudits.converters
 qiskit\_qudits.converters.circuit\_to\_quditgate module
 -------------------------------------------------------
 
+.. moduleauthor:: Tim Alexis Körner
 .. automodule:: qiskit_qudits.converters.circuit_to_quditgate
    :members:
    :undoc-members:
@@ -12,6 +13,7 @@ qiskit\_qudits.converters.circuit\_to\_quditgate module
 qiskit\_qudits.converters.circuit\_to\_quditinstruction module
 --------------------------------------------------------------
 
+.. moduleauthor:: Tim Alexis Körner
 .. automodule:: qiskit_qudits.converters.circuit_to_quditinstruction
    :members:
    :undoc-members:

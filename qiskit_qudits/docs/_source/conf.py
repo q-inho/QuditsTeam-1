@@ -22,6 +22,8 @@ project = 'qiskit-qudits'
 author = 'Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien'
 copyright = 'Apache 2.0, 2021 ' + author
 
+show_authors = True
+
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -51,7 +53,7 @@ add_module_names = False
 # (e.g., if this is set to ['foo.'], then foo.bar is shown under B, not F).
 # This can be handy if you document a project that consists of a single
 # package. Works only for the HTML builder currently.
-modindex_common_prefix = ['qiskit.']
+modindex_common_prefix = ['qiskit_qudits.']
 
 # -- Options for HTML output -------------------------------------------------
 

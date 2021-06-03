@@ -240,27 +240,28 @@
       <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
         <div class="pytorch-content-left">
           
-          <div class="rst-content style-external-links">
+          <div class="rst-content">
           
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <section id="qiskit-qudits-circuit">
 <h1>qiskit_qudits.circuit<a class="headerlink" href="#qiskit-qudits-circuit" title="Permalink to this headline">¶</a></h1>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<section id="gates">
+<h2>Gates<a class="headerlink" href="#gates" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_qudits.circuit.gates.html">qiskit_qudits.circuit.gates</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#module-qiskit_qudits.circuit.gates.zd">qiskit_qudits.circuit.gates.zd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-zd">qiskit_qudits.circuit.gates.zd</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
-<section id="module-qiskit_qudits.circuit.flexiblequditinstruction">
-<span id="qiskit-qudits-circuit-flexiblequditinstruction"></span><h2>qiskit_qudits.circuit.flexiblequditinstruction<a class="headerlink" href="#module-qiskit_qudits.circuit.flexiblequditinstruction" title="Permalink to this headline">¶</a></h2>
-<p>Flexible versions of QuditInstruction and QuditGate.
+<section id="qiskit-qudits-circuit-flexiblequditinstruction">
+<h2>qiskit_qudits.circuit.flexiblequditinstruction<a class="headerlink" href="#qiskit-qudits-circuit-flexiblequditinstruction" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.flexiblequditinstruction"></span><p>Flexible versions of QuditInstruction and QuditGate.
 Subclasses should only leave the qudit_dimensions argument in constructor, i.e.
 def __init__(self, qudit_dimensions): …
 Since num_qudits is a class variable, it exists before instantiation.
@@ -892,9 +893,10 @@ qargs / cargs broadcasting fails.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditbarrier">
-<span id="qiskit-qudits-circuit-quditbarrier"></span><h2>qiskit_qudits.circuit.quditbarrier<a class="headerlink" href="#module-qiskit_qudits.circuit.quditbarrier" title="Permalink to this headline">¶</a></h2>
-<p>Barrier instruction for qudits.</p>
+<section id="qiskit-qudits-circuit-quditbarrier">
+<h2>qiskit_qudits.circuit.quditbarrier<a class="headerlink" href="#qiskit-qudits-circuit-quditbarrier" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditbarrier"></span><p>Barrier instruction for qudits.</p>
 <dl class="py class">
 <dt id="qiskit_qudits.circuit.quditbarrier.QuditBarrier">
 <em class="property">class </em><code class="sig-name descname">QuditBarrier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qudit_dimensions</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditbarrier.html#QuditBarrier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditbarrier.QuditBarrier" title="Permalink to this definition">¶</a></dt>
@@ -1142,9 +1144,10 @@ account.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditcircuit">
-<span id="qiskit-qudits-circuit-quditcircuit"></span><h2>qiskit_qudits.circuit.quditcircuit<a class="headerlink" href="#module-qiskit_qudits.circuit.quditcircuit" title="Permalink to this headline">¶</a></h2>
-<p>Quantum circuit object for qudits.</p>
+<section id="qiskit-qudits-circuit-quditcircuit">
+<h2>qiskit_qudits.circuit.quditcircuit<a class="headerlink" href="#qiskit-qudits-circuit-quditcircuit" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditcircuit"></span><p>Quantum circuit object for qudits.</p>
 <dl class="py class">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit">
 <em class="property">class </em><code class="sig-name descname">QuditCircuit</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">regs</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">global_phase</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">modular_qudits</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit" title="Permalink to this definition">¶</a></dt>
@@ -3308,9 +3311,10 @@ the single-qubit rotation gates</p></li>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditcircuitdata">
-<span id="qiskit-qudits-circuit-quditcircuitdata"></span><h2>qiskit_qudits.circuit.quditcircuitdata<a class="headerlink" href="#module-qiskit_qudits.circuit.quditcircuitdata" title="Permalink to this headline">¶</a></h2>
-<p>A wrapper class for the purposes of validating modifications to QuditCircuit.data
+<section id="qiskit-qudits-circuit-quditcircuitdata">
+<h2>qiskit_qudits.circuit.quditcircuitdata<a class="headerlink" href="#qiskit-qudits-circuit-quditcircuitdata" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditcircuitdata"></span><p>A wrapper class for the purposes of validating modifications to QuditCircuit.data
 while maintaining the interface of a python list.
 Qudit context is stored additionally to the qubit an classical bit context for each
 instruction in the data. There are two forms of each rule in the data:
@@ -3438,9 +3442,10 @@ qdargs / qargs / cargs is a list of qudits / qubits / classical bits.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditdelay">
-<span id="qiskit-qudits-circuit-quditdelay"></span><h2>qiskit_qudits.circuit.quditdelay<a class="headerlink" href="#module-qiskit_qudits.circuit.quditdelay" title="Permalink to this headline">¶</a></h2>
-<p>Delay instruction on qudits.</p>
+<section id="qiskit-qudits-circuit-quditdelay">
+<h2>qiskit_qudits.circuit.quditdelay<a class="headerlink" href="#qiskit-qudits-circuit-quditdelay" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditdelay"></span><p>Delay instruction on qudits.</p>
 <dl class="py class">
 <dt id="qiskit_qudits.circuit.quditdelay.QuditDelay">
 <em class="property">class </em><code class="sig-name descname">QuditDelay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qudit_dimensions</span></em>, <em class="sig-param"><span class="n">duration</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">unit</span><span class="o">=</span><span class="default_value">'dt'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditdelay.html#QuditDelay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditdelay.QuditDelay" title="Permalink to this definition">¶</a></dt>
@@ -3703,9 +3708,10 @@ added to enable simulation without making delay a full Gate type.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditgate">
-<span id="qiskit-qudits-circuit-quditgate"></span><h2>qiskit_qudits.circuit.quditgate<a class="headerlink" href="#module-qiskit_qudits.circuit.quditgate" title="Permalink to this headline">¶</a></h2>
-<p>Unitary gate for qudits.</p>
+<section id="qiskit-qudits-circuit-quditgate">
+<h2>qiskit_qudits.circuit.quditgate<a class="headerlink" href="#qiskit-qudits-circuit-quditgate" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditgate"></span><p>Unitary gate for qudits.</p>
 <dl class="py class">
 <dt id="qiskit_qudits.circuit.quditgate.QuditGate">
 <em class="property">class </em><code class="sig-name descname">QuditGate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">qudit_dimensions</span></em>, <em class="sig-param"><span class="n">num_single_qubits</span></em>, <em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditgate.html#QuditGate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditgate.QuditGate" title="Permalink to this definition">¶</a></dt>
@@ -4049,9 +4055,10 @@ account.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditinstruction">
-<span id="qiskit-qudits-circuit-quditinstruction"></span><h2>qiskit_qudits.circuit.quditinstruction<a class="headerlink" href="#module-qiskit_qudits.circuit.quditinstruction" title="Permalink to this headline">¶</a></h2>
-<p>A qudit quantum instruction.
+<section id="qiskit-qudits-circuit-quditinstruction">
+<h2>qiskit_qudits.circuit.quditinstruction<a class="headerlink" href="#qiskit-qudits-circuit-quditinstruction" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditinstruction"></span><p>A qudit quantum instruction.
 Qudit instructions additionally hold the dimensions of affected qudits and
 single (non-qudit) qubits.
 Each instruction must either be defined on a qubit level i.e. accessing qubits
@@ -4319,9 +4326,10 @@ account.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditinstructionset">
-<span id="qiskit-qudits-circuit-quditinstructionset"></span><h2>qiskit_qudits.circuit.quditinstructionset<a class="headerlink" href="#module-qiskit_qudits.circuit.quditinstructionset" title="Permalink to this headline">¶</a></h2>
-<p>QuditInstruction collection.</p>
+<section id="qiskit-qudits-circuit-quditinstructionset">
+<h2>qiskit_qudits.circuit.quditinstructionset<a class="headerlink" href="#qiskit-qudits-circuit-quditinstructionset" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditinstructionset"></span><p>QuditInstruction collection.</p>
 <dl class="py class">
 <dt id="qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet">
 <em class="property">class </em><code class="sig-name descname">QuditInstructionSet</code><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditinstructionset.html#QuditInstructionSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet" title="Permalink to this definition">¶</a></dt>
@@ -4402,9 +4410,10 @@ Appends an empty list to qdargs for each added instruction.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditmeasure">
-<span id="qiskit-qudits-circuit-quditmeasure"></span><h2>qiskit_qudits.circuit.quditmeasure<a class="headerlink" href="#module-qiskit_qudits.circuit.quditmeasure" title="Permalink to this headline">¶</a></h2>
-<p>Qudit measurement by measuring all underlying qubits.
+<section id="qiskit-qudits-circuit-quditmeasure">
+<h2>qiskit_qudits.circuit.quditmeasure<a class="headerlink" href="#qiskit-qudits-circuit-quditmeasure" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditmeasure"></span><p>Qudit measurement by measuring all underlying qubits.
 While qudits could be measured by simply calling measure(qdc, qudit[:], clbits),
 QuditMeasure can be properly visualized in terms of qudits.</p>
 <dl class="py class">
@@ -4654,9 +4663,10 @@ account.</p>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditregister">
-<span id="qiskit-qudits-circuit-quditregister"></span><h2>qiskit_qudits.circuit.quditregister<a class="headerlink" href="#module-qiskit_qudits.circuit.quditregister" title="Permalink to this headline">¶</a></h2>
-<p>Qudit and qudit register reference object.</p>
+<section id="qiskit-qudits-circuit-quditregister">
+<h2>qiskit_qudits.circuit.quditregister<a class="headerlink" href="#qiskit-qudits-circuit-quditregister" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditregister"></span><p>Qudit and qudit register reference object.</p>
 <dl class="py class">
 <dt id="qiskit_qudits.circuit.quditregister.AncillaQudit">
 <em class="property">class </em><code class="sig-name descname">AncillaQudit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dimension</span></em>, <em class="sig-param"><span class="n">qubits</span></em>, <em class="sig-param"><span class="n">register</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditregister.html#AncillaQudit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditregister.AncillaQudit" title="Permalink to this definition">¶</a></dt>
@@ -4999,9 +5009,10 @@ unique name will be auto-generated from the register type.</p></li>
 </dd></dl>
 
 </section>
-<section id="module-qiskit_qudits.circuit.quditreset">
-<span id="qiskit-qudits-circuit-quditreset"></span><h2>qiskit_qudits.circuit.quditreset<a class="headerlink" href="#module-qiskit_qudits.circuit.quditreset" title="Permalink to this headline">¶</a></h2>
-<p>Qudit reset to computational zero by resetting all underlying qubits.
+<section id="qiskit-qudits-circuit-quditreset">
+<h2>qiskit_qudits.circuit.quditreset<a class="headerlink" href="#qiskit-qudits-circuit-quditreset" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.quditreset"></span><p>Qudit reset to computational zero by resetting all underlying qubits.
 While qudits could be reset by simply calling reset(qdc, qudit[:]),
 QuditReset can not be properly visualized in terms of qudits.</p>
 <dl class="py class">
@@ -5298,18 +5309,18 @@ account.</p>
             <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
               <ul>
 <li><a class="reference internal" href="#">qiskit_qudits.circuit</a><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.flexiblequditinstruction">qiskit_qudits.circuit.flexiblequditinstruction</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditbarrier">qiskit_qudits.circuit.quditbarrier</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditcircuit">qiskit_qudits.circuit.quditcircuit</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditcircuitdata">qiskit_qudits.circuit.quditcircuitdata</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditdelay">qiskit_qudits.circuit.quditdelay</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditgate">qiskit_qudits.circuit.quditgate</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditinstruction">qiskit_qudits.circuit.quditinstruction</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditinstructionset">qiskit_qudits.circuit.quditinstructionset</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditmeasure">qiskit_qudits.circuit.quditmeasure</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditregister">qiskit_qudits.circuit.quditregister</a></li>
-<li><a class="reference internal" href="#module-qiskit_qudits.circuit.quditreset">qiskit_qudits.circuit.quditreset</a></li>
+<li><a class="reference internal" href="#gates">Gates</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-flexiblequditinstruction">qiskit_qudits.circuit.flexiblequditinstruction</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditbarrier">qiskit_qudits.circuit.quditbarrier</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditcircuit">qiskit_qudits.circuit.quditcircuit</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditcircuitdata">qiskit_qudits.circuit.quditcircuitdata</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditdelay">qiskit_qudits.circuit.quditdelay</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditgate">qiskit_qudits.circuit.quditgate</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditinstruction">qiskit_qudits.circuit.quditinstruction</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditinstructionset">qiskit_qudits.circuit.quditinstructionset</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditmeasure">qiskit_qudits.circuit.quditmeasure</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditregister">qiskit_qudits.circuit.quditregister</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-quditreset">qiskit_qudits.circuit.quditreset</a></li>
 </ul>
 </li>
 </ul>
