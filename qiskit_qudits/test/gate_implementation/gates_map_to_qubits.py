@@ -13,15 +13,19 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from qiskit import QuantumCircuit
+from qiskit import QuantumCircuit, QuantumRegister
 from qiskit.exceptions import QiskitError
 
 
 #Dephasing to m level    
-def Dephasing(circuit,m,phase):
-    n=circuit.width()-1
-    if 2**n <m :
-        raise QiskitError('Circuit does not allow to map this level. Try a lower level or a bigger circuit.')
+def Dephasing(m,phase,dimension):
+    if dimension < m :
+        raise QiskitError('The level is higher than the dimension')
+    n=int(np.ceil(np.log2(dimension)))
+    qubits=QuantumRegister(n+1)
+    circuit=QuantumCircuit(qubits)
+    control_qubits = qubits[:n]
+    target_qubit = qubits[n]
     marray=[]
     for i in range(0,n): #bit decomposition
         if (( m >>  i) & 1) != 1 :
@@ -47,10 +51,14 @@ def Dephasing(circuit,m,phase):
 
 
 #Pi coupling between m and l level
-def LevelsSwitch(circuit,m,l):
-    n=circuit.width()-1 
-    if 2**n <m or 2**n <l:
-        raise QiskitError('Circuit does not allow to map this level. Try a lower level or a bigger circuit.')
+def LevelsSwitch(m,l,dimension):
+    if dimension < m or dimension < l:
+        raise QiskitError('The level is higher than the dimension')
+    n=int(np.ceil(np.log2(dimension)))
+    qubits=QuantumRegister(n+1)
+    circuit=QuantumCircuit(qubits)
+    control_qubits = qubits[:n]
+    target_qubit = qubits[n]
     marray=[]
     larray=[]
     for i in range(0,n): #bit decomposition
@@ -59,10 +67,6 @@ def LevelsSwitch(circuit,m,l):
     for i in range(0,n):
         if (( l >>  i) & 1) != 1 :
             larray.append(i)
-    control_qubits=[]
-    for i in range(0,n):
-        control_qubits.append([i])
-    target_qubit=[n]
     #check if m
     if len(marray)>0:
         circuit.x(marray)
