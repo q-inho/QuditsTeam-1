@@ -62,6 +62,12 @@ class FlexibleQuditInstruction(QuditInstruction):
             unit=unit
             )
 
+    def __eq__(self, other):
+        """Compares if equal ``num_qudits`` and if equal from qudit instruction perspective."""
+        if isinstance(other, FlexibleQuditInstruction) and self.num_qudits != other.num_qudits:
+            return False
+        return super().__eq__(other)
+
 
 class FlexibleQuditGate(QuditGate):
     """Qudit gate adjusting to qudit dimensions.
@@ -93,6 +99,12 @@ class FlexibleQuditGate(QuditGate):
             params=params,
             label=label
             )
+
+    def __eq__(self, other):
+        """Compares if equal ``num_qudits`` and if equal from qudit gate perspective."""
+        if isinstance(other, FlexibleQuditGate) and self.num_qudits != other.num_qudits:
+            return False
+        return super().__eq__(other)
 
 
 def flex_qd_broadcast_arguments(circuit, instr_class, qdargs=None, qargs=None, cargs=None,

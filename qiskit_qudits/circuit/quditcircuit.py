@@ -947,6 +947,14 @@ class QuditCircuit(QuantumCircuit):
 
         instr_copies = {id_: instr.copy() for id_, instr in instr_instances.items()}
 
+        for key in instr_instances:
+            x, y = instr_instances[key], instr_copies[key]
+
+            print(x.definition == y.definition)
+            print(x.definition)
+            print(y.definition)
+            print("------------------")
+
         cpy._parameter_table = ParameterTable(
             {
                 param: [
