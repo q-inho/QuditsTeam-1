@@ -13,5 +13,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+from .circuit_to_quditcircuit import circuit_to_quditcircuit
 from .circuit_to_quditinstruction import circuit_to_quditinstruction
 from .circuit_to_quditgate import circuit_to_quditgate

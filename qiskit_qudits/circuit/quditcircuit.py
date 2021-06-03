@@ -107,38 +107,6 @@ class QuditCircuit(QuantumCircuit):
         super().__init__(name=name, global_phase=global_phase, metadata=metadata)
         self.add_register(*regs)
 
-    @staticmethod
-    def to_quditcircuit(circuit):
-        """Convert a quantum circuit to a qudit quantum circuit.
-
-        Args:
-            circuit (QuantumCircuit): quantum circuit to convert
-
-        Returns:
-            qd_circuit (QuditCircuit): qudit quantum circuit
-
-        Raises:
-            CircuitError: If `circuit` is not a quantum circuit.
-        """
-        if isinstance(circuit, QuditCircuit):
-            return circuit
-        if not isinstance(circuit, QuantumCircuit):
-            raise CircuitError("Only a QuantumCircuit can be converted to a QuditCircuit.")
-
-        qd_circuit = QuditCircuit(
-            circuit.qubits,
-            circuit.clbits,
-            *circuit.qregs,
-            *circuit.cregs,
-            name=circuit.name,
-            global_phase=circuit.global_phase,
-            metadata=circuit.metadata
-        )
-        qd_circuit.duration = circuit.duration
-        qd_circuit.unit = circuit.unit
-        qd_circuit.data = circuit.data
-        return qd_circuit
-
     @property
     def data(self):
         """Return the qudit circuit data (instructions and context).
@@ -366,7 +334,8 @@ class QuditCircuit(QuantumCircuit):
                 return None
             return dest
 
-        other = QuditCircuit.to_quditcircuit(other)
+        from qiskit_qudits.converters import circuit_to_quditcircuit
+        other = circuit_to_quditcircuit(other)
 
         if other.num_qudits > self.num_qudits or \
                 other.num_qubits > self.num_qubits or other.num_clbits > self.num_clbits:
@@ -452,7 +421,8 @@ class QuditCircuit(QuantumCircuit):
         Returns:
             QuditCircuit: The tensored circuit (returns None if inplace==True).
         """
-        other = QuditCircuit.to_quditcircuit(other)
+        from qiskit_qudits.converters import circuit_to_quditcircuit
+        other = circuit_to_quditcircuit(other)
 
         qudit_dimensions = self.qudit_dimensions + other.qudit_dimensions
         num_qudits = self.num_qudits + other.num_qudits

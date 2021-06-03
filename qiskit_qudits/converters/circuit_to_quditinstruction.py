@@ -40,7 +40,6 @@ from qiskit_qudits.circuit.quditinstruction import QuditInstruction
 from qiskit_qudits.circuit.quditregister import QuditRegister
 
 
-# noinspection DuplicatedCode
 def circuit_to_quditinstruction(circuit, parameter_map=None, equivalence_library=None):
     """Build an ``QuditInstruction`` object from a ``QuantumCircuit`` or ``QuditCircuit``.
 
