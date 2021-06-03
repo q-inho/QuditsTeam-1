@@ -1285,7 +1285,7 @@ class QuditCircuit(QuantumCircuit):
 
         Args:
             *qudits: Qudits within ``self`` to include. Integers are allowed for qudits, indicating
-            indices of ``self.qudits``.
+                indices of ``self.qudits``.
 
         Returns:
             Return the start time of the first instruction, excluding delays, over the qudits

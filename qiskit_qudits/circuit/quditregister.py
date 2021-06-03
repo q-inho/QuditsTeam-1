@@ -226,11 +226,11 @@ class QuditRegister(QuantumRegister):
         """
         Get single qudit at index key or list of qudits with slice as key.
 
-        Arg:
+        Args:
             key (int or slice or list): Index of the qudit to be retrieved.
         Returns:
-            A Qudit instance if key is int, A list of Qudits if key is slice.
-
+            Qudit or list(Qudit): A Qudit instance if key is int,
+                a list of Qudits if key is slice.
         Raises:
             CircuitError: If the `key` is not an integer.
             CircuitError: If the `key` is not in the range `(0, self.qd_size)`.
@@ -251,13 +251,12 @@ class QuditRegister(QuantumRegister):
         """
         Supports imaginary numbers (e.g. 0j) for indexing into qudits.
 
-        Arg:
+        Args:
             key (int or complex or slice or list): Index of the qubit or qudit to be retrieved.
         Returns:
             A Qudit instance / list of Qudits if key is a purely imaginary integer / slice
             with purely imaginary integers.
             A Qubit instance / list of Qubits if key is a real integer / slice with real integers.
-
         Raises:
             TypeError: If the `index` is made of complex but not a purely imaginary integer(s).
             TypeError: If the `index` is a list with different index types.
