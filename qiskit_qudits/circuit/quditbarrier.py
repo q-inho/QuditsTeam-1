@@ -55,12 +55,16 @@ class QuditBarrier(FlexibleQuditInstruction):
         qc = QuantumCircuit(q, name=self.name)
 
         rules = [
-            (Barrier(q.size), [q[:]], [])
+            (Barrier(q.size), q[:], [])
         ]
         for inst, qargs, cargs in rules:
             qc._append(inst, qargs, cargs)
 
         self.definition = qc
+
+    def inverse(self):
+        """Special case. Return self."""
+        return QuditBarrier(self.qudit_dimensions)
 
     def c_if(self, classical, val):
         raise QiskitError('Barriers are compiler directives and cannot be conditional.')

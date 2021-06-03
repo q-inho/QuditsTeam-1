@@ -683,12 +683,15 @@ class QuditCircuit(QuantumCircuit):
         return ret
 
     def add_register(self, *regs):
-        """Add registers. Also allows 0 as an integer argument and [] as an list argument."""
+        """Add registers. Also allows 0 as an integer argument and [] as an
+        list argument for qudit_dimensions.
+        """
         if not regs:
             return
 
         if any(isinstance(reg, int) for reg in regs) or \
-                any(isinstance(reg, list) and all(isinstance(d, int) for d in reg) for reg in regs):
+                (len(regs) == 1 and isinstance(regs[0], list)
+                 and all(isinstance(dimension, int) for dimension in regs[0])):
             # QuantumCircuit defined without registers / with anonymous wires
             if len(regs) == 1:
                 if not regs[0]:
@@ -721,7 +724,7 @@ class QuditCircuit(QuantumCircuit):
                 regs = tuple(new_regs)
             else:
                 raise CircuitError(
-                    "QuditCircuit parameters can be Registers or a list of qudit dimensions"
+                    "QuditCircuit parameters can be Registers or a list of qudit dimensions "
                     "followed by the size of qubit and classical bit registers as integers. "
                     "The for non registers the possibilities are: "
                     "int -> QuantumRegister | "

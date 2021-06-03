@@ -66,7 +66,7 @@ class QuditDelay(FlexibleQuditInstruction):
         q = QuantumRegister(self.num_qubits)
         qc = QuantumCircuit(q, name=self.name)
         rules = [
-            (Delay(self.params[0], self.unit), [q[:]], [])
+            (Delay(self.params[0], self.unit), q[:], [])
         ]
         for inst, qargs, cargs in rules:
             qc._append(inst, qargs, cargs)

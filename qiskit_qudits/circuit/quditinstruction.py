@@ -138,7 +138,6 @@ class QuditInstruction(Instruction):
             CircuitError: If the instruction is not composite
                 and an inverse has not been implemented for it.
         """
-        print(self.definition)
         if self.definition is None:
             raise CircuitError("inverse() not implemented for %s." % self.name)
 

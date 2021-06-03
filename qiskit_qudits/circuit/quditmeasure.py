@@ -59,9 +59,9 @@ class QuditMeasure(FlexibleQuditInstruction):
         """Measure each underlying qubit."""
         q = QuantumRegister(self.num_qubits)
         c = ClassicalRegister(self.num_clbits)
-        qc = QuantumCircuit(q, name=self.name)
+        qc = QuantumCircuit(q, c, name=self.name)
         rules = [
-            (Measure(), [q[:]], [c[:]])
+            (Measure(), q[:], c[:])
         ]
         for inst, qargs, cargs in rules:
             qc._append(inst, qargs, cargs)

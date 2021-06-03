@@ -57,7 +57,7 @@ class QuditReset(FlexibleQuditInstruction):
         q = QuantumRegister(self.num_qubits)
         qc = QuantumCircuit(q, name=self.name)
         rules = [
-            (Reset(), [q[:]], [])
+            (Reset(), q[:], [])
         ]
         for inst, qargs, cargs in rules:
             qc._append(inst, qargs, cargs)
