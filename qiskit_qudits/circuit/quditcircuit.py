@@ -315,7 +315,6 @@ class QuditCircuit(QuantumCircuit):
             QuditCircuit: the composed circuit (returns None if inplace==True).
 
         Raises:
-            CircuitError:
             CircuitError: if composing on the front.
             CircuitError: if ``other`` is wider or there are duplicate edge mappings.
         """

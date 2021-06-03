@@ -235,7 +235,7 @@
       <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
         <div class="pytorch-content-left">
           
-          <div class="rst-content">
+          <div class="rst-content style-external-links">
           
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
@@ -244,6 +244,8 @@
 <span></span><span class="c1"># This code is from Qiskit Hackathon 2021 by the team</span>
 <span class="c1"># Qiskit for high dimensional multipartite quantum states.</span>
 <span class="c1"># It is a modified version of quantumcircuit.py from the original Qiskit-Terra code.</span>
+<span class="c1">#</span>
+<span class="c1"># Author: Tim Alexis Körner</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.</span>
 <span class="c1">#</span>
@@ -347,38 +349,6 @@
         <span class="c1"># superclass will raise error &quot;Circuit args must be Registers or integers&quot;.</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">global_phase</span><span class="o">=</span><span class="n">global_phase</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_register</span><span class="p">(</span><span class="o">*</span><span class="n">regs</span><span class="p">)</span>
-
-<div class="viewcode-block" id="QuditCircuit.to_quditcircuit"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_quditcircuit">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">to_quditcircuit</span><span class="p">(</span><span class="n">circuit</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a quantum circuit to a qudit quantum circuit.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            circuit (QuantumCircuit): quantum circuit to convert</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            qd_circuit (QuditCircuit): qudit quantum circuit</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            CircuitError: If `circuit` is not a quantum circuit.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">QuditCircuit</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">circuit</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">CircuitError</span><span class="p">(</span><span class="s2">&quot;Only a QuantumCircuit can be converted to a QuditCircuit.&quot;</span><span class="p">)</span>
-
-        <span class="n">qd_circuit</span> <span class="o">=</span> <span class="n">QuditCircuit</span><span class="p">(</span>
-            <span class="n">circuit</span><span class="o">.</span><span class="n">qubits</span><span class="p">,</span>
-            <span class="n">circuit</span><span class="o">.</span><span class="n">clbits</span><span class="p">,</span>
-            <span class="o">*</span><span class="n">circuit</span><span class="o">.</span><span class="n">qregs</span><span class="p">,</span>
-            <span class="o">*</span><span class="n">circuit</span><span class="o">.</span><span class="n">cregs</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">circuit</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">global_phase</span><span class="o">=</span><span class="n">circuit</span><span class="o">.</span><span class="n">global_phase</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">circuit</span><span class="o">.</span><span class="n">metadata</span>
-        <span class="p">)</span>
-        <span class="n">qd_circuit</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">duration</span>
-        <span class="n">qd_circuit</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">unit</span>
-        <span class="n">qd_circuit</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">data</span>
-        <span class="k">return</span> <span class="n">qd_circuit</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -500,7 +470,7 @@
                     <span class="n">new_index</span> <span class="o">+=</span> <span class="n">num_qubits</span>
                 <span class="n">new_qargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_qubits</span><span class="p">[</span><span class="n">new_index</span><span class="p">])</span>
 
-            <span class="n">circ</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="o">*</span><span class="n">QuditCircuitData</span><span class="o">.</span><span class="n">to_rule</span><span class="p">((</span><span class="n">new_qdargs</span><span class="p">,</span> <span class="n">new_qargs</span><span class="p">,</span> <span class="n">new_cargs</span><span class="p">)))</span>
+            <span class="n">circ</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="o">*</span><span class="n">QuditCircuitData</span><span class="o">.</span><span class="n">to_rule</span><span class="p">((</span><span class="n">inst</span><span class="p">,</span> <span class="n">new_qdargs</span><span class="p">,</span> <span class="n">new_qargs</span><span class="p">,</span> <span class="n">new_cargs</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">circ</span></div>
 
 <div class="viewcode-block" id="QuditCircuit.inverse"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -588,7 +558,6 @@
 <span class="sd">            QuditCircuit: the composed circuit (returns None if inplace==True).</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            CircuitError:</span>
 <span class="sd">            CircuitError: if composing on the front.</span>
 <span class="sd">            CircuitError: if ``other`` is wider or there are duplicate edge mappings.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -607,7 +576,8 @@
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">return</span> <span class="n">dest</span>
 
-        <span class="n">other</span> <span class="o">=</span> <span class="n">QuditCircuit</span><span class="o">.</span><span class="n">to_quditcircuit</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">qiskit_qudits.converters</span> <span class="kn">import</span> <span class="n">circuit_to_quditcircuit</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">circuit_to_quditcircuit</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">num_qudits</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_qudits</span> <span class="ow">or</span> \
                 <span class="n">other</span><span class="o">.</span><span class="n">num_qubits</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span> <span class="ow">or</span> <span class="n">other</span><span class="o">.</span><span class="n">num_clbits</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_clbits</span><span class="p">:</span>
@@ -693,7 +663,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            QuditCircuit: The tensored circuit (returns None if inplace==True).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">other</span> <span class="o">=</span> <span class="n">QuditCircuit</span><span class="o">.</span><span class="n">to_quditcircuit</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">qiskit_qudits.converters</span> <span class="kn">import</span> <span class="n">circuit_to_quditcircuit</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">circuit_to_quditcircuit</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
         <span class="n">qudit_dimensions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">qudit_dimensions</span>
         <span class="n">num_qudits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_qudits</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">num_qudits</span>
@@ -954,12 +925,15 @@
         <span class="k">return</span> <span class="n">ret</span>
 
 <div class="viewcode-block" id="QuditCircuit.add_register"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.add_register">[docs]</a>    <span class="k">def</span> <span class="nf">add_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">regs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add registers. Also allows 0 as an integer argument and [] as an list argument.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Add registers. Also allows 0 as an integer argument and [] as an</span>
+<span class="sd">        list argument for qudit_dimensions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">regs</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">regs</span><span class="p">)</span> <span class="ow">or</span> \
-                <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">reg</span><span class="p">)</span> <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">regs</span><span class="p">):</span>
+                <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span>
+                 <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">dimension</span> <span class="ow">in</span> <span class="n">regs</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
             <span class="c1"># QuantumCircuit defined without registers / with anonymous wires</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">regs</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
@@ -992,7 +966,7 @@
                 <span class="n">regs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_regs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">CircuitError</span><span class="p">(</span>
-                    <span class="s2">&quot;QuditCircuit parameters can be Registers or a list of qudit dimensions&quot;</span>
+                    <span class="s2">&quot;QuditCircuit parameters can be Registers or a list of qudit dimensions &quot;</span>
                     <span class="s2">&quot;followed by the size of qubit and classical bit registers as integers. &quot;</span>
                     <span class="s2">&quot;The for non registers the possibilities are: &quot;</span>
                     <span class="s2">&quot;int -&gt; QuantumRegister | &quot;</span>

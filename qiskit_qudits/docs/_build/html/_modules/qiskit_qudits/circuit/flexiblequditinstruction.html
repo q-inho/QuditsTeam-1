@@ -235,7 +235,7 @@
       <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
         <div class="pytorch-content-left">
           
-          <div class="rst-content">
+          <div class="rst-content style-external-links">
           
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
@@ -243,6 +243,8 @@
   <h1>Source code for qiskit_qudits.circuit.flexiblequditinstruction</h1><div class="highlight"><pre>
 <span></span><span class="c1"># This code is from Qiskit Hackathon 2021 by the team</span>
 <span class="c1"># Qiskit for high dimensional multipartite quantum states.</span>
+<span class="c1">#</span>
+<span class="c1"># Author: Tim Alexis Körner</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.</span>
 <span class="c1">#</span>
@@ -301,7 +303,13 @@
             <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
             <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="n">unit</span>
-            <span class="p">)</span></div>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compares if equal ``num_qudits`` and if equal from qudit instruction perspective.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">FlexibleQuditInstruction</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_qudits</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">num_qudits</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FlexibleQuditGate"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate">[docs]</a><span class="k">class</span> <span class="nc">FlexibleQuditGate</span><span class="p">(</span><span class="n">QuditGate</span><span class="p">):</span>
@@ -333,7 +341,13 @@
             <span class="n">num_single_qubits</span><span class="o">=</span><span class="n">num_single_qubits</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="n">label</span>
-            <span class="p">)</span></div>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compares if equal ``num_qudits`` and if equal from qudit gate perspective.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">FlexibleQuditGate</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_qudits</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">num_qudits</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="flex_qd_broadcast_arguments"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.flex_qd_broadcast_arguments">[docs]</a><span class="k">def</span> <span class="nf">flex_qd_broadcast_arguments</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">instr_class</span><span class="p">,</span> <span class="n">qdargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">qargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

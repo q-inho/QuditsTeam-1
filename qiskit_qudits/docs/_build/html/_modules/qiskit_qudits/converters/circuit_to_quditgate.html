@@ -235,7 +235,7 @@
       <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
         <div class="pytorch-content-left">
           
-          <div class="rst-content">
+          <div class="rst-content style-external-links">
           
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
@@ -244,6 +244,8 @@
 <span></span><span class="c1"># This code is from Qiskit Hackathon 2021 by the team</span>
 <span class="c1"># Qiskit for high dimensional multipartite quantum states.</span>
 <span class="c1"># It is a modified version of circuit_to_gate.py from the original Qiskit-Terra code.</span>
+<span class="c1">#</span>
+<span class="c1"># Author: Tim Alexis Körner</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.</span>
 <span class="c1">#</span>
@@ -271,7 +273,7 @@
 <span class="c1">#</span>
 <span class="c1">###############################################################################</span>
 
-<span class="sd">&quot;&quot;&quot;Helper function for converting a circuit to a qudit gate&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Helper function for converting a circuit to a qudit gate.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">qiskit.exceptions</span> <span class="kn">import</span> <span class="n">QiskitError</span>
 <span class="kn">from</span> <span class="nn">qiskit.circuit.gate</span> <span class="kn">import</span> <span class="n">Gate</span>
@@ -281,7 +283,6 @@
 <span class="kn">from</span> <span class="nn">qiskit_qudits.circuit.quditregister</span> <span class="kn">import</span> <span class="n">QuditRegister</span>
 
 
-<span class="c1"># noinspection DuplicatedCode,DuplicatedCode,DuplicatedCode</span>
 <div class="viewcode-block" id="circuit_to_quditgate"><a class="viewcode-back" href="../../../qiskit_qudits.converters.html#qiskit_qudits.converters.circuit_to_quditgate.circuit_to_quditgate">[docs]</a><span class="k">def</span> <span class="nf">circuit_to_quditgate</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">parameter_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equivalence_library</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Build a ``QuditGate`` object from a ``QuantumCircuit`` or ``QuditCircuit``.</span>
 

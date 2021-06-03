@@ -240,7 +240,7 @@
       <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
         <div class="pytorch-content-left">
           
-          <div class="rst-content">
+          <div class="rst-content style-external-links">
           
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
@@ -984,24 +984,8 @@ if None then the name stays the same.</p>
 
 <dl class="py method">
 <dt id="qiskit_qudits.circuit.quditbarrier.QuditBarrier.inverse">
-<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.quditbarrier.QuditBarrier.inverse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invert this instruction.</p>
-<p>If the instruction is composite (i.e. has a definition),
-then its definition will be recursively inverted.</p>
-<p>Special instructions inheriting from QuditInstruction can
-implement their own inverse.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a fresh instruction for the inverse</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#qiskit_qudits.circuit.quditinstruction.QuditInstruction" title="qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction</a></p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>CircuitError</strong> – If the instruction is not composite
-    and an inverse has not been implemented for it.</p>
-</dd>
-</dl>
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditbarrier.html#QuditBarrier.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditbarrier.QuditBarrier.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special case. Return self.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1214,7 +1198,8 @@ in instructions.</p></li>
 <dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.add_register">
 <code class="sig-name descname">add_register</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">regs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.add_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.add_register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add registers. Also allows 0 as an integer argument and [] as an list argument.</p>
+<dd><p>Add registers. Also allows 0 as an integer argument and [] as an
+list argument for qudit_dimensions.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1514,7 +1499,6 @@ circuits.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>CircuitError</strong> – </p></li>
 <li><p><strong>CircuitError</strong> – if composing on the front.</p></li>
 <li><p><strong>CircuitError</strong> – if <code class="docutils literal notranslate"><span class="pre">other</span></code> is wider or there are duplicate edge mappings.</p></li>
 </ul>
@@ -3033,26 +3017,6 @@ parameterize the instruction.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>qiskit.circuit.Instruction</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_quditcircuit">
-<em class="property">static </em><code class="sig-name descname">to_quditcircuit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">circuit</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.to_quditcircuit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_quditcircuit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a quantum circuit to a qudit quantum circuit.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>circuit</strong> (<em>QuantumCircuit</em>) – quantum circuit to convert</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>qudit quantum circuit</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>qd_circuit (<a class="reference internal" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit" title="qiskit_qudits.circuit.quditcircuit.QuditCircuit">QuditCircuit</a>)</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>CircuitError</strong> – If <cite>circuit</cite> is not a quantum circuit.</p>
 </dd>
 </dl>
 </dd></dl>

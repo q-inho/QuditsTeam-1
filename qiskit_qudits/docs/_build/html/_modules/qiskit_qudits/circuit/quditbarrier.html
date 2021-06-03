@@ -235,7 +235,7 @@
       <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
         <div class="pytorch-content-left">
           
-          <div class="rst-content">
+          <div class="rst-content style-external-links">
           
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
@@ -244,6 +244,8 @@
 <span></span><span class="c1"># This code is from Qiskit Hackathon 2021 by the team</span>
 <span class="c1"># Qiskit for high dimensional multipartite quantum states.</span>
 <span class="c1"># It is a modified version of barrier.py from the original Qiskit-Terra code.</span>
+<span class="c1">#</span>
+<span class="c1"># Author: Tim Alexis Körner</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.</span>
 <span class="c1">#</span>
@@ -292,16 +294,20 @@
 
     <span class="k">def</span> <span class="nf">_define</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Relay barrier to each underlying qubit.&quot;&quot;&quot;</span>
-        <span class="n">q</span> <span class="o">=</span> <span class="n">QuantumRegister</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">QuantumRegister</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">)</span>
         <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">Barrier</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="p">[</span><span class="n">q</span><span class="p">[:]],</span> <span class="p">[])</span>
+            <span class="p">(</span><span class="n">Barrier</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">q</span><span class="p">[:],</span> <span class="p">[])</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">inst</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
             <span class="n">qc</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">qc</span>
+
+<div class="viewcode-block" id="QuditBarrier.inverse"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Special case. Return self.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">QuditBarrier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="QuditBarrier.c_if"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.c_if">[docs]</a>    <span class="k">def</span> <span class="nf">c_if</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classical</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">QiskitError</span><span class="p">(</span><span class="s1">&#39;Barriers are compiler directives and cannot be conditional.&#39;</span><span class="p">)</span></div></div>
