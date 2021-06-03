@@ -63,7 +63,7 @@ class QuditDelay(FlexibleQuditInstruction):
 
     def _define(self):
         """Relay delay to each underlying qubit."""
-        q = QuantumRegister(self.num_qubits)
+        q = QuantumRegister(self.num_qubits, 'q')
         qc = QuantumCircuit(q, name=self.name)
         rules = [
             (Delay(self.params[0], self.unit), q[:], [])

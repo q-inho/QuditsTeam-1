@@ -35,7 +35,7 @@ class ZDGate(FlexibleQuditGate):
 
     def _define(self):
         """gate zd()"""
-        q = QuantumRegister(self.num_qubits)
+        q = QuantumRegister(self.num_qubits, 'q')
         qc = QuantumCircuit(q, name=self.name)
 
         w = 2*np.pi/self.qudit_dimensions[0]

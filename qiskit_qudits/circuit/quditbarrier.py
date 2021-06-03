@@ -51,7 +51,7 @@ class QuditBarrier(FlexibleQuditInstruction):
 
     def _define(self):
         """Relay barrier to each underlying qubit."""
-        q = QuantumRegister(self.num_qubits)
+        q = QuantumRegister(self.num_qubits, 'q')
         qc = QuantumCircuit(q, name=self.name)
 
         rules = [

@@ -266,14 +266,3 @@ class QuditInstruction(Instruction):
 
         instruction.definition = qc
         return instruction
-
-    def __deepcopy__(self, _memo=None):
-        """Improved deepcopy with recursive circuit definition copy."""
-        cpy = super().__deepcopy__(_memo=_memo)
-        print("!!")
-
-        from qiskit.circuit.quantumcircuit import QuantumCircuit  # pylint: disable=cyclic-import
-
-        if isinstance(self._definition, QuantumCircuit):
-            cpy._definition = self._definition.copy()
-        return cpy

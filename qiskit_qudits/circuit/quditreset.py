@@ -54,7 +54,7 @@ class QuditReset(FlexibleQuditInstruction):
 
     def _define(self):
         """Reset each underlying qubit."""
-        q = QuantumRegister(self.num_qubits)
+        q = QuantumRegister(self.num_qubits, 'q')
         qc = QuantumCircuit(q, name=self.name)
         rules = [
             (Reset(), q[:], [])

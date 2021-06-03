@@ -57,8 +57,8 @@ class QuditMeasure(FlexibleQuditInstruction):
 
     def _define(self):
         """Measure each underlying qubit."""
-        q = QuantumRegister(self.num_qubits)
-        c = ClassicalRegister(self.num_clbits)
+        q = QuantumRegister(self.num_qubits, 'q')
+        c = ClassicalRegister(self.num_clbits, 'c')
         qc = QuantumCircuit(q, c, name=self.name)
         rules = [
             (Measure(), q[:], c[:])
