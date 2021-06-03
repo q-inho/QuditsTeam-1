@@ -1,0 +1,1652 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Index &mdash; qiskit-qudits  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!-- <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> -->
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/jupyter-sphinx.css" type="text/css" />
+  <link rel="stylesheet" href="_static/thebelab.css" type="text/css" />
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<div class="container-fluid header-holder tutorials-header" id="header-holder">
+  <div class="container">
+    <div class="header-container">
+      <a class="header-logo" href="https://qiskit.org/" aria-label="PyTorch"></a>
+
+      <div class="main-menu">
+        <ul>
+          <li>
+            <a href="getting_started.html">Getting started</a>
+          </li>
+
+          <li>
+            <a href="tutorials.html">Tutorials</a>
+          </li>
+
+          <li>
+            <a href="https://qiskit.org/documentation/partners/" target="_blank">Qiskit Providers</a>
+          </li>
+
+          <li>
+            <div id="resourcesDropdownButton" data-toggle="resources-dropdown" class="resources-dropdown">
+              <a class="resource-option with-down-orange-arrow">
+                Applications
+              </a>
+              <div class="resources-dropdown-menu">
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/machine-learning/">
+                  <span class="dropdown-title">Machine learning</span>
+                  <p>QSVM, VQC (Variational Quantum Classifier), and QGAN (Quantum Generative
+                    Adversarial Network) algorithms.</p>
+                </a>
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/nature/">
+                  <span class="dropdown-title">Nature</span>
+                  <p>Quantum applications in chemistry, physics, and biology.</p>
+                </a>
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/finance/">
+                  <span class="dropdown-title">Finance</span>
+                  <p>Uncertainty components for stock/securities problems, Ising translators for
+                    portfolio optimizations and data providers to source real or random data.</p>
+                </a>
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/optimization/">
+                  <span class="dropdown-title">Optimization</span>
+                  <p>High-level optimization problems that are ready to
+                    run on simulators and real quantum devices</p>
+                </a>
+              </div>
+          </li>
+
+          <li>
+            <div id="resourcesDropdownButton" data-toggle="resources-dropdown" class="resources-dropdown">
+              <a class="resource-option with-down-orange-arrow">
+                Resources
+              </a>
+              <div class="resources-dropdown-menu">
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://qiskit.slack.com">
+                  <span class="dropdown-title">Slack support</span>
+                  <p></p>
+                </a>
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://qiskit.org/textbook">
+                  <span class="dropdown-title">Qiskit Textbook</span>
+                  <p></p>
+                </a>
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://qiskit.org/events">
+                  <span class="dropdown-title">Qiskit events</span>
+                  <p></p>
+                </a>
+            </div>
+          </li>
+          <li>
+            <a href="https://github.com/Qiskit/" target="_blank">Github</a>
+          </li>
+        </ul>
+      </div>
+
+      <a class="main-menu-open-button" href="#" data-behavior="open-mobile-menu"></a>
+    </div>
+
+  </div>
+</div>
+
+
+<body class="pytorch-body">
+
+   
+
+    
+
+    
+
+
+    <div class="table-of-contents-link-wrapper">
+      <span>Table of Contents</span>
+      <a href="#" class="toggle-table-of-contents" data-behavior="toggle-table-of-contents"></a>
+    </div>
+
+    <nav data-toggle="wy-nav-shift" class="pytorch-left-menu" id="pytorch-left-menu">
+      <div class="pytorch-side-scroll">
+        <div class="pytorch-menu pytorch-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          <div class="pytorch-left-menu-search">
+            
+
+            
+              
+              
+            
+
+            
+
+
+  
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search Docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+            
+          </div>
+
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_qudits.circuit.html">qiskit_qudits.circuit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_qudits.converters.html">qiskit_qudits.converters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_qudits.examples.html">qiskit_qudits.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_qudits.visualization.html">qiskit_qudits.visualization</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <div class="pytorch-container">
+      <div class="pytorch-page-level-bar" id="pytorch-page-level-bar">
+        <div class="pytorch-breadcrumbs-wrapper">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="pytorch-breadcrumbs">
+    
+      <li>
+        <a href="index.html">
+          
+            Docs
+          
+        </a> &gt;
+      </li>
+
+        
+      <li>Index</li>
+    
+    
+      <li class="pytorch-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+</div>
+        </div>
+
+        <div class="pytorch-shortcuts-wrapper" id="pytorch-shortcuts-wrapper">
+          Shortcuts
+        </div>
+      </div>
+
+      <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
+        <div class="pytorch-content-left">
+          
+          <div class="rst-content style-external-links">
+          
+            <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
+             <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
+              
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet.add">add() (QuditInstructionSet method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.add_bits">add_bits() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.add_calibration">add_calibration() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.add_decomposition">add_decomposition() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.add_decomposition">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.add_decomposition">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.add_decomposition">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.add_decomposition">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.add_decomposition">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.add_decomposition">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.add_decomposition">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.add_decomposition">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.add_register">add_register() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQudit">AncillaQudit (class in qiskit_qudits.circuit.quditregister)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister">AncillaQuditRegister (class in qiskit_qudits.circuit.quditregister)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ancillas">ancillas() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.append">append() (QuditCircuit method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.append">(QuditCircuitData method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.assemble">assemble() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.assemble">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.assemble">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.assemble">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.assemble">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.assemble">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.assemble">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.assemble">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.assemble">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.assign_parameters">assign_parameters() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.barrier">barrier() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.bind_parameters">bind_parameters() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.bit_type">bit_type (AncillaQuditRegister attribute)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.bit_type">(QuditRegister attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.broadcast_arguments">broadcast_arguments() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.broadcast_arguments">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.broadcast_arguments">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.broadcast_arguments">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.broadcast_arguments">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.broadcast_arguments">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.broadcast_arguments">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.broadcast_arguments">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.broadcast_arguments">(ZDGate method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.c_if">c_if() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.c_if">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.c_if">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.c_if">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.c_if">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.c_if">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet.c_if">(QuditInstructionSet method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.c_if">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.c_if">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.c_if">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.calibrations">calibrations() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cast">cast() (QuditCircuit static method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cbit_argument_conversion">cbit_argument_conversion() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ccx">ccx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ch">ch() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.converters.html#qiskit_qudits.converters.circuit_to_quditgate.circuit_to_quditgate">circuit_to_quditgate() (in module qiskit_qudits.converters.circuit_to_quditgate)</a>
+</li>
+      <li><a href="qiskit_qudits.converters.html#qiskit_qudits.converters.circuit_to_quditinstruction.circuit_to_quditinstruction">circuit_to_quditinstruction() (in module qiskit_qudits.converters.circuit_to_quditinstruction)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.clbits">clbits() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.clear">clear() (QuditCircuitData method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cls_instances">cls_instances() (QuditCircuit class method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cls_prefix">cls_prefix() (QuditCircuit class method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cnot">cnot() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.combine">combine() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.compose">compose() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.control">control() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.control">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.control">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.control">(ZDGate method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.copy">copy() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.copy">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.copy">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.copy">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.copy">(QuditCircuitData method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.copy">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.copy">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.copy">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.copy">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.copy">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.copy">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.count">count() (QuditCircuitData method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.count_ops">count_ops() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.visualization.html#qiskit_qudits.visualization.counts_to_quditcounts.counts_to_quditcounts">counts_to_quditcounts() (in module qiskit_qudits.visualization.counts_to_quditcounts)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cp">cp() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.crx">crx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cry">cry() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.crz">crz() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cswap">cswap() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.csx">csx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cu">cu() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cu1">cu1() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cu3">cu3() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cx">cx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cy">cy() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.cz">cz() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.data">data() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.dcx">dcx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.decompose">decompose() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.decompositions">decompositions() (FlexibleQuditGate property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.decompositions">(FlexibleQuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.decompositions">(QuditBarrier property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.decompositions">(QuditDelay property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.decompositions">(QuditGate property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.decompositions">(QuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.decompositions">(QuditMeasure property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.decompositions">(QuditReset property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.decompositions">(ZDGate property)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.definition">definition() (FlexibleQuditGate property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.definition">(FlexibleQuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.definition">(QuditBarrier property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.definition">(QuditDelay property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.definition">(QuditGate property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.definition">(QuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.definition">(QuditMeasure property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.definition">(QuditReset property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.definition">(ZDGate property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.delay">delay() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.depth">depth() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.diagonal">diagonal() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQudit.dimension">dimension() (AncillaQudit property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.Qudit.dimension">(Qudit property)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.draw">draw() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.duration">duration() (FlexibleQuditGate property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.duration">(FlexibleQuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.duration">(QuditBarrier property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.duration">(QuditDelay property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.duration">(QuditGate property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.duration">(QuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.duration">(QuditMeasure property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.duration">(QuditReset property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.duration">(ZDGate property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ecr">ecr() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.extend">extend() (QuditCircuit method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.extend">(QuditCircuitData method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet.extend">(QuditInstructionSet method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.extension_lib">extension_lib (QuditCircuit attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.flex_qd_broadcast_arguments">flex_qd_broadcast_arguments() (in module qiskit_qudits.circuit.flexiblequditinstruction)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate">FlexibleQuditGate (class in qiskit_qudits.circuit.flexiblequditinstruction)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction">FlexibleQuditInstruction (class in qiskit_qudits.circuit.flexiblequditinstruction)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.fredkin">fredkin() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.from_qasm_file">from_qasm_file() (QuditCircuit static method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.from_qasm_str">from_qasm_str() (QuditCircuit static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.global_phase">global_phase() (QuditCircuit property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.h">h() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.hamiltonian">hamiltonian() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.has_register">has_register() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.header">header (QuditCircuit attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.i">i() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.id">id() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQudit.index">index() (AncillaQudit property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.Qudit.index">(Qudit property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.index">(QuditCircuitData method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.initialize">initialize() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.insert">insert() (QuditCircuitData method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.instances">instances (QuditCircuit attribute)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.instances_counter">instances_counter (AncillaQuditRegister attribute)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.instances_counter">(QuditRegister attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.inverse">inverse() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.inverse">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.inverse">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.inverse">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.inverse">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.inverse">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.inverse">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet.inverse">(QuditInstructionSet method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.inverse">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.inverse">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.inverse">(ZDGate method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.is_parameterized">is_parameterized() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.is_parameterized">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.is_parameterized">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.is_parameterized">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.is_parameterized">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.is_parameterized">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.is_parameterized">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.is_parameterized">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.is_parameterized">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.iso">iso() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.isometry">isometry() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.iswap">iswap() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.label">label() (FlexibleQuditGate property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.label">(QuditGate property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.label">(ZDGate property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcp">mcp() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcrx">mcrx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcry">mcry() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcrz">mcrz() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mct">mct() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcu1">mcu1() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcx">mcx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.measure">measure() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.measure_active">measure_active() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.measure_all">measure_all() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.metadata">metadata() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.mirror">mirror() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.mirror">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.mirror">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.mirror">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.mirror">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.mirror">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.mirror">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.mirror">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.mirror">(ZDGate method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    module
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.flexiblequditinstruction">qiskit_qudits.circuit.flexiblequditinstruction</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#module-qiskit_qudits.circuit.gates.zd">qiskit_qudits.circuit.gates.zd</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditbarrier">qiskit_qudits.circuit.quditbarrier</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditcircuit">qiskit_qudits.circuit.quditcircuit</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditcircuitdata">qiskit_qudits.circuit.quditcircuitdata</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditdelay">qiskit_qudits.circuit.quditdelay</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditgate">qiskit_qudits.circuit.quditgate</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditinstruction">qiskit_qudits.circuit.quditinstruction</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditinstructionset">qiskit_qudits.circuit.quditinstructionset</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditmeasure">qiskit_qudits.circuit.quditmeasure</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditregister">qiskit_qudits.circuit.quditregister</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditreset">qiskit_qudits.circuit.quditreset</a>
+</li>
+        <li><a href="qiskit_qudits.converters.html#module-qiskit_qudits.converters.circuit_to_quditgate">qiskit_qudits.converters.circuit_to_quditgate</a>
+</li>
+        <li><a href="qiskit_qudits.converters.html#module-qiskit_qudits.converters.circuit_to_quditinstruction">qiskit_qudits.converters.circuit_to_quditinstruction</a>
+</li>
+        <li><a href="qiskit_qudits.visualization.html#module-qiskit_qudits.visualization.counts_to_quditcounts">qiskit_qudits.visualization.counts_to_quditcounts</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ms">ms() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.name">name() (AncillaQuditRegister property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.name">(QuditRegister property)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.name_format">name_format (AncillaQuditRegister attribute)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.name_format">(QuditRegister attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_ancillas">num_ancillas() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_clbits">num_clbits() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_connected_components">num_connected_components() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_nonlocal_gates">num_nonlocal_gates() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_parameters">num_parameters() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_qd_ancillas">num_qd_ancillas() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_qubits">num_qubits() (QuditCircuit property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.num_qudits">num_qudits (FlexibleQuditGate attribute)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.num_qudits">(FlexibleQuditInstruction attribute)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.num_qudits">(QuditBarrier attribute)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.num_qudits">(QuditDelay attribute)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.num_qudits">(QuditMeasure attribute)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.num_qudits">(QuditReset attribute)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.num_qudits">(ZDGate attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_qudits">num_qudits() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_single_qubits">num_single_qubits() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_tensor_factors">num_tensor_factors() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.num_unitary_factors">num_unitary_factors() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.p">p() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.parameters">parameters() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.params">params() (FlexibleQuditGate property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.params">(FlexibleQuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.params">(QuditBarrier property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.params">(QuditDelay property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.params">(QuditGate property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.params">(QuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.params">(QuditMeasure property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.params">(QuditReset property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.params">(ZDGate property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.pauli">pauli() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.pop">pop() (QuditCircuitData method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.power">power() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.power">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.power">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.power">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.prefix">prefix (AncillaQuditRegister attribute)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.prefix">(QuditCircuit attribute)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.prefix">(QuditRegister attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.qasm">qasm() (AncillaQuditRegister method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.qasm">(FlexibleQuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.qasm">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.qasm">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qasm">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.qasm">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.qasm">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.qasm">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.qasm">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.qasm">(QuditRegister method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.qasm">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.qasm">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qbit_argument_conversion">qbit_argument_conversion() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet.qd_add">qd_add() (QuditInstructionSet method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qd_ancillas">qd_ancillas() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qd_append">qd_append() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.qd_broadcast_arguments">qd_broadcast_arguments() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.qd_broadcast_arguments">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.qd_broadcast_arguments">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.qd_broadcast_arguments">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.qd_broadcast_arguments">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.qd_broadcast_arguments">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.qd_broadcast_arguments">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.qd_broadcast_arguments">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.qd_broadcast_arguments">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet.qd_extend">qd_extend() (QuditInstructionSet method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.qd_get">qd_get() (AncillaQuditRegister method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.qd_get">(QuditCircuitData method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.qd_get">(QuditRegister method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.qd_iter">qd_iter() (AncillaQuditRegister method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.qd_iter">(QuditRegister method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.qd_len">qd_len() (AncillaQuditRegister method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.qd_len">(QuditRegister method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.qd_size">qd_size() (AncillaQuditRegister property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.qd_size">(QuditRegister property)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qd_width">qd_width() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qdit_argument_conversion">qdit_argument_conversion() (QuditCircuit method)</a>
+</li>
+      <li>
+    qiskit_qudits.circuit.flexiblequditinstruction
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.flexiblequditinstruction">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.gates.zd
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.gates.html#module-qiskit_qudits.circuit.gates.zd">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditbarrier
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditbarrier">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditcircuit
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditcircuit">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    qiskit_qudits.circuit.quditcircuitdata
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditcircuitdata">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditdelay
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditdelay">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditgate
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditgate">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditinstruction
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditinstruction">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditinstructionset
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditinstructionset">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditmeasure
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditmeasure">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditregister
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditregister">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.circuit.quditreset
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#module-qiskit_qudits.circuit.quditreset">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.converters.circuit_to_quditgate
+
+      <ul>
+        <li><a href="qiskit_qudits.converters.html#module-qiskit_qudits.converters.circuit_to_quditgate">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.converters.circuit_to_quditinstruction
+
+      <ul>
+        <li><a href="qiskit_qudits.converters.html#module-qiskit_qudits.converters.circuit_to_quditinstruction">module</a>
+</li>
+      </ul></li>
+      <li>
+    qiskit_qudits.visualization.counts_to_quditcounts
+
+      <ul>
+        <li><a href="qiskit_qudits.visualization.html#module-qiskit_qudits.visualization.counts_to_quditcounts">module</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qubit_duration">qubit_duration() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qubit_offset">qubit_offset() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qubit_start_time">qubit_start_time() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qubit_stop_time">qubit_stop_time() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQudit.qubits">qubits() (AncillaQudit property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.Qudit.qubits">(Qudit property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qubits">(QuditCircuit property)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.Qudit">Qudit (class in qiskit_qudits.circuit.quditregister)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qudit_dimensions">qudit_dimensions() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qudit_duration">qudit_duration() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qudit_start_time">qudit_start_time() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qudit_stop_time">qudit_stop_time() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier">QuditBarrier (class in qiskit_qudits.circuit.quditbarrier)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit">QuditCircuit (class in qiskit_qudits.circuit.quditcircuit)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData">QuditCircuitData (class in qiskit_qudits.circuit.quditcircuitdata)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay">QuditDelay (class in qiskit_qudits.circuit.quditdelay)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate">QuditGate (class in qiskit_qudits.circuit.quditgate)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction (class in qiskit_qudits.circuit.quditinstruction)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstructionset.QuditInstructionSet">QuditInstructionSet (class in qiskit_qudits.circuit.quditinstructionset)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure">QuditMeasure (class in qiskit_qudits.circuit.quditmeasure)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister">QuditRegister (class in qiskit_qudits.circuit.quditregister)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset">QuditReset (class in qiskit_qudits.circuit.quditreset)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qudits">qudits() (QuditCircuit property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.r">r() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rcccx">rcccx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rccx">rccx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQudit.register">register() (AncillaQudit property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.Qudit.register">(Qudit property)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.remove">remove() (QuditCircuitData method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.remove_final_measurements">remove_final_measurements() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.repeat">repeat() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.repeat">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.repeat">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.repeat">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.repeat">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.repeat">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.repeat">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.repeat">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.repeat">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.repeat">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.reset">reset() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.reverse">reverse() (QuditCircuitData method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.reverse_bits">reverse_bits() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.reverse_ops">reverse_ops() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.reverse_ops">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.reverse_ops">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.reverse_ops">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.reverse_ops">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.reverse_ops">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.reverse_ops">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.reverse_ops">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.reverse_ops">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.reverse_ops">(ZDGate method)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rv">rv() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rx">rx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rxx">rxx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ry">ry() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ryy">ryy() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rz">rz() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rzx">rzx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.rzz">rzz() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.s">s() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.sdg">sdg() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.single_qubits">single_qubits() (QuditCircuit property)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQudit.size">size() (AncillaQudit property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.AncillaQuditRegister.size">(AncillaQuditRegister property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.Qudit.size">(Qudit property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.size">(QuditCircuit method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditregister.QuditRegister.size">(QuditRegister property)</a>
+</li>
+      </ul></li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.snapshot">snapshot() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.soft_compare">soft_compare() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.soft_compare">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.soft_compare">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.soft_compare">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.soft_compare">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.soft_compare">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.soft_compare">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.soft_compare">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.soft_compare">(ZDGate method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.sort">sort() (QuditCircuitData method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.squ">squ() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.swap">swap() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.sx">sx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.sxdg">sxdg() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.t">t() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.tdg">tdg() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.tensor">tensor() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_gate">to_gate() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_instruction">to_instruction() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.to_matrix">to_matrix() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.to_matrix">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.to_matrix">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.to_matrix">(ZDGate method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.to_qd_rule">to_qd_rule() (QuditCircuitData method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_quditcircuit">to_quditcircuit() (QuditCircuit static method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_quditgate">to_quditgate() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.to_quditinstruction">to_quditinstruction() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.to_rule">to_rule() (QuditCircuitData static method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.toffoli">toffoli() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.u">u() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.u1">u1() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.u2">u2() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.u3">u3() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.uc">uc() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ucrx">ucrx() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ucry">ucry() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ucrz">ucrz() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.unit">unit() (FlexibleQuditGate property)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.unit">(FlexibleQuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.unit">(QuditBarrier property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.unit">(QuditDelay property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.unit">(QuditGate property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.unit">(QuditInstruction property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.unit">(QuditMeasure property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.unit">(QuditReset property)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.unit">(ZDGate property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.unitary">unitary() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate.validate_parameter">validate_parameter() (FlexibleQuditGate method)</a>
+
+      <ul>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditInstruction.validate_parameter">(FlexibleQuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditbarrier.QuditBarrier.validate_parameter">(QuditBarrier method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditdelay.QuditDelay.validate_parameter">(QuditDelay method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditgate.QuditGate.validate_parameter">(QuditGate method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction.validate_parameter">(QuditInstruction method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditmeasure.QuditMeasure.validate_parameter">(QuditMeasure method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditreset.QuditReset.validate_parameter">(QuditReset method)</a>
+</li>
+        <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate.validate_parameter">(ZDGate method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.width">width() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.x">x() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.y">y() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.z">z() (QuditCircuit method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.zd">zd() (QuditCircuit method)</a>
+</li>
+      <li><a href="qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.zd.ZDGate">ZDGate (class in qiskit_qudits.circuit.gates.zd)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+             </article>
+             
+            </div>
+            <footer>
+  
+
+  
+
+    <hr>
+
+  
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Apache 2.0, 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.
+      Last updated on 2021/06/03.
+
+    </p>
+  </div>
+    
+      <div>
+        Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+      </div>
+     
+
+</footer>
+
+          </div>
+        </div>
+
+        <div class="pytorch-content-right" id="pytorch-content-right">
+          <div class="pytorch-right-menu" id="pytorch-right-menu">
+            <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
+              
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  
+
+     
+       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script src="_static/thebelab-helper.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+         <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+     
+
+  
+
+  <script type="text/javascript" src="_static/js/vendor/popper.min.js"></script>
+  <script type="text/javascript" src="_static/js/vendor/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+  <div>
+    <br>
+  </div>
+
+  <!-- Begin Mobile Menu -->
+
+  <div class="mobile-main-menu">
+    <div class="container-fluid">
+      <div class="container">
+        <div class="mobile-main-menu-header-container">
+          <a class="header-logo" href="https://qiskit.org/" aria-label="PyTorch"></a>
+          <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-main-menu-links-container">
+      <div class="main-menu">
+        <ul>
+          <li>
+            <a href="getting_started.html">Getting Started</a>
+          </li>
+          <li>
+            <a href="tutorials.html">Tutorials</a>
+          </li>
+          <li>
+            <a href="https://qiskit.org/documentation/partners/">Qiskit Providers</a>
+          </li>
+          <br>
+          <li class="resources-mobile-menu-title">
+            Applications
+          </li>
+          <ul class="resources-mobile-menu-items">
+            <li>
+              <a href="https://qiskit.org/documentation/machine-learning/">Machine learning</a>
+            </li>
+
+            <li>
+              <a href="https://qiskit.org/documentation/nature/">Nature</a>
+            </li>
+
+            <li>
+              <a href="https://qiskit.org/documentation/finance/">Finance</a>
+            </li>
+
+            <li>
+              <a href="https://qiskit.org/documentation/optimization/">Optimization</a>
+            </li>
+          </ul>
+
+          <br>
+
+          <li class="resources-mobile-menu-title">
+            Resources
+          </li>
+
+          <ul class="resources-mobile-menu-items">
+            <li>
+              <a href="https://qiskit.slack.com">Slack support</a>
+            </li>
+          </ul>
+          <br>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- End Mobile Menu -->
+
+  <script type="text/javascript" src="_static/js/vendor/anchor.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      mobileMenu.bind();
+      mobileTOC.bind();
+      pytorchAnchors.bind();
+      sideMenus.bind();
+      scrollToAnchor.bind();
+      highlightNavigation.bind();
+      mainMenuDropdown.bind();
+      filterTags.bind();
+
+      // Add class to links that have code blocks, since we cannot create links in code blocks
+      $("article.pytorch-article a span.pre").each(function(e) {
+        $(this).closest("a").addClass("has-code");
+      });
+    })
+  </script>
+</body>
+</html>

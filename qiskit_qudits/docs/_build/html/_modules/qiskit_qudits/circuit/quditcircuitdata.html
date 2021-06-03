@@ -1,0 +1,618 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>qiskit_qudits.circuit.quditcircuitdata &mdash; qiskit-qudits  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!-- <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> -->
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/jupyter-sphinx.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/thebelab.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<div class="container-fluid header-holder tutorials-header" id="header-holder">
+  <div class="container">
+    <div class="header-container">
+      <a class="header-logo" href="https://qiskit.org/" aria-label="PyTorch"></a>
+
+      <div class="main-menu">
+        <ul>
+          <li>
+            <a href="../../../getting_started.html">Getting started</a>
+          </li>
+
+          <li>
+            <a href="../../../tutorials.html">Tutorials</a>
+          </li>
+
+          <li>
+            <a href="https://qiskit.org/documentation/partners/" target="_blank">Qiskit Providers</a>
+          </li>
+
+          <li>
+            <div id="resourcesDropdownButton" data-toggle="resources-dropdown" class="resources-dropdown">
+              <a class="resource-option with-down-orange-arrow">
+                Applications
+              </a>
+              <div class="resources-dropdown-menu">
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/machine-learning/">
+                  <span class="dropdown-title">Machine learning</span>
+                  <p>QSVM, VQC (Variational Quantum Classifier), and QGAN (Quantum Generative
+                    Adversarial Network) algorithms.</p>
+                </a>
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/nature/">
+                  <span class="dropdown-title">Nature</span>
+                  <p>Quantum applications in chemistry, physics, and biology.</p>
+                </a>
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/finance/">
+                  <span class="dropdown-title">Finance</span>
+                  <p>Uncertainty components for stock/securities problems, Ising translators for
+                    portfolio optimizations and data providers to source real or random data.</p>
+                </a>
+                <a class="nav-dropdown-item" href="https://qiskit.org/documentation/optimization/">
+                  <span class="dropdown-title">Optimization</span>
+                  <p>High-level optimization problems that are ready to
+                    run on simulators and real quantum devices</p>
+                </a>
+              </div>
+          </li>
+
+          <li>
+            <div id="resourcesDropdownButton" data-toggle="resources-dropdown" class="resources-dropdown">
+              <a class="resource-option with-down-orange-arrow">
+                Resources
+              </a>
+              <div class="resources-dropdown-menu">
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://qiskit.slack.com">
+                  <span class="dropdown-title">Slack support</span>
+                  <p></p>
+                </a>
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://qiskit.org/textbook">
+                  <span class="dropdown-title">Qiskit Textbook</span>
+                  <p></p>
+                </a>
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://qiskit.org/events">
+                  <span class="dropdown-title">Qiskit events</span>
+                  <p></p>
+                </a>
+            </div>
+          </li>
+          <li>
+            <a href="https://github.com/Qiskit/" target="_blank">Github</a>
+          </li>
+        </ul>
+      </div>
+
+      <a class="main-menu-open-button" href="#" data-behavior="open-mobile-menu"></a>
+    </div>
+
+  </div>
+</div>
+
+
+<body class="pytorch-body">
+
+   
+
+    
+
+    
+
+
+    <div class="table-of-contents-link-wrapper">
+      <span>Table of Contents</span>
+      <a href="#" class="toggle-table-of-contents" data-behavior="toggle-table-of-contents"></a>
+    </div>
+
+    <nav data-toggle="wy-nav-shift" class="pytorch-left-menu" id="pytorch-left-menu">
+      <div class="pytorch-side-scroll">
+        <div class="pytorch-menu pytorch-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          <div class="pytorch-left-menu-search">
+            
+
+            
+              
+              
+            
+
+            
+
+
+  
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search Docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+            
+          </div>
+
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../qiskit_qudits.circuit.html">qiskit_qudits.circuit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qiskit_qudits.converters.html">qiskit_qudits.converters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qiskit_qudits.examples.html">qiskit_qudits.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qiskit_qudits.visualization.html">qiskit_qudits.visualization</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <div class="pytorch-container">
+      <div class="pytorch-page-level-bar" id="pytorch-page-level-bar">
+        <div class="pytorch-breadcrumbs-wrapper">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="pytorch-breadcrumbs">
+    
+      <li>
+        <a href="../../../index.html">
+          
+            Docs
+          
+        </a> &gt;
+      </li>
+
+        
+          <li><a href="../../index.html">Module code</a> &gt;</li>
+        
+      <li>qiskit_qudits.circuit.quditcircuitdata</li>
+    
+    
+      <li class="pytorch-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+</div>
+        </div>
+
+        <div class="pytorch-shortcuts-wrapper" id="pytorch-shortcuts-wrapper">
+          Shortcuts
+        </div>
+      </div>
+
+      <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
+        <div class="pytorch-content-left">
+          
+          <div class="rst-content style-external-links">
+          
+            <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
+             <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
+              
+  <h1>Source code for qiskit_qudits.circuit.quditcircuitdata</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This code is from Qiskit Hackathon 2021 by the team</span>
+<span class="c1"># Qiskit for high dimensional multipartite quantum states.</span>
+<span class="c1"># It is a modified version of quantumcircuitdata.py from the original Qiskit-Terra code.</span>
+<span class="c1">#</span>
+<span class="c1"># (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.</span>
+<span class="c1">#</span>
+<span class="c1"># This code is licensed under the Apache License, Version 2.0. You may</span>
+<span class="c1"># obtain a copy of this license in the LICENSE.txt file in the root directory</span>
+<span class="c1"># of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.</span>
+<span class="c1">#</span>
+<span class="c1"># Any modifications or derivative works of this code must retain this</span>
+<span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
+<span class="c1"># that they have been altered from the originals.</span>
+<span class="c1">#</span>
+<span class="c1">###############################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of Qiskit.</span>
+<span class="c1">#</span>
+<span class="c1"># (C) Copyright IBM 2017.</span>
+<span class="c1">#</span>
+<span class="c1"># This code is licensed under the Apache License, Version 2.0. You may</span>
+<span class="c1"># obtain a copy of this license in the LICENSE.txt file in the root directory</span>
+<span class="c1"># of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.</span>
+<span class="c1">#</span>
+<span class="c1"># Any modifications or derivative works of this code must retain this</span>
+<span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
+<span class="c1"># that they have been altered from the originals.</span>
+<span class="c1">#</span>
+<span class="c1">###############################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A wrapper class for the purposes of validating modifications to QuditCircuit.data</span>
+<span class="sd">while maintaining the interface of a python list.</span>
+<span class="sd">Qudit context is stored additionally to the qubit an classical bit context for each</span>
+<span class="sd">instruction in the data. There are two forms of each rule in the data:</span>
+<span class="sd">(instruction, qubits, clbits) where qubits consists of qubits of qudits and single qubits,</span>
+<span class="sd">(instruction, qudits, qubits, clbits) where qubits are only single qubits.</span>
+<span class="sd">The second variant can be accessed via imaginary indices, ``qd_get`` or the ``qd_iter`` method.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">qiskit.circuit.quantumcircuitdata</span> <span class="kn">import</span> <span class="n">QuantumCircuitData</span>
+<span class="kn">from</span> <span class="nn">qiskit.circuit.exceptions</span> <span class="kn">import</span> <span class="n">CircuitError</span>
+
+<span class="kn">from</span> <span class="nn">._utils</span> <span class="kn">import</span> <span class="n">parse_complex_index</span>
+<span class="kn">from</span> <span class="nn">.quditinstruction</span> <span class="kn">import</span> <span class="n">QuditInstruction</span>
+
+
+<div class="viewcode-block" id="QuditCircuitData"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData">[docs]</a><span class="k">class</span> <span class="nc">QuditCircuitData</span><span class="p">(</span><span class="n">QuantumCircuitData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A wrapper class for the purposes of validating modifications to QuditCircuit.data</span>
+<span class="sd">    while maintaining the interface of a python list. Allows access to rules of the</span>
+<span class="sd">    form (instruction, qubits, clbits) or (instruction, qudits, qubits, clbits).&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="QuditCircuitData.to_rule"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.to_rule">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">to_rule</span><span class="p">(</span><span class="n">qd_rule</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a rule with qudit context to a rule without qudit context.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            qd_rule (tuple): Tuple (instruction, qdargs, qargs, cargs),</span>
+<span class="sd">                qdargs / qargs / cargs is a list of qudits / qubits / classical bits.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple: Converted rule (instruction, qargs, cargs).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">qd_rule</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CircuitError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid rule form, expected (instruction, qudits, qubits, clbits), &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="n">qd_rule</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">inst</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="o">=</span> <span class="n">qd_rule</span>
+        <span class="k">return</span> <span class="n">inst</span><span class="p">,</span> <span class="p">[</span><span class="n">qubit</span> <span class="k">for</span> <span class="n">qudit</span> <span class="ow">in</span> <span class="n">qdargs</span> <span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="n">qudit</span><span class="p">]</span> <span class="o">+</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span></div>
+
+<div class="viewcode-block" id="QuditCircuitData.to_qd_rule"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.to_qd_rule">[docs]</a>    <span class="k">def</span> <span class="nf">to_qd_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a rule without qudit context to a rule with qudit context.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            rule (tuple): Tuple (instruction, qargs, cargs),</span>
+<span class="sd">                qargs / cargs is a list of qubits / classical bits.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple: Converted rule (instruction, qdargs, qargs, cargs).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CircuitError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid rule form, expected (instruction, qubits, clbits), &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="n">rule</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">inst</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="o">=</span> <span class="n">rule</span>
+        <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circuit</span><span class="o">.</span><span class="n">_split_qargs</span><span class="p">(</span><span class="n">qargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inst</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span></div>
+
+<div class="viewcode-block" id="QuditCircuitData.qd_get"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuitdata.QuditCircuitData.qd_get">[docs]</a>    <span class="k">def</span> <span class="nf">qd_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns rule including qudit context at index key or a list of tuples</span>
+<span class="sd">        with slice as key. Does not relay modifications to original data, please use</span>
+<span class="sd">        single item modifications e.g. data[4j] = (inst, qdargs, qargs, cargs) instead.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_qd_rule</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">to_qd_rule</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Supports imaginary numbers (e.g. 0j) for indexing into rules with qudit context.</span>
+
+<span class="sd">        Arg:</span>
+<span class="sd">            key (int or complex or slice or list): Index of the rule to be retrieved.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Rule / list of rules with qudit context if key is a purely imaginary</span>
+<span class="sd">            integer / slice with purely imaginary integers.</span>
+<span class="sd">            Rule / list of rules without qudit context if key is a real</span>
+<span class="sd">            integer / slice with real integers.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If the `index` is made of complex but not a purely imaginary integer(s).</span>
+<span class="sd">            TypeError: If the `index` is a list with different index types.</span>
+<span class="sd">            TypeError: If the `index` is a slice with different index types (not regarding None).</span>
+<span class="sd">            TypeError: If the `index` is neither a int / complex integer nor a list or slice.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">is_real</span> <span class="o">=</span> <span class="n">parse_complex_index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_real</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">qd_get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Supports imaginary numbers (e.g. 0j) to set rules with qudit context.</span>
+
+<span class="sd">        Arg:</span>
+<span class="sd">            key (int): Index of the rule to set.</span>
+<span class="sd">            value (tuple): Rule containing instruction, qdargs (optional), qargs, cargs.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            CircuitError: If the instruction is not a QuditInstruction but `value` includes qdargs.</span>
+<span class="sd">            CircuitError: If `value` cannot be interpreted without broadcasting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">is_real</span> <span class="o">=</span> <span class="n">parse_complex_index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_real</span><span class="p">:</span>
+            <span class="n">inst</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">qdargs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">inst</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="s2">&quot;to_qd_instruction&quot;</span><span class="p">):</span>
+            <span class="n">inst</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">to_qd_instruction</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">QuditInstruction</span><span class="p">):</span>
+            <span class="n">expanded_partial_qdargs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_circuit</span><span class="o">.</span><span class="n">qdit_argument_conversion</span><span class="p">(</span><span class="n">qdarg</span><span class="p">)</span> <span class="k">for</span> <span class="n">qdarg</span> <span class="ow">in</span> <span class="n">qdargs</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="p">]</span>
+            <span class="n">flat_partial_qdargs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">qdarg</span> <span class="k">for</span> <span class="n">mixed_qdargs</span> <span class="ow">in</span> <span class="n">expanded_partial_qdargs</span> <span class="k">for</span> <span class="n">qdarg</span> <span class="ow">in</span> <span class="n">mixed_qdargs</span>
+            <span class="p">]</span>
+            <span class="n">expanded_mixed_qargs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_circuit</span><span class="o">.</span><span class="n">qbit_argument_conversion</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_circuit</span><span class="o">.</span><span class="n">_offset_qubit_representation</span><span class="p">(</span><span class="n">qarg</span><span class="p">)</span>
+                <span class="p">)</span> <span class="k">for</span> <span class="n">qarg</span> <span class="ow">in</span> <span class="n">qargs</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="p">]</span>
+            <span class="n">flat_mixed_qargs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">qarg</span> <span class="k">for</span> <span class="n">mixed_qargs</span> <span class="ow">in</span> <span class="n">expanded_mixed_qargs</span> <span class="k">for</span> <span class="n">qarg</span> <span class="ow">in</span> <span class="n">mixed_qargs</span>
+            <span class="p">]</span>
+            <span class="n">expanded_cargs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_circuit</span><span class="o">.</span><span class="n">cbit_argument_conversion</span><span class="p">(</span><span class="n">carg</span><span class="p">)</span> <span class="k">for</span> <span class="n">carg</span> <span class="ow">in</span> <span class="n">cargs</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="p">]</span>
+
+            <span class="n">qudits</span><span class="p">,</span> <span class="n">single_qubits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circuit</span><span class="o">.</span><span class="n">_split_qargs</span><span class="p">(</span><span class="n">flat_mixed_qargs</span><span class="p">)</span>
+            <span class="n">qdargs</span> <span class="o">=</span> <span class="n">qudits</span> <span class="o">+</span> <span class="n">flat_partial_qdargs</span>
+            <span class="n">qargs</span> <span class="o">=</span> <span class="n">single_qubits</span>
+            <span class="n">cargs</span> <span class="o">=</span> <span class="p">[</span><span class="n">carg</span> <span class="k">for</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">expanded_cargs</span> <span class="k">for</span> <span class="n">carg</span> <span class="ow">in</span> <span class="n">cargs</span><span class="p">]</span>
+
+            <span class="n">inst</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_rule</span><span class="p">((</span><span class="n">inst</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="n">qdargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CircuitError</span><span class="p">(</span>
+                <span class="s2">&quot;Instruction argument is not an QuditInstruction, &quot;</span>
+                <span class="s2">&quot;but value includes qdargs.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;returns qudit data representation&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">:])</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Multiplies and returns data*n if `n` is real integer,</span>
+<span class="sd">        qd_data*n if `n` is a purely imaginary integer.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If the `n` is complex but not a purely imaginary integer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">complex</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">real</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="o">.</span><span class="n">imag</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Complex factors must be purely imaginary integers.&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">:]</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Multiplies and returns n*data if `n` is real integer,</span>
+<span class="sd">        n*qd_data if `n` is a purely imaginary integer.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If the `n` is complex but not a purely imaginary integer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">complex</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">real</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="o">.</span><span class="n">imag</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Complex factors must be purely imaginary integers.&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__rmul__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+</pre></div>
+
+             </article>
+             
+            </div>
+            <footer>
+  
+
+  
+
+    <hr>
+
+  
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Apache 2.0, 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.
+      Last updated on 2021/06/03.
+
+    </p>
+  </div>
+    
+      <div>
+        Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+      </div>
+     
+
+</footer>
+
+          </div>
+        </div>
+
+        <div class="pytorch-content-right" id="pytorch-content-right">
+          <div class="pytorch-right-menu" id="pytorch-right-menu">
+            <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
+              
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  
+
+     
+       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+         <script src="../../../_static/jquery.js"></script>
+         <script src="../../../_static/underscore.js"></script>
+         <script src="../../../_static/doctools.js"></script>
+         <script src="../../../_static/language_data.js"></script>
+         <script src="../../../_static/thebelab-helper.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+         <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+     
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/vendor/popper.min.js"></script>
+  <script type="text/javascript" src="../../../_static/js/vendor/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+  <div>
+    <br>
+  </div>
+
+  <!-- Begin Mobile Menu -->
+
+  <div class="mobile-main-menu">
+    <div class="container-fluid">
+      <div class="container">
+        <div class="mobile-main-menu-header-container">
+          <a class="header-logo" href="https://qiskit.org/" aria-label="PyTorch"></a>
+          <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-main-menu-links-container">
+      <div class="main-menu">
+        <ul>
+          <li>
+            <a href="../../../getting_started.html">Getting Started</a>
+          </li>
+          <li>
+            <a href="../../../tutorials.html">Tutorials</a>
+          </li>
+          <li>
+            <a href="https://qiskit.org/documentation/partners/">Qiskit Providers</a>
+          </li>
+          <br>
+          <li class="resources-mobile-menu-title">
+            Applications
+          </li>
+          <ul class="resources-mobile-menu-items">
+            <li>
+              <a href="https://qiskit.org/documentation/machine-learning/">Machine learning</a>
+            </li>
+
+            <li>
+              <a href="https://qiskit.org/documentation/nature/">Nature</a>
+            </li>
+
+            <li>
+              <a href="https://qiskit.org/documentation/finance/">Finance</a>
+            </li>
+
+            <li>
+              <a href="https://qiskit.org/documentation/optimization/">Optimization</a>
+            </li>
+          </ul>
+
+          <br>
+
+          <li class="resources-mobile-menu-title">
+            Resources
+          </li>
+
+          <ul class="resources-mobile-menu-items">
+            <li>
+              <a href="https://qiskit.slack.com">Slack support</a>
+            </li>
+          </ul>
+          <br>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- End Mobile Menu -->
+
+  <script type="text/javascript" src="../../../_static/js/vendor/anchor.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      mobileMenu.bind();
+      mobileTOC.bind();
+      pytorchAnchors.bind();
+      sideMenus.bind();
+      scrollToAnchor.bind();
+      highlightNavigation.bind();
+      mainMenuDropdown.bind();
+      filterTags.bind();
+
+      // Add class to links that have code blocks, since we cannot create links in code blocks
+      $("article.pytorch-article a span.pre").each(function(e) {
+        $(this).closest("a").addClass("has-code");
+      });
+    })
+  </script>
+</body>
+</html>

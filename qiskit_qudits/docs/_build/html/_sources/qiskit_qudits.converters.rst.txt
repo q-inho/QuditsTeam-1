@@ -1,0 +1,18 @@
+qiskit\_qudits.converters
+=========================
+
+qiskit\_qudits.converters.circuit\_to\_quditgate module
+-------------------------------------------------------
+
+.. automodule:: qiskit_qudits.converters.circuit_to_quditgate
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+qiskit\_qudits.converters.circuit\_to\_quditinstruction module
+--------------------------------------------------------------
+
+.. automodule:: qiskit_qudits.converters.circuit_to_quditinstruction
+   :members:
+   :undoc-members:
+   :show-inheritance:
