@@ -14,8 +14,7 @@
 # that they have been altered from the originals.
 
 import numpy as np
-from qiskit import QuantumCircuit, QuantumRegister
-from qiskit.circuit.library.standard_gates import XGate
+from qiskit import QuantumCircuit
 from qiskit.exceptions import QiskitError
 
 
@@ -24,7 +23,6 @@ def Dephasing(circuit,m,phase):
     n=circuit.width()-1
     if 2**n <m :
         raise QiskitError('Circuit does not allow to map this level. Try a lower level or a bigger circuit.')
-    qubits=QuantumRegister(n+1)
     marray=[]
     for i in range(0,n): #bit decomposition
         if (( m >>  i) & 1) != 1 :
@@ -54,7 +52,6 @@ def LevelsSwitch(circuit,m,l):
     n=circuit.width()-1 
     if 2**n <m or 2**n <l:
         raise QiskitError('Circuit does not allow to map this level. Try a lower level or a bigger circuit.')
-    qubits= QuantumRegister(n+1)
     marray=[]
     larray=[]
     for i in range(0,n): #bit decomposition
