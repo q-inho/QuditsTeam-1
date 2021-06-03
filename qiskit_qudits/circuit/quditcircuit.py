@@ -227,7 +227,7 @@ class QuditCircuit(QuantumCircuit):
                     new_index += num_qubits
                 new_qargs.append(new_qubits[new_index])
 
-            circ._append(inst, *QuditCircuitData.to_rule((new_qdargs, new_qargs, new_cargs)))
+            circ._append(*QuditCircuitData.to_rule((inst, new_qdargs, new_qargs, new_cargs)))
         return circ
 
     def inverse(self):

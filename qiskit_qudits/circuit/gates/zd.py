@@ -43,3 +43,14 @@ class ZDGate(FlexibleQuditGate):
             qc.rz(w * 2**(q.size-i+1), q[q.size-1-i])
 
         self.definition = qc
+
+    def _inverse(self):
+        """gate zd()^dagger"""
+        q = QuantumRegister(self.num_qubits)
+        qc = QuantumCircuit(q, name=self.name)
+
+        w = -2*np.pi/self.qudit_dimensions[0]
+        for i in range(q.size):
+            qc.rz(w * 2**(q.size-i+1), q[q.size-1-i])
+
+        self.definition = qc
