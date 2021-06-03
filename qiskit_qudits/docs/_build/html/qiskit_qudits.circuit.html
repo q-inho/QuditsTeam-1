@@ -1153,7 +1153,10 @@ int, int -&gt; QuantumRegister, ClassicalRegister
 list(int) -&gt; QuditRegister
 list(int), int -&gt; QuditRegister, ClassicalRegister
 list(int), int, int -&gt; QuditRegister, QuantumRegister, ClassicalRegister.
-Also allows 0 and [] as arguments, resulting in no Register created.</p></li>
+Also allows 0 and [] as arguments, resulting in no Register created.
+When adding registers of other quditcircuits, every QuditRegister
+will already be included in <code class="docutils literal notranslate"><span class="pre">qregs</span></code> since it is a subclass of Quantumregister.
+Therefore passing <code class="docutils literal notranslate"><span class="pre">qdregs</span></code> additionally should be avoided.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Optional. The name of the quantum circuit. If not set, an
 automatically generated string will be assigned.</p></li>
 <li><p><strong>global_phase</strong> (<em>float</em><em> or </em><em>ParameterExpression</em>) – Optional.
@@ -1475,7 +1478,7 @@ circuits.</p>
 
 <dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.compose">
-<code class="sig-name descname">compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">qudits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">qubits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clbits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">front</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.compose" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">qudits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">single_qubits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clbits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">front</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.compose" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compose circuit with <code class="docutils literal notranslate"><span class="pre">other</span></code> circuit or instruction, optionally permuting wires.</p>
 <p><code class="docutils literal notranslate"><span class="pre">other</span></code> can be narrower or of equal width to <code class="docutils literal notranslate"><span class="pre">self</span></code>.</p>
 <dl class="field-list simple">
@@ -1484,9 +1487,9 @@ circuits.</p>
 <li><p><strong>(</strong><strong>qiskit.circuit.Instruction</strong><strong> or </strong><strong>QuditInstruction or</strong> (<em>other</em>) – </p></li>
 <li><p><strong>or QuditCircuit</strong> (<em>qiskit.circuit.QuantumCircuit</em>) – </p></li>
 <li><p><strong>BaseOperator</strong><strong>)</strong> (<em>or</em>) – (sub)circuit to compose onto self.</p></li>
-<li><p><strong>qudits</strong> (<em>list</em><em>[</em><em>Qudit|int</em><em>]</em>) – qudits of self to compose onto.</p></li>
-<li><p><strong>qubits</strong> (<em>list</em><em>[</em><em>Qubit|int</em><em>]</em>) – qubits of self to compose onto.</p></li>
-<li><p><strong>clbits</strong> (<em>list</em><em>[</em><em>Clbit|int</em><em>]</em>) – clbits of self to compose onto.</p></li>
+<li><p><strong>qudits</strong> (<em>list</em><em>[</em><em>Qudit|int</em><em>]</em>) – qudits or their indices of self to compose onto.</p></li>
+<li><p><strong>single_qubits</strong> (<em>list</em><em>[</em><em>Qubit|int</em><em>]</em>) – single_qubits or their indices of self to compose onto.</p></li>
+<li><p><strong>clbits</strong> (<em>list</em><em>[</em><em>Clbit|int</em><em>]</em>) – clbits or their indices of self to compose onto.</p></li>
 <li><p><strong>front</strong> (<em>bool</em>) – If True, front composition will be performed (not implemented yet).</p></li>
 <li><p><strong>inplace</strong> (<em>bool</em>) – If True, modify the object. Otherwise return composed circuit.</p></li>
 </ul>
@@ -1499,8 +1502,9 @@ circuits.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>CircuitError</strong> – if composing on the front.</p></li>
-<li><p><strong>CircuitError</strong> – if <code class="docutils literal notranslate"><span class="pre">other</span></code> is wider or there are duplicate edge mappings.</p></li>
+<li><p><strong>CircuitError</strong> – If composing on the front.</p></li>
+<li><p><strong>CircuitError</strong> – If <code class="docutils literal notranslate"><span class="pre">other</span></code> is wider or there are duplicate edge mappings.</p></li>
+<li><p><strong>CircuitError</strong> – If a qudit is mapped to a qudit with different dimension.</p></li>
 </ul>
 </dd>
 </dl>
@@ -5253,7 +5257,7 @@ account.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright Apache 2.0, 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.
-      Last updated on 2021/06/03.
+      Last updated on 2021/06/04.
 
     </p>
   </div>

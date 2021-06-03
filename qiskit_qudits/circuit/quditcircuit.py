@@ -35,6 +35,7 @@
 import copy
 import warnings
 from typing import Union
+from collections import Counter
 from qiskit.exceptions import QiskitError
 from qiskit.circuit.parameter import Parameter
 from qiskit.circuit.exceptions import CircuitError
@@ -77,6 +78,9 @@ class QuditCircuit(QuantumCircuit):
                 list(int), int -> QuditRegister, ClassicalRegister
                 list(int), int, int -> QuditRegister, QuantumRegister, ClassicalRegister.
                 Also allows 0 and [] as arguments, resulting in no Register created.
+                When adding registers of other quditcircuits, every QuditRegister
+                will already be included in ``qregs`` since it is a subclass of Quantumregister.
+                Therefore passing ``qdregs`` additionally should be avoided.
             name (str): Optional. The name of the quantum circuit. If not set, an
                 automatically generated string will be assigned.
             global_phase (float or ParameterExpression): Optional.
@@ -296,7 +300,8 @@ class QuditCircuit(QuantumCircuit):
         This implementation will only return a QuantumCircuit, not a QuditCircuit."""
         return super().control(num_ctrl_qubits=num_ctrl_qubits, label=label, ctrl_state=ctrl_state)
 
-    def compose(self, other, qudits=None, qubits=None, clbits=None, front=False, inplace=False):
+    def compose(self, other, qudits=None, single_qubits=None,
+                clbits=None, front=False, inplace=False):
         """Compose circuit with ``other`` circuit or instruction, optionally permuting wires.
 
         ``other`` can be narrower or of equal width to ``self``.
@@ -305,9 +310,9 @@ class QuditCircuit(QuantumCircuit):
             other (qiskit.circuit.Instruction or QuditInstruction or
             qiskit.circuit.QuantumCircuit or QuditCircuit
             or BaseOperator): (sub)circuit to compose onto self.
-            qudits (list[Qudit|int]): qudits of self to compose onto.
-            qubits (list[Qubit|int]): qubits of self to compose onto.
-            clbits (list[Clbit|int]): clbits of self to compose onto.
+            qudits (list[Qudit|int]): qudits or their indices of self to compose onto.
+            single_qubits (list[Qubit|int]): single_qubits or their indices of self to compose onto.
+            clbits (list[Clbit|int]): clbits or their indices of self to compose onto.
             front (bool): If True, front composition will be performed (not implemented yet).
             inplace (bool): If True, modify the object. Otherwise return composed circuit.
 
@@ -315,8 +320,9 @@ class QuditCircuit(QuantumCircuit):
             QuditCircuit: the composed circuit (returns None if inplace==True).
 
         Raises:
-            CircuitError: if composing on the front.
-            CircuitError: if ``other`` is wider or there are duplicate edge mappings.
+            CircuitError: If composing on the front.
+            CircuitError: If ``other`` is wider or there are duplicate edge mappings.
+            CircuitError: If a qudit is mapped to a qudit with different dimension.
         """
         if inplace:
             dest = self
@@ -325,9 +331,11 @@ class QuditCircuit(QuantumCircuit):
 
         if not isinstance(other, QuantumCircuit):
             if front:
-                dest.data.insert(0, *QuditCircuitData.to_rule((other, qudits, qubits, clbits)))
+                dest.data.insert(
+                    0, *QuditCircuitData.to_rule((other, qudits, single_qubits, clbits))
+                )
             else:
-                dest.qd_append(other, qdargs=qudits, qargs=qubits, cargs=clbits)
+                dest.qd_append(other, qdargs=qudits, qargs=single_qubits, cargs=clbits)
 
             if inplace:
                 return None
@@ -336,23 +344,36 @@ class QuditCircuit(QuantumCircuit):
         from qiskit_qudits.converters import circuit_to_quditcircuit
         other = circuit_to_quditcircuit(other)
 
-        if other.num_qudits > self.num_qudits or \
-                other.num_qubits > self.num_qubits or other.num_clbits > self.num_clbits:
+        def _is_sublist(sublist, superlist):
+            count_sublist = Counter(sublist)
+            count_superlist = Counter(superlist)
+
+            # checking if element exists in second list
+            for key in count_sublist:
+                if count_sublist[key] > count_superlist[key]:
+                    return False
+                if key not in count_superlist:
+                    return False
+            return True
+
+        if not _is_sublist(other.qudit_dimensions, self.qudit_dimensions) or \
+                other.num_single_qubits > self.num_single_qubits or \
+                other.num_clbits > self.num_clbits:
             raise CircuitError(
                 "Trying to compose with another QuantumCircuit which has more 'in' edges."
             )
 
         bit_list = [
             ("qudits", qudits, other.qudits, self.qudits),
-            ("qubits", qubits, other.qubits, self.qubits),
+            ("single qubits", single_qubits, other.single_qubits, self.single_qubits),
             ("clbits", clbits, other.clbits, self.clbits)
         ]
         edge_map = {}
 
         for bit_name, arg_bits, other_bits, self_bits in bit_list:
-            # number of qudits, qubits and clbits must match number in circuit or None
             identity_bit_map = dict(zip(other_bits, self_bits))
 
+            # number of qudits, qubits and clbits must match number in circuit or None
             if arg_bits is None:
                 bit_map = identity_bit_map
             elif len(arg_bits) != len(other_bits):
@@ -362,20 +383,24 @@ class QuditCircuit(QuantumCircuit):
                 )
             else:
                 bit_map = {
-                    other_bits[i]: (self_bits[q] if isinstance(q, int) else q)
-                    for i, q in enumerate(arg_bits)
+                    other_bits[i]:
+                        (self_bits[b] if isinstance(b, int) else b) for i, b in enumerate(arg_bits)
                 } or identity_bit_map
 
             edge_map.update(bit_map)
 
-        if isinstance(other, QuditCircuit):
-            qd_data = other.data[0j:]
-        else:
-            qd_data = [self.data.to_qd_rule(rule) for rule in other.data]
+        for qudit in other.qudits:
+            if qudit.dimension != edge_map[qudit].dimension:
+                raise CircuitError(
+                    f"Qudit with dimension {qudit.dimension} cannot be mapped to qudit "
+                    f"with dimension {edge_map[qudit].dimension}."
+                )
+            # map qudit qubits
+            edge_map.update({qudit[i]: edge_map[qudit][i] for i in range(qudit.size)})
 
-        mapped_qd_instrs = []
+        mapped_instrs = []
 
-        for instr, qdargs, qargs, cargs in qd_data:
+        for instr, qdargs, qargs, cargs in other[0j:]:
             n_qdargs = [edge_map[qdarg] for qdarg in qdargs]
             n_qargs = [edge_map[qarg] for qarg in qargs]
             n_cargs = [edge_map[carg] for carg in cargs]
@@ -386,9 +411,7 @@ class QuditCircuit(QuantumCircuit):
 
                 n_instr.condition = DAGCircuit._map_condition(edge_map, instr.condition, self.cregs)
 
-            mapped_qd_instrs.append((n_instr, n_qdargs, n_qargs, n_cargs))
-
-        mapped_instrs = [self.data.to_rule(qd_rule) for qd_rule in mapped_qd_instrs]
+            mapped_instrs.append(self.data.to_rule((n_instr, n_qdargs, n_qargs, n_cargs)))
 
         if front:
             dest._data = mapped_instrs + dest._data
@@ -423,10 +446,10 @@ class QuditCircuit(QuantumCircuit):
         from qiskit_qudits.converters import circuit_to_quditcircuit
         other = circuit_to_quditcircuit(other)
 
-        qudit_dimensions = self.qudit_dimensions + other.qudit_dimensions
-        num_qudits = self.num_qudits + other.num_qudits
-        num_single_qubits = self.num_single_qubits + other.num_single_qubits
-        num_clbits = self.num_clbits + other.num_clbits
+        qudit_dimensions = other.qudit_dimensions + self.qudit_dimensions
+        num_qudits = other.num_qudits + self.num_qudits
+        num_single_qubits = other.num_single_qubits + self.num_single_qubits
+        num_clbits = other.num_clbits + self.num_clbits
 
         # Check name collisions of circuits.
         # To still allow tensoring we define new registers of the correct sizes.
@@ -489,9 +512,9 @@ class QuditCircuit(QuantumCircuit):
         )
         dest.compose(
             self,
-            list((other.num_qudits, num_qudits)),
-            list((other.num_single_qubits, num_single_qubits)),
-            list((other.num_clbits, num_clbits)),
+            list(range(other.num_qudits, num_qudits)),
+            list(range(other.num_single_qubits, num_single_qubits)),
+            list(range(other.num_clbits, num_clbits)),
             inplace=True,
         )
 
