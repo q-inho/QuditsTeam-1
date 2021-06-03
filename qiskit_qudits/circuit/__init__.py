@@ -1,6 +1,8 @@
 # This code is from Qiskit Hackathon 2021 by the team
 # Qiskit for high dimensional multipartite quantum states.
 #
+# Author: Tim Alexis Körner
+#
 # (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.
 #
 # This code is licensed under the Apache License, Version 2.0. You may

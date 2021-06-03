@@ -2,6 +2,8 @@
 # Qiskit for high dimensional multipartite quantum states.
 # It is a modified version of instruction.py from the original Qiskit-Terra code.
 #
+# Author: Tim Alexis Körner
+#
 # (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
