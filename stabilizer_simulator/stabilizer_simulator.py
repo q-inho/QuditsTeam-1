@@ -28,8 +28,7 @@ class PauliND:
 
         Arguments:
             d   : dimensionality of the qudit (prime number)
-            pauli_list : (w_N,  P_N, Q_N) : orders of the generators.
-            Q_N
+            pauli_list : (w, q, p) : orders of the generators.
         """
         # if max(pauli_list) >= d or min(pauli_list) < 0:
         #     warn("Generalized Pauli matrices have orders as their dimension."
@@ -51,16 +50,16 @@ class PauliND:
 
     def __str__(self):
         """Zoli string."""
-        w, p, q = self.pauli_list
-        return f"ω**{w} p**{p} q**{q}"
+        w, q, p = self.pauli_list
+        return f"ω**{w} q**{q} p**{p}"
 
     def __mul__(self, other):
         """Multiplication betwen two Pauli operators (not commutative)."""
         if not self.d == other.d:
             raise ValueError("Only qudits with same d can be multiplied.")
-        w1, p1, q1 = self.pauli_list
-        w2, p2, q2 = other.pauli_list
-        return __class__(self.d, [(w1+w2+q1*p2), p1+p2, q1+q2])
+        w1, q1, p1 = self.pauli_list
+        w2, q2, p2 = other.pauli_list
+        return __class__(self.d, [(w1+w2+p1*q2), q1+q2, p1+p2])
 
     def __pow__(self, power):
         """Raise to a power."""
@@ -70,54 +69,64 @@ class PauliND:
         return prod((self for _ in range(power)),
                     start=__class__(self.d, (0, 0, 0)))
 
+    @classmethod
+    def q(cls, d):
+        """Q operator, as Pauli operator."""
+        return cls(d, (0, 1, 0))
+
+    @classmethod
+    def p(cls, d):
+        """P operator, as Pauli operator."""
+        return cls(d, (0, 0, 1))
+
 
 class CliffordND:
     """Represent Clifford operators."""
 
-    def __init__(self, new_p: PauliND, new_q: PauliND):
+    def __init__(self, new_q: PauliND, new_p: PauliND):
         """Initialize the Clifford operator from it's tableau."""
-        if not new_p.d == new_q.d:
+        if not new_q.d == new_p.d:
             raise ValueError("Pauli operator should work on same qudits.")
-        self.d = new_p.d
-        self.new_p = new_p
+        self.d = new_q.d
         self.new_q = new_q
+        self.new_p = new_p
 
     def __repr__(self):
         """Representation."""
-        return f"CliffordND({self.new_p!r}, {self.new_q!r})"
+        return f"CliffordND({self.new_q!r}, {self.new_p!r})"
 
     def __str__(self):
         """Zoli string."""
-        return f"[p -> {self.new_p}, q -> {self.new_q}]"
+        return f"[q -> {self.new_q}, p -> {self.new_p}]"
 
     def __call__(self, pauli: PauliND):
         """Apply the Clifford gate to a Pauli operator."""
         if not self.d == pauli.d:
             raise ValueError("Dimension of qudits doesn't match.")
-        w, p, q = pauli.pauli_list
-        return PauliND(self.d, (w, 0, 0)) * self.new_p**p * self.new_q**q
+        w, q, p = pauli.pauli_list
+        return PauliND(self.d, (w, 0, 0)) * self.new_q**q * self.new_p**p
 
     def __mul__(self, other):
         """Do the multiplication (rhs applied before lhs)."""
         if not self.d == other.d:
             raise ValueError("Only Clifford of qudits with same d can be *.")
-        return __class__(self(other.new_p), self(other.new_q))
-
-    @classmethod
-    def P(cls, d):
-        """P gate (as a Clifford gate."""
-        p = PauliND(d, [0, 1, 0])
-        p_inv = PauliND(d, [0, d-1, 0])
-        q = PauliND(d, [0, 0, 1])
-        return cls(p, p*q*p_inv)
+        return __class__(self(other.new_q), self(other.new_p))
 
     @classmethod
     def Q(cls, d):
         """Q gate (as a Clifford gate."""
-        p = PauliND(d, [0, 1, 0])
-        q = PauliND(d, [0, 0, 1])
-        q_inv = PauliND(d, [0, 0, q])
-        return cls(q*p*q_inv, q)
+        q = PauliND.q(d)
+        q_inv = q**(d-1)
+        p = PauliND.p(d)
+        return cls(q, q*p*q_inv)
+
+    @classmethod
+    def P(cls, d):
+        """P gate (as a Clifford gate."""
+        q = PauliND.q(d)
+        p = PauliND.p(d)
+        p_inv = p**(d-1)
+        return cls(p*q*p_inv, p)
 
     @classmethod
     def S(cls, d):
