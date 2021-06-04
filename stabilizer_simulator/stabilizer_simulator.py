@@ -40,7 +40,7 @@ class PauliND():
     def PauliProduct(self,SymplecticList1,SymplecticList2,dimension):
         SymplecticList1=PauliND().PauliOrdersList(SymplecticList1,dimension)
         SymplecticList1=PauliND().PauliOrdersList(SymplecticList2,dimension)
-        SymplecticProduct=[SymplecticList1[0]+SymplecticList2[0]+SymplecticList1[2]+SymplecticList2[1],
+        SymplecticProduct=[SymplecticList1[0]+SymplecticList2[0]+SymplecticList1[2]*SymplecticList2[1],
                            SymplecticList1[1]+SymplecticList2[1],
                            SymplecticList1[2]+SymplecticList2[2]]
         return PauliND().PauliOrdersList(SymplecticProduct,dimension)
