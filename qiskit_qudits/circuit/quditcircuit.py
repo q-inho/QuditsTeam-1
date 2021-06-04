@@ -67,11 +67,11 @@ class QuditCircuit(QuantumCircuit):
         """Create a new circuit capable of handling qudits.
 
         Args:
-            regs (list(:class:`Register`|list(``int``)|``ìnt``):
+            regs (list(:class:`Register`|list(``int``)|``ìnt``|``bit``):
                 Registers to be included in the circuit.
                 Parameters can be Registers or a list of qudit dimensions
                 followed by the size of qubit and classical bit registers as integers.
-                The for non registers the possibilities are:
+                The for non registers/bits the possibilities are:
                 int -> QuantumRegister
                 int, int -> QuantumRegister, ClassicalRegister
                 list(int) -> QuditRegister

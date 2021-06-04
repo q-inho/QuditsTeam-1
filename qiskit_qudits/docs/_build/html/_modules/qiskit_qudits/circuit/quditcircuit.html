@@ -310,11 +310,11 @@
         <span class="sd">&quot;&quot;&quot;Create a new circuit capable of handling qudits.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            regs (list(:class:`Register`|list(``int``)|``ìnt``):</span>
+<span class="sd">            regs (list(:class:`Register`|list(``int``)|``ìnt``|``bit``):</span>
 <span class="sd">                Registers to be included in the circuit.</span>
 <span class="sd">                Parameters can be Registers or a list of qudit dimensions</span>
 <span class="sd">                followed by the size of qubit and classical bit registers as integers.</span>
-<span class="sd">                The for non registers the possibilities are:</span>
+<span class="sd">                The for non registers/bits the possibilities are:</span>
 <span class="sd">                int -&gt; QuantumRegister</span>
 <span class="sd">                int, int -&gt; QuantumRegister, ClassicalRegister</span>
 <span class="sd">                list(int) -&gt; QuditRegister</span>

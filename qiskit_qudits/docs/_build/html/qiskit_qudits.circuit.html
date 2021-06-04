@@ -1147,10 +1147,10 @@ To access qudits for gates, use imaginary indices (e.g. 2j).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>regs</strong> (list(<code class="xref py py-class docutils literal notranslate"><span class="pre">Register`|list(``int`</span></code>)|``ìnt``) – Registers to be included in the circuit.
+<li><p><strong>regs</strong> (list(<code class="xref py py-class docutils literal notranslate"><span class="pre">Register`|list(``int`</span></code>)|``ìnt``|``bit``) – Registers to be included in the circuit.
 Parameters can be Registers or a list of qudit dimensions
 followed by the size of qubit and classical bit registers as integers.
-The for non registers the possibilities are:
+The for non registers/bits the possibilities are:
 int -&gt; QuantumRegister
 int, int -&gt; QuantumRegister, ClassicalRegister
 list(int) -&gt; QuditRegister
