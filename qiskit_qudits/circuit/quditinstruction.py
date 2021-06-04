@@ -147,7 +147,7 @@ class QuditInstruction(Instruction):
         from .quditgate import QuditGate  # pylint: disable=cyclic-import
 
         if self.num_clbits:
-            inverse_gate = QuditInstruction(
+            inverse_inst = QuditInstruction(
                 name=self.name + "_dg",
                 qudit_dimensions=self.qudit_dimensions,
                 num_single_qubits=self.num_single_qubits,
@@ -156,7 +156,7 @@ class QuditInstruction(Instruction):
             )
 
         else:
-            inverse_gate = QuditGate(
+            inverse_inst = QuditGate(
                 name=self.name + "_dg",
                 qudit_dimensions=self.qudit_dimensions,
                 num_single_qubits=self.num_single_qubits,
@@ -164,23 +164,23 @@ class QuditInstruction(Instruction):
             )
 
         if isinstance(self.definition, QuditCircuit):
-            inverse_gate.definition = QuditCircuit(
+            inverse_inst.definition = QuditCircuit(
                 *self.definition.qdregs,
                 *self.definition.qregs,
                 *self.definition.cregs,
                 global_phase=-self.definition.global_phase
             )
         else:
-            inverse_gate.definition = QuantumCircuit(
+            inverse_inst.definition = QuantumCircuit(
                 *self.definition.qregs,
                 *self.definition.cregs,
                 global_phase=-self.definition.global_phase
             )
 
-        inverse_gate.definition._data = [
+        inverse_inst.definition._data = [
             (inst.inverse(), qargs, cargs) for inst, qargs, cargs in reversed(self._definition)
         ]
-        return inverse_gate
+        return inverse_inst
 
     def qd_broadcast_arguments(self, qdargs, qargs, cargs):
         """

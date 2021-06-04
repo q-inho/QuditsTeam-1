@@ -253,6 +253,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_qudits.circuit.gates.html">qiskit_qudits.circuit.gates</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-zd">qiskit_qudits.circuit.gates.zd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-qftd">qiskit_qudits.circuit.gates.qftd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-xd">qiskit_qudits.circuit.gates.xd</a></li>
 </ul>
 </li>
 </ul>
@@ -2535,6 +2537,18 @@ into a list of qudits.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftd">
+<code class="sig-name descname">qftd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.qftd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">QFTDGate</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftddg">
+<code class="sig-name descname">qftddg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.qftddg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftddg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">QFTDdgGate</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.qubit_duration">
 <code class="sig-name descname">qubit_duration</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">qubits</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qubit_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the duration between the start and stop time of the first and last instructions,
@@ -3259,6 +3273,18 @@ the single-qubit rotation gates</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.xd">
+<code class="sig-name descname">xd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">steps</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.xd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.xd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">XDGate</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.xddg">
+<code class="sig-name descname">xddg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">steps</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.xddg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.xddg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">XDdgGate</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.y">
 <code class="sig-name descname">y</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qubit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.y" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">YGate</span></code>.</p>
@@ -3274,6 +3300,12 @@ the single-qubit rotation gates</p></li>
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.zd">
 <code class="sig-name descname">zd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.zd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.zd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">ZDGate</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.zddg">
+<code class="sig-name descname">zddg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.zddg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.zddg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">ZDdgGate</span></code>.</p>
 </dd></dl>
 
 </dd></dl>

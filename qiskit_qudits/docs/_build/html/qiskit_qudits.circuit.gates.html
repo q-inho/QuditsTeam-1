@@ -384,24 +384,8 @@ if None then the name stays the same.</p>
 
 <dl class="py method">
 <dt id="qiskit_qudits.circuit.gates.zd.ZDGate.inverse">
-<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDGate.inverse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invert this instruction.</p>
-<p>If the instruction is composite (i.e. has a definition),
-then its definition will be recursively inverted.</p>
-<p>Special instructions inheriting from QuditInstruction can
-implement their own inverse.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a fresh instruction for the inverse</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction" title="qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction</a></p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>CircuitError</strong> – If the instruction is not composite
-    and an inverse has not been implemented for it.</p>
-</dd>
-</dl>
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/zd.html#ZDGate.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDGate.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>gate zddg()</p>
 </dd></dl>
 
 <dl class="py method">
@@ -589,6 +573,1620 @@ account.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate">
+<em class="property">class </em><code class="sig-name descname">ZDdgGate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qudit_dimensions</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/zd.html#ZDdgGate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate" title="qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate"><code class="xref py py-class docutils literal notranslate"><span class="pre">qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate</span></code></a></p>
+<p>Adjoint of general Z gate for Qudits.</p>
+<p>Create new adjoint of a general Z gate for a single qudit.</p>
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.add_decomposition">
+<code class="sig-name descname">add_decomposition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decomposition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.add_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a decomposition of the instruction to the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.assemble">
+<code class="sig-name descname">assemble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.assemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a QasmQobjInstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Instruction</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.broadcast_arguments">
+<code class="sig-name descname">broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">cx([q[0],q[1]],</span> <span class="pre">q[2])</span></code> means <code class="docutils literal notranslate"><span class="pre">cx(q[0],</span> <span class="pre">q[2]);</span> <span class="pre">cx(q[1],</span> <span class="pre">q[2])</span></code>. This
+method yields the arguments in the right grouping. In the given example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ow">in</span><span class="p">:</span> <span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],[]</span>
+<span class="n">outs</span><span class="p">:</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+      <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>The general broadcasting rules are:</p>
+<blockquote>
+<div><ul>
+<li><p>If len(qargs) == 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) == 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) &gt;= 3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>  <span class="o">...</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.c_if">
+<code class="sig-name descname">c_if</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classical</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.c_if" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add classical condition on register classical and value val.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.control">
+<code class="sig-name descname">control</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_ctrl_qubits</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ctrl_state</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return controlled version of gate. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ControlledGate</span></code> for usage.
+This implementation will only return  a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name to be given to the copied circuit,
+if None then the name stays the same.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>a copy of the current instruction, with the name</dt><dd><p>updated if it was provided</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.decompositions">
+<em class="property">property </em><code class="sig-name descname">decompositions</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.decompositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the decompositions of the instruction from the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.definition">
+<em class="property">property </em><code class="sig-name descname">definition</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return definition in terms of other basic gates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.duration">
+<em class="property">property </em><code class="sig-name descname">duration</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.inverse">
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/zd.html#ZDdgGate.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>gate zd()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.is_parameterized">
+<code class="sig-name descname">is_parameterized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.is_parameterized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True .IFF. instruction is parameterized else False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.label">
+<em class="property">property </em><code class="sig-name descname">label</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return gate label</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.mirror">
+<code class="sig-name descname">mirror</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED: use instruction.reverse_ops().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with sub-instructions</dt><dd><p>reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.num_qudits">
+<code class="sig-name descname">num_qudits</code><em class="property"> = 1</em><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.num_qudits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>return instruction params.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.power">
+<code class="sig-name descname">power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">exponent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a unitary gate as gate^exponent.
+The current implementation will only return a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.qasm">
+<code class="sig-name descname">qasm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.qasm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a default OpenQASM string for the instruction.</p>
+<p>Derived instructions may override this to print in a
+different format (e.g. measure q[0] -&gt; c[0];).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.qd_broadcast_arguments">
+<code class="sig-name descname">qd_broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.qd_broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship for qudit gates.</p>
+<p>At first qdargs will be cast into the form
+[[qd(d=d1), qd(d=d2), …], [qd(d=d1), qd(d=d2), …], …]
+for qudit_dimensions [d1, d2, …] with each qd being a different qudit.
+Similarly qargs will be cast into the form
+[[qb, qb, …], [qb, qb, …], …]
+with each sublist having length num_single_qubits and each qb being a different qubit.</p>
+<p>The returned tuples are the cartesian product of these forms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qdargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of d-dimensional quantum bit arguments.</p></li>
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.repeat">
+<code class="sig-name descname">repeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an QuditInstruction with this instruction repeated <cite>n</cite> amount of times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Number of times to repeat the instruction</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing the definition.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction" title="qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If n &lt; 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.reverse_ops">
+<code class="sig-name descname">reverse_ops</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.reverse_ops" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a composite instruction, reverse the order of sub-instructions.</p>
+<p>This is done by recursively reversing all sub-instructions.
+It does not invert any gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with</dt><dd><p>sub-instructions reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.soft_compare">
+<code class="sig-name descname">soft_compare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.soft_compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Soft comparison between qudit gates. Their names, qudit dimensions, number of qubits,
+and classical bit numbers must match. The number of parameters must match. Each parameter
+is compared. If one is a ParameterExpression then it is not taken into
+account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Instruction</em>) – other instruction.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>are self and other equal up to parameter expressions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.to_matrix">
+<code class="sig-name descname">to_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Numpy.array for the gate unitary matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>if the Gate subclass has a matrix definition.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>CircuitError</strong> – If a Gate subclass does not implement this method an
+    exception will be raised when this base class method is called.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.unit">
+<em class="property">property </em><code class="sig-name descname">unit</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the time unit of duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.zd.ZDdgGate.validate_parameter">
+<code class="sig-name descname">validate_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parameter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.zd.ZDdgGate.validate_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gate parameters should be int, float, or ParameterExpression</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="qiskit-qudits-circuit-gates-qftd">
+<h2>qiskit_qudits.circuit.gates.qftd<a class="headerlink" href="#qiskit-qudits-circuit-gates-qftd" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.gates.qftd"></span><p>QFT gate for qudits. Currently only powers of 2 are supported for qudit dimension.
+Uses <code class="docutils literal notranslate"><span class="pre">qiskit.circuit.library.basis_change.qft</span></code>.</p>
+<dl class="py class">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate">
+<em class="property">class </em><code class="sig-name descname">QFTDGate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qudit_dimensions</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/qftd.html#QFTDGate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate" title="qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate"><code class="xref py py-class docutils literal notranslate"><span class="pre">qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate</span></code></a></p>
+<p>QFT gate for Qudits. Currently only powers of 2 are supported for qudit dimension.</p>
+<p>Create new QFT gate for a single qudit.
+Currently only powers of 2 are supported for qudit dimension.</p>
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.add_decomposition">
+<code class="sig-name descname">add_decomposition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decomposition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.add_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a decomposition of the instruction to the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.assemble">
+<code class="sig-name descname">assemble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.assemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a QasmQobjInstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Instruction</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.broadcast_arguments">
+<code class="sig-name descname">broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">cx([q[0],q[1]],</span> <span class="pre">q[2])</span></code> means <code class="docutils literal notranslate"><span class="pre">cx(q[0],</span> <span class="pre">q[2]);</span> <span class="pre">cx(q[1],</span> <span class="pre">q[2])</span></code>. This
+method yields the arguments in the right grouping. In the given example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ow">in</span><span class="p">:</span> <span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],[]</span>
+<span class="n">outs</span><span class="p">:</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+      <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>The general broadcasting rules are:</p>
+<blockquote>
+<div><ul>
+<li><p>If len(qargs) == 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) == 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) &gt;= 3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>  <span class="o">...</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.c_if">
+<code class="sig-name descname">c_if</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classical</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.c_if" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add classical condition on register classical and value val.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.control">
+<code class="sig-name descname">control</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_ctrl_qubits</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ctrl_state</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return controlled version of gate. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ControlledGate</span></code> for usage.
+This implementation will only return  a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name to be given to the copied circuit,
+if None then the name stays the same.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>a copy of the current instruction, with the name</dt><dd><p>updated if it was provided</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.decompositions">
+<em class="property">property </em><code class="sig-name descname">decompositions</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.decompositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the decompositions of the instruction from the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.definition">
+<em class="property">property </em><code class="sig-name descname">definition</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return definition in terms of other basic gates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.duration">
+<em class="property">property </em><code class="sig-name descname">duration</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.inverse">
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/qftd.html#QFTDGate.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>gate qftddg()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.is_parameterized">
+<code class="sig-name descname">is_parameterized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.is_parameterized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True .IFF. instruction is parameterized else False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.label">
+<em class="property">property </em><code class="sig-name descname">label</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return gate label</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.mirror">
+<code class="sig-name descname">mirror</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED: use instruction.reverse_ops().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with sub-instructions</dt><dd><p>reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.num_qudits">
+<code class="sig-name descname">num_qudits</code><em class="property"> = 1</em><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.num_qudits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>return instruction params.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.power">
+<code class="sig-name descname">power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">exponent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a unitary gate as gate^exponent.
+The current implementation will only return a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.qasm">
+<code class="sig-name descname">qasm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.qasm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a default OpenQASM string for the instruction.</p>
+<p>Derived instructions may override this to print in a
+different format (e.g. measure q[0] -&gt; c[0];).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.qd_broadcast_arguments">
+<code class="sig-name descname">qd_broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.qd_broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship for qudit gates.</p>
+<p>At first qdargs will be cast into the form
+[[qd(d=d1), qd(d=d2), …], [qd(d=d1), qd(d=d2), …], …]
+for qudit_dimensions [d1, d2, …] with each qd being a different qudit.
+Similarly qargs will be cast into the form
+[[qb, qb, …], [qb, qb, …], …]
+with each sublist having length num_single_qubits and each qb being a different qubit.</p>
+<p>The returned tuples are the cartesian product of these forms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qdargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of d-dimensional quantum bit arguments.</p></li>
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.repeat">
+<code class="sig-name descname">repeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an QuditInstruction with this instruction repeated <cite>n</cite> amount of times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Number of times to repeat the instruction</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing the definition.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction" title="qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If n &lt; 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.reverse_ops">
+<code class="sig-name descname">reverse_ops</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.reverse_ops" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a composite instruction, reverse the order of sub-instructions.</p>
+<p>This is done by recursively reversing all sub-instructions.
+It does not invert any gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with</dt><dd><p>sub-instructions reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.soft_compare">
+<code class="sig-name descname">soft_compare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.soft_compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Soft comparison between qudit gates. Their names, qudit dimensions, number of qubits,
+and classical bit numbers must match. The number of parameters must match. Each parameter
+is compared. If one is a ParameterExpression then it is not taken into
+account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Instruction</em>) – other instruction.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>are self and other equal up to parameter expressions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.to_matrix">
+<code class="sig-name descname">to_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Numpy.array for the gate unitary matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>if the Gate subclass has a matrix definition.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>CircuitError</strong> – If a Gate subclass does not implement this method an
+    exception will be raised when this base class method is called.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.unit">
+<em class="property">property </em><code class="sig-name descname">unit</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the time unit of duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDGate.validate_parameter">
+<code class="sig-name descname">validate_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parameter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDGate.validate_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gate parameters should be int, float, or ParameterExpression</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate">
+<em class="property">class </em><code class="sig-name descname">QFTDdgGate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qudit_dimensions</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/qftd.html#QFTDdgGate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate" title="qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate"><code class="xref py py-class docutils literal notranslate"><span class="pre">qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate</span></code></a></p>
+<p>Adjoint of QFT gate for Qudits.
+Currently only powers of 2 are supported for qudit dimension.</p>
+<p>Create new adjoint of a QFT gate for a single qudit.
+Currently only powers of 2 are supported for qudit dimension.</p>
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.add_decomposition">
+<code class="sig-name descname">add_decomposition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decomposition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.add_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a decomposition of the instruction to the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.assemble">
+<code class="sig-name descname">assemble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.assemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a QasmQobjInstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Instruction</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.broadcast_arguments">
+<code class="sig-name descname">broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">cx([q[0],q[1]],</span> <span class="pre">q[2])</span></code> means <code class="docutils literal notranslate"><span class="pre">cx(q[0],</span> <span class="pre">q[2]);</span> <span class="pre">cx(q[1],</span> <span class="pre">q[2])</span></code>. This
+method yields the arguments in the right grouping. In the given example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ow">in</span><span class="p">:</span> <span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],[]</span>
+<span class="n">outs</span><span class="p">:</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+      <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>The general broadcasting rules are:</p>
+<blockquote>
+<div><ul>
+<li><p>If len(qargs) == 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) == 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) &gt;= 3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>  <span class="o">...</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.c_if">
+<code class="sig-name descname">c_if</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classical</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.c_if" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add classical condition on register classical and value val.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.control">
+<code class="sig-name descname">control</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_ctrl_qubits</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ctrl_state</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return controlled version of gate. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ControlledGate</span></code> for usage.
+This implementation will only return  a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name to be given to the copied circuit,
+if None then the name stays the same.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>a copy of the current instruction, with the name</dt><dd><p>updated if it was provided</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.decompositions">
+<em class="property">property </em><code class="sig-name descname">decompositions</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.decompositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the decompositions of the instruction from the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.definition">
+<em class="property">property </em><code class="sig-name descname">definition</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return definition in terms of other basic gates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.duration">
+<em class="property">property </em><code class="sig-name descname">duration</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.inverse">
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/qftd.html#QFTDdgGate.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>gate qftd()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.is_parameterized">
+<code class="sig-name descname">is_parameterized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.is_parameterized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True .IFF. instruction is parameterized else False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.label">
+<em class="property">property </em><code class="sig-name descname">label</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return gate label</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.mirror">
+<code class="sig-name descname">mirror</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED: use instruction.reverse_ops().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with sub-instructions</dt><dd><p>reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.num_qudits">
+<code class="sig-name descname">num_qudits</code><em class="property"> = 1</em><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.num_qudits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>return instruction params.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.power">
+<code class="sig-name descname">power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">exponent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a unitary gate as gate^exponent.
+The current implementation will only return a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.qasm">
+<code class="sig-name descname">qasm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.qasm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a default OpenQASM string for the instruction.</p>
+<p>Derived instructions may override this to print in a
+different format (e.g. measure q[0] -&gt; c[0];).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.qd_broadcast_arguments">
+<code class="sig-name descname">qd_broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.qd_broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship for qudit gates.</p>
+<p>At first qdargs will be cast into the form
+[[qd(d=d1), qd(d=d2), …], [qd(d=d1), qd(d=d2), …], …]
+for qudit_dimensions [d1, d2, …] with each qd being a different qudit.
+Similarly qargs will be cast into the form
+[[qb, qb, …], [qb, qb, …], …]
+with each sublist having length num_single_qubits and each qb being a different qubit.</p>
+<p>The returned tuples are the cartesian product of these forms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qdargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of d-dimensional quantum bit arguments.</p></li>
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.repeat">
+<code class="sig-name descname">repeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an QuditInstruction with this instruction repeated <cite>n</cite> amount of times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Number of times to repeat the instruction</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing the definition.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction" title="qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If n &lt; 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.reverse_ops">
+<code class="sig-name descname">reverse_ops</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.reverse_ops" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a composite instruction, reverse the order of sub-instructions.</p>
+<p>This is done by recursively reversing all sub-instructions.
+It does not invert any gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with</dt><dd><p>sub-instructions reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.soft_compare">
+<code class="sig-name descname">soft_compare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.soft_compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Soft comparison between qudit gates. Their names, qudit dimensions, number of qubits,
+and classical bit numbers must match. The number of parameters must match. Each parameter
+is compared. If one is a ParameterExpression then it is not taken into
+account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Instruction</em>) – other instruction.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>are self and other equal up to parameter expressions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.to_matrix">
+<code class="sig-name descname">to_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Numpy.array for the gate unitary matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>if the Gate subclass has a matrix definition.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>CircuitError</strong> – If a Gate subclass does not implement this method an
+    exception will be raised when this base class method is called.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.unit">
+<em class="property">property </em><code class="sig-name descname">unit</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the time unit of duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.qftd.QFTDdgGate.validate_parameter">
+<code class="sig-name descname">validate_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parameter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.validate_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gate parameters should be int, float, or ParameterExpression</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="qiskit-qudits-circuit-gates-xd">
+<h2>qiskit_qudits.circuit.gates.xd<a class="headerlink" href="#qiskit-qudits-circuit-gates-xd" title="Permalink to this headline">¶</a></h2>
+<p><em>Module author: Tim Alexis Körner</em></p>
+<span class="target" id="module-qiskit_qudits.circuit.gates.xd"></span><p>Generalized X gate for qudits, also known as X-.</p>
+<dl class="py class">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate">
+<em class="property">class </em><code class="sig-name descname">XDGate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qudit_dimensions</span></em>, <em class="sig-param"><span class="n">steps</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/xd.html#XDGate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate" title="qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate"><code class="xref py py-class docutils literal notranslate"><span class="pre">qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate</span></code></a></p>
+<p>General X gate for Qudits.</p>
+<p>Create new general X gate for a single qudit.</p>
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.add_decomposition">
+<code class="sig-name descname">add_decomposition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decomposition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.add_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a decomposition of the instruction to the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.assemble">
+<code class="sig-name descname">assemble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.assemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a QasmQobjInstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Instruction</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.broadcast_arguments">
+<code class="sig-name descname">broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">cx([q[0],q[1]],</span> <span class="pre">q[2])</span></code> means <code class="docutils literal notranslate"><span class="pre">cx(q[0],</span> <span class="pre">q[2]);</span> <span class="pre">cx(q[1],</span> <span class="pre">q[2])</span></code>. This
+method yields the arguments in the right grouping. In the given example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ow">in</span><span class="p">:</span> <span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],[]</span>
+<span class="n">outs</span><span class="p">:</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+      <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>The general broadcasting rules are:</p>
+<blockquote>
+<div><ul>
+<li><p>If len(qargs) == 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) == 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) &gt;= 3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>  <span class="o">...</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.c_if">
+<code class="sig-name descname">c_if</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classical</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.c_if" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add classical condition on register classical and value val.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.control">
+<code class="sig-name descname">control</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_ctrl_qubits</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ctrl_state</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return controlled version of gate. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ControlledGate</span></code> for usage.
+This implementation will only return  a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name to be given to the copied circuit,
+if None then the name stays the same.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>a copy of the current instruction, with the name</dt><dd><p>updated if it was provided</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.decompositions">
+<em class="property">property </em><code class="sig-name descname">decompositions</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.decompositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the decompositions of the instruction from the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.definition">
+<em class="property">property </em><code class="sig-name descname">definition</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return definition in terms of other basic gates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.duration">
+<em class="property">property </em><code class="sig-name descname">duration</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.inverse">
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/xd.html#XDGate.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>gate xddg()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.is_parameterized">
+<code class="sig-name descname">is_parameterized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.is_parameterized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True .IFF. instruction is parameterized else False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.label">
+<em class="property">property </em><code class="sig-name descname">label</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return gate label</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.mirror">
+<code class="sig-name descname">mirror</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED: use instruction.reverse_ops().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with sub-instructions</dt><dd><p>reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.num_qudits">
+<code class="sig-name descname">num_qudits</code><em class="property"> = 1</em><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.num_qudits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>return instruction params.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.power">
+<code class="sig-name descname">power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">exponent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a unitary gate as gate^exponent.
+The current implementation will only return a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.qasm">
+<code class="sig-name descname">qasm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.qasm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a default OpenQASM string for the instruction.</p>
+<p>Derived instructions may override this to print in a
+different format (e.g. measure q[0] -&gt; c[0];).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.qd_broadcast_arguments">
+<code class="sig-name descname">qd_broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.qd_broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship for qudit gates.</p>
+<p>At first qdargs will be cast into the form
+[[qd(d=d1), qd(d=d2), …], [qd(d=d1), qd(d=d2), …], …]
+for qudit_dimensions [d1, d2, …] with each qd being a different qudit.
+Similarly qargs will be cast into the form
+[[qb, qb, …], [qb, qb, …], …]
+with each sublist having length num_single_qubits and each qb being a different qubit.</p>
+<p>The returned tuples are the cartesian product of these forms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qdargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of d-dimensional quantum bit arguments.</p></li>
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.repeat">
+<code class="sig-name descname">repeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an QuditInstruction with this instruction repeated <cite>n</cite> amount of times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Number of times to repeat the instruction</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing the definition.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction" title="qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If n &lt; 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.reverse_ops">
+<code class="sig-name descname">reverse_ops</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.reverse_ops" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a composite instruction, reverse the order of sub-instructions.</p>
+<p>This is done by recursively reversing all sub-instructions.
+It does not invert any gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with</dt><dd><p>sub-instructions reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.soft_compare">
+<code class="sig-name descname">soft_compare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.soft_compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Soft comparison between qudit gates. Their names, qudit dimensions, number of qubits,
+and classical bit numbers must match. The number of parameters must match. Each parameter
+is compared. If one is a ParameterExpression then it is not taken into
+account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Instruction</em>) – other instruction.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>are self and other equal up to parameter expressions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.to_matrix">
+<code class="sig-name descname">to_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Numpy.array for the gate unitary matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>if the Gate subclass has a matrix definition.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>CircuitError</strong> – If a Gate subclass does not implement this method an
+    exception will be raised when this base class method is called.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.unit">
+<em class="property">property </em><code class="sig-name descname">unit</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the time unit of duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDGate.validate_parameter">
+<code class="sig-name descname">validate_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parameter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDGate.validate_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gate parameters should be int, float, or ParameterExpression</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate">
+<em class="property">class </em><code class="sig-name descname">XDdgGate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qudit_dimensions</span></em>, <em class="sig-param"><span class="n">steps</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/xd.html#XDdgGate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate" title="qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate"><code class="xref py py-class docutils literal notranslate"><span class="pre">qiskit_qudits.circuit.flexiblequditinstruction.FlexibleQuditGate</span></code></a></p>
+<p>Adjoint of general X gate for Qudits, also known as X+.</p>
+<p>Create new adjoint of a general X gate for a single qudit.</p>
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.add_decomposition">
+<code class="sig-name descname">add_decomposition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decomposition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.add_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a decomposition of the instruction to the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.assemble">
+<code class="sig-name descname">assemble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.assemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a QasmQobjInstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Instruction</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.broadcast_arguments">
+<code class="sig-name descname">broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">cx([q[0],q[1]],</span> <span class="pre">q[2])</span></code> means <code class="docutils literal notranslate"><span class="pre">cx(q[0],</span> <span class="pre">q[2]);</span> <span class="pre">cx(q[1],</span> <span class="pre">q[2])</span></code>. This
+method yields the arguments in the right grouping. In the given example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ow">in</span><span class="p">:</span> <span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],[]</span>
+<span class="n">outs</span><span class="p">:</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+      <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>The general broadcasting rules are:</p>
+<blockquote>
+<div><ul>
+<li><p>If len(qargs) == 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) == 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>       <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>If len(qargs) &gt;= 3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>  <span class="o">...</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.c_if">
+<code class="sig-name descname">c_if</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classical</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.c_if" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add classical condition on register classical and value val.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.control">
+<code class="sig-name descname">control</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_ctrl_qubits</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ctrl_state</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return controlled version of gate. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ControlledGate</span></code> for usage.
+This implementation will only return  a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy of the instruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name to be given to the copied circuit,
+if None then the name stays the same.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>a copy of the current instruction, with the name</dt><dd><p>updated if it was provided</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.decompositions">
+<em class="property">property </em><code class="sig-name descname">decompositions</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.decompositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the decompositions of the instruction from the SessionEquivalenceLibrary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.definition">
+<em class="property">property </em><code class="sig-name descname">definition</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return definition in terms of other basic gates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.duration">
+<em class="property">property </em><code class="sig-name descname">duration</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.inverse">
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/gates/xd.html#XDdgGate.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>gate xd()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.is_parameterized">
+<code class="sig-name descname">is_parameterized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.is_parameterized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True .IFF. instruction is parameterized else False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.label">
+<em class="property">property </em><code class="sig-name descname">label</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return gate label</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.mirror">
+<code class="sig-name descname">mirror</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED: use instruction.reverse_ops().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with sub-instructions</dt><dd><p>reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.num_qudits">
+<code class="sig-name descname">num_qudits</code><em class="property"> = 1</em><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.num_qudits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>return instruction params.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.power">
+<code class="sig-name descname">power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">exponent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a unitary gate as gate^exponent.
+The current implementation will only return a Gate, not a QuditGate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.qasm">
+<code class="sig-name descname">qasm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.qasm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a default OpenQASM string for the instruction.</p>
+<p>Derived instructions may override this to print in a
+different format (e.g. measure q[0] -&gt; c[0];).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.qd_broadcast_arguments">
+<code class="sig-name descname">qd_broadcast_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">cargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.qd_broadcast_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validation and handling of the arguments and its relationship for qudit gates.</p>
+<p>At first qdargs will be cast into the form
+[[qd(d=d1), qd(d=d2), …], [qd(d=d1), qd(d=d2), …], …]
+for qudit_dimensions [d1, d2, …] with each qd being a different qudit.
+Similarly qargs will be cast into the form
+[[qb, qb, …], [qb, qb, …], …]
+with each sublist having length num_single_qubits and each qb being a different qubit.</p>
+<p>The returned tuples are the cartesian product of these forms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qdargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of d-dimensional quantum bit arguments.</p></li>
+<li><p><strong>qargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of quantum bit arguments.</p></li>
+<li><p><strong>cargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – List of classical bit arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with single arguments.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If the input is not valid. For example, the number of
+    arguments does not match the gate expectation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.repeat">
+<code class="sig-name descname">repeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an QuditInstruction with this instruction repeated <cite>n</cite> amount of times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Number of times to repeat the instruction</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing the definition.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditinstruction.QuditInstruction" title="qiskit_qudits.circuit.quditinstruction.QuditInstruction">QuditInstruction</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>CircuitError</strong> – If n &lt; 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.reverse_ops">
+<code class="sig-name descname">reverse_ops</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.reverse_ops" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a composite instruction, reverse the order of sub-instructions.</p>
+<p>This is done by recursively reversing all sub-instructions.
+It does not invert any gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a new instruction with</dt><dd><p>sub-instructions reversed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>qiskit.circuit.Instruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.soft_compare">
+<code class="sig-name descname">soft_compare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.soft_compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Soft comparison between qudit gates. Their names, qudit dimensions, number of qubits,
+and classical bit numbers must match. The number of parameters must match. Each parameter
+is compared. If one is a ParameterExpression then it is not taken into
+account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Instruction</em>) – other instruction.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>are self and other equal up to parameter expressions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.to_matrix">
+<code class="sig-name descname">to_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Numpy.array for the gate unitary matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>if the Gate subclass has a matrix definition.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>CircuitError</strong> – If a Gate subclass does not implement this method an
+    exception will be raised when this base class method is called.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.unit">
+<em class="property">property </em><code class="sig-name descname">unit</code><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the time unit of duration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qiskit_qudits.circuit.gates.xd.XDdgGate.validate_parameter">
+<code class="sig-name descname">validate_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parameter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.gates.xd.XDdgGate.validate_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gate parameters should be int, float, or ParameterExpression</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -638,6 +2236,8 @@ account.</p>
               <ul>
 <li><a class="reference internal" href="#">qiskit_qudits.circuit.gates</a><ul>
 <li><a class="reference internal" href="#qiskit-qudits-circuit-gates-zd">qiskit_qudits.circuit.gates.zd</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-gates-qftd">qiskit_qudits.circuit.gates.qftd</a></li>
+<li><a class="reference internal" href="#qiskit-qudits-circuit-gates-xd">qiskit_qudits.circuit.gates.xd</a></li>
 </ul>
 </li>
 </ul>

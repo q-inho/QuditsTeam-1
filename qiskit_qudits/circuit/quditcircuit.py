@@ -1261,6 +1261,86 @@ class QuditCircuit(QuantumCircuit):
 
         return instructions
 
+    def zddg(self, qdargs):
+        """Apply :class:`~.gates.ZDdgGate`."""
+        from .gates.zd import ZDdgGate
+
+        instructions = QuditInstructionSet()
+
+        if qdargs is None or qdargs == []:
+            return instructions
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, ZDdgGate, qdargs=qdargs):
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            inst = (ZDdgGate(qudit_dimensions), qdargs, qargs, cargs)
+            instructions.qd_extend(self.qd_append(*inst))
+
+        return instructions
+
+    def qftd(self, qdargs):
+        """Apply :class:`~.gates.QFTDGate`."""
+        from .gates.qftd import QFTDGate
+
+        instructions = QuditInstructionSet()
+
+        if qdargs is None or qdargs == []:
+            return instructions
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QFTDGate, qdargs=qdargs):
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            inst = (QFTDGate(qudit_dimensions), qdargs, qargs, cargs)
+            instructions.qd_extend(self.qd_append(*inst))
+
+        return instructions
+
+    def qftddg(self, qdargs):
+        """Apply :class:`~.gates.QFTDdgGate`."""
+        from .gates.qftd import QFTDdgGate
+
+        instructions = QuditInstructionSet()
+
+        if qdargs is None or qdargs == []:
+            return instructions
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QFTDdgGate, qdargs=qdargs):
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            inst = (QFTDdgGate(qudit_dimensions), qdargs, qargs, cargs)
+            instructions.qd_extend(self.qd_append(*inst))
+
+        return instructions
+
+    def xd(self, qdargs, steps=1):
+        """Apply :class:`~.gates.XDGate`."""
+        from .gates.xd import XDGate
+
+        instructions = QuditInstructionSet()
+
+        if qdargs is None or qdargs == []:
+            return instructions
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, XDGate, qdargs=qdargs):
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            inst = (XDGate(qudit_dimensions, steps=steps), qdargs, qargs, cargs)
+            instructions.qd_extend(self.qd_append(*inst))
+
+        return instructions
+
+    def xddg(self, qdargs, steps=1):
+        """Apply :class:`~.gates.XDdgGate`."""
+        from .gates.xd import XDdgGate
+
+        instructions = QuditInstructionSet()
+
+        if qdargs is None or qdargs == []:
+            return instructions
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, XDdgGate, qdargs=qdargs):
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            inst = (XDdgGate(qudit_dimensions, steps=steps), qdargs, qargs, cargs)
+            instructions.qd_extend(self.qd_append(*inst))
+
+        return instructions
+
     # Functions only for scheduled circuits
     def qudit_duration(self, *qudits: Union[Qudit, int]) -> Union[int, float]:
         """Return the duration between the start and stop time of the first and last instructions,
