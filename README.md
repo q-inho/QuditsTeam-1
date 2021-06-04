@@ -6,7 +6,7 @@ We aim to extend QiSkit's versatility to higher dimensional quantum states, ie, 
 We propose to add to QiSkit the capacity to handle qudits following two approaches: 
 
 1. In the Schrödinger picture; remapping d-dimension qudits to ⌈log₂(d)⌉ qubits, and find the decomposition of qudits gates into qubit gates. The result is the python package qiskit_qudits.
-2. In the Heisenberg picture; using generalized Pauli matrices to write a simulator handling directly gates acting on qudits. The results are in the stabilizer_simulator folder.
+2. In the Heisenberg picture; using generalized Pauli matrices to write a simulator handling directly gates acting on qudits. The results is the stabilizer_simulator.
 
 ## Team members
 
