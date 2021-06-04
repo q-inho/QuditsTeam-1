@@ -17,10 +17,13 @@
 Generalized X gate for qudits, also known as X-.
 """
 
-from qiskit_qudits.circuit.quditregister import QuditRegister
+from qiskit.circuit.quantumcircuit import QuantumCircuit
+from qiskit.circuit.quantumregister import QuantumRegister
+
 from qiskit_qudits.circuit.quditcircuit import QuditCircuit
+from qiskit_qudits.circuit.quditregister import QuditRegister
 from qiskit_qudits.circuit import FlexibleQuditGate
-from .qftd import QFTDGate, QFTDdgGate
+from .qft import QFTGate, QFTdgGate
 from .zd import ZDGate
 
 
@@ -36,24 +39,23 @@ class XDGate(FlexibleQuditGate):
 
     def _define(self):
         """gate xd()"""
-        qd = QuditRegister(self.num_qubits, 'qd')
-        qdc = QuditCircuit(qd, name=self.name)
+        q = QuantumRegister(self.num_qubits, 'q')
+        qc = QuantumCircuit(q, name=self.name)
 
-        qd_rules = [
-            (QFTDGate(self.qudit_dimensions), [qd[0j]], [], [])
-        ]
+        # gates of gates are not supported, extracting subinstructions instead
+
+        rules = []
+
+        rules.extend(QFTGate(self.qudit_dimensions).definition[:])
+
         for _ in range(self._steps):
-            qd_rules.append(
-                (ZDGate(self.qudit_dimensions), [qd[0j]], [], [])
-            )
-            qdc.zd(0)
-        qd_rules.append(
-            (QFTDdgGate(self.qudit_dimensions), [qd[0j]], [], [])
-        )
+            rules.extend(ZDGate(self.qudit_dimensions).definition[:])
 
-        for instr, qdargs, qargs, cargs in qd_rules:
-            qdc._qd_append(instr, qargs, qargs, cargs)
-        self.definition = qdc
+        rules.extend(QFTdgGate(self.qudit_dimensions).definition[:])
+
+        for instr, _, _ in rules:
+            qc._append(instr, q[:], [])
+        self.definition = qc
 
     def inverse(self):
         """gate xddg()"""
@@ -72,24 +74,23 @@ class XDdgGate(FlexibleQuditGate):
 
     def _define(self):
         """gate xddg()"""
-        qd = QuditRegister(self.num_qubits, 'qd')
-        qdc = QuditCircuit(qd, name=self.name)
+        q = QuantumRegister(self.num_qubits, 'q')
+        qc = QuantumCircuit(q, name=self.name)
 
-        qd_rules = [
-            (QFTDdgGate(self.qudit_dimensions), [qd[0j]], [], [])
-        ]
+        # gates of gates are not supported, extracting subinstructions instead
+
+        rules = []
+
+        rules.extend(QFTdgGate(self.qudit_dimensions).definition[:])
+
         for _ in range(self._steps):
-            qd_rules.append(
-                (ZDGate(self.qudit_dimensions), [qd[0j]], [], [])
-            )
-            qdc.zd(0)
-        qd_rules.append(
-            (QFTDGate(self.qudit_dimensions), [qd[0j]], [], [])
-        )
+            rules.extend(ZDGate(self.qudit_dimensions).definition[:])
 
-        for instr, qdargs, qargs, cargs in qd_rules:
-            qdc._qd_append(instr, qargs, qargs, cargs)
-        self.definition = qdc
+        rules.extend(QFTGate(self.qudit_dimensions).definition[:])
+
+        for instr, _, _ in rules:
+            qc._append(instr, q[:], [])
+        self.definition = qc
 
     def inverse(self):
         """gate xd()"""

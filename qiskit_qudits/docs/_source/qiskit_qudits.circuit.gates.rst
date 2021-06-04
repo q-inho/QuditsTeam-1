@@ -10,20 +10,20 @@ qiskit\_qudits.circuit.gates.zd
    :undoc-members:
    :show-inheritance:
 
-qiskit\_qudits.circuit.gates.qftd
----------------------------------
+qiskit\_qudits.circuit.gates.qft
+--------------------------------
 
 .. moduleauthor:: Tim Alexis Körner
-.. automodule:: qiskit_qudits.circuit.gates.qftd
+.. automodule:: qiskit_qudits.circuit.gates.qft
    :members:
    :undoc-members:
    :show-inheritance:
 
-qiskit\_qudits.circuit.gates.xd
----------------------------------
+qiskit\_qudits.circuit.gates.levelswitch
+----------------------------------------
 
-.. moduleauthor:: Tim Alexis Körner
-.. automodule:: qiskit_qudits.circuit.gates.xd
+.. moduleauthor:: Hoang Van Do, Tim Alexis Körner
+.. automodule:: qiskit_qudits.circuit.gates.levelswitch
    :members:
    :undoc-members:
    :show-inheritance:

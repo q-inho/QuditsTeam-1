@@ -263,7 +263,7 @@
 <span class="kn">from</span> <span class="nn">qiskit_qudits.circuit.quditregister</span> <span class="kn">import</span> <span class="n">QuditRegister</span>
 <span class="kn">from</span> <span class="nn">qiskit_qudits.circuit.quditcircuit</span> <span class="kn">import</span> <span class="n">QuditCircuit</span>
 <span class="kn">from</span> <span class="nn">qiskit_qudits.circuit</span> <span class="kn">import</span> <span class="n">FlexibleQuditGate</span>
-<span class="kn">from</span> <span class="nn">.qftd</span> <span class="kn">import</span> <span class="n">QFTDGate</span><span class="p">,</span> <span class="n">QFTDdgGate</span>
+<span class="kn">from</span> <span class="nn">.qftd</span> <span class="kn">import</span> <span class="n">QFTGate</span><span class="p">,</span> <span class="n">QFTdgGate</span>
 <span class="kn">from</span> <span class="nn">.zd</span> <span class="kn">import</span> <span class="n">ZDGate</span>
 
 
@@ -283,7 +283,7 @@
         <span class="n">qdc</span> <span class="o">=</span> <span class="n">QuditCircuit</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">qd_rules</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">QFTDGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
+            <span class="p">(</span><span class="n">QFTGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">):</span>
             <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -291,7 +291,7 @@
             <span class="p">)</span>
             <span class="n">qdc</span><span class="o">.</span><span class="n">zd</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">QFTDdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
+            <span class="p">(</span><span class="n">QFTdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
         <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">instr</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">qd_rules</span><span class="p">:</span>
@@ -319,7 +319,7 @@
         <span class="n">qdc</span> <span class="o">=</span> <span class="n">QuditCircuit</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">qd_rules</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">QFTDdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
+            <span class="p">(</span><span class="n">QFTdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">):</span>
             <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -327,7 +327,7 @@
             <span class="p">)</span>
             <span class="n">qdc</span><span class="o">.</span><span class="n">zd</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">QFTDGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
+            <span class="p">(</span><span class="n">QFTGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
         <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">instr</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">qd_rules</span><span class="p">:</span>

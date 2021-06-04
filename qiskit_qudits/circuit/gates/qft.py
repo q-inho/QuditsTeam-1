@@ -24,7 +24,7 @@ from qiskit.circuit.library.basis_change.qft import QFT
 from qiskit_qudits.circuit import FlexibleQuditGate
 
 
-class QFTDGate(FlexibleQuditGate):
+class QFTGate(FlexibleQuditGate):
     """QFT gate for Qudits. Currently only powers of 2 are supported for qudit dimension."""
 
     num_qudits = 1
@@ -38,16 +38,16 @@ class QFTDGate(FlexibleQuditGate):
         super().__init__("QFT", qudit_dimensions, 0, [], label=label)
 
     def _define(self):
-        """gate qftd()"""
+        """gate qft()"""
         # for future reference for generalizations see https://arxiv.org/abs/quant-ph/0212002
         self.definition = QFT(num_qubits=self.num_qubits, name=self.name)
 
     def inverse(self):
-        """gate qftddg()"""
-        return QFTDdgGate(self.qudit_dimensions, label=self.label)
+        """gate qftdg()"""
+        return QFTdgGate(self.qudit_dimensions, label=self.label)
 
 
-class QFTDdgGate(FlexibleQuditGate):
+class QFTdgGate(FlexibleQuditGate):
     """Adjoint of QFT gate for Qudits.
     Currently only powers of 2 are supported for qudit dimension."""
 
@@ -62,10 +62,10 @@ class QFTDdgGate(FlexibleQuditGate):
         super().__init__("QFT_dg", qudit_dimensions, 0, [], label=label)
 
     def _define(self):
-        """gate qftddg()"""
+        """gate qftdg()"""
         # for future reference for generalizations see https://arxiv.org/abs/quant-ph/0212002
         self.definition = QFT(num_qubits=self.num_qubits, inverse=True, name=self.name)
 
     def inverse(self):
-        """gate qftd()"""
-        return QFTDGate(self.qudit_dimensions, label=self.label)
+        """gate qft()"""
+        return QFTGate(self.qudit_dimensions, label=self.label)

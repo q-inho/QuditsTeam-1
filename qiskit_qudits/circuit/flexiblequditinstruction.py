@@ -143,7 +143,7 @@ def flex_qd_broadcast_arguments(circuit, instr_class, qdargs=None, qargs=None, c
     cargs = cargs if cargs is not None else []
 
     qdargs = circuit.qdit_argument_conversion(qdargs)
-    qargs = circuit.qbit_argument_conversion(qargs)
+    qargs = circuit.qbit_argument_conversion(circuit._offset_qubit_representation(qargs))
     cargs = circuit.cbit_argument_conversion(cargs)
 
     broadcast_factor = len(qdargs) / instr_class.num_qudits

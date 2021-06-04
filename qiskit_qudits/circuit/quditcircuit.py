@@ -1277,67 +1277,80 @@ class QuditCircuit(QuantumCircuit):
 
         return instructions
 
-    def qftd(self, qdargs):
-        """Apply :class:`~.gates.QFTDGate`."""
-        from .gates.qftd import QFTDGate
+    def qft(self, qdargs):
+        """Apply :class:`~.gates.QFTGate`."""
+        from .gates.qft import QFTGate
 
         instructions = QuditInstructionSet()
 
         if qdargs is None or qdargs == []:
             return instructions
 
-        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QFTDGate, qdargs=qdargs):
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QFTGate, qdargs=qdargs):
             qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-            inst = (QFTDGate(qudit_dimensions), qdargs, qargs, cargs)
+            inst = (QFTGate(qudit_dimensions), qdargs, qargs, cargs)
             instructions.qd_extend(self.qd_append(*inst))
 
         return instructions
 
-    def qftddg(self, qdargs):
-        """Apply :class:`~.gates.QFTDdgGate`."""
-        from .gates.qftd import QFTDdgGate
+    def qftdg(self, qdargs):
+        """Apply :class:`~.gates.QFTdgGate`."""
+        from .gates.qft import QFTdgGate
 
         instructions = QuditInstructionSet()
 
         if qdargs is None or qdargs == []:
             return instructions
 
-        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QFTDdgGate, qdargs=qdargs):
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, QFTdgGate, qdargs=qdargs):
             qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-            inst = (QFTDdgGate(qudit_dimensions), qdargs, qargs, cargs)
+            inst = (QFTdgGate(qudit_dimensions), qdargs, qargs, cargs)
             instructions.qd_extend(self.qd_append(*inst))
 
         return instructions
 
     def xd(self, qdargs, steps=1):
-        """Apply :class:`~.gates.XDGate`."""
-        from .gates.xd import XDGate
+        """Currently appends other gates directly.
+        In future apply :class:`~.gates.XDGate` is planned."""
 
         instructions = QuditInstructionSet()
-
-        if qdargs is None or qdargs == []:
-            return instructions
-
-        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, XDGate, qdargs=qdargs):
-            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-            inst = (XDGate(qudit_dimensions, steps=steps), qdargs, qargs, cargs)
-            instructions.qd_extend(self.qd_append(*inst))
+        instructions.extend(self.qft(qdargs))
+        for _ in range(steps):
+            instructions.extend(self.zd(qdargs))
+        instructions.extend(self.qftdg(qdargs))
 
         return instructions
 
     def xddg(self, qdargs, steps=1):
-        """Apply :class:`~.gates.XDdgGate`."""
-        from .gates.xd import XDdgGate
+        """Currently appends other gates directly.
+        In future apply :class:`~.gates.XDdgGate` is planned."""
+
+        instructions = QuditInstructionSet()
+        instructions.extend(self.qftdg(qdargs))
+        for _ in range(steps):
+            instructions.extend(self.zd(qdargs))
+        instructions.extend(self.qftdg(qdargs))
+
+        return instructions
+
+    def ls(self, qdargs, qargs, first_level, second_level):
+        """Apply :class:`~.gates.LevelSwitchGate`."""
+        from .gates.levelswitch import LevelSwitchGate
 
         instructions = QuditInstructionSet()
 
         if qdargs is None or qdargs == []:
             return instructions
 
-        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(self, XDdgGate, qdargs=qdargs):
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(
+                self, LevelSwitchGate, qdargs=qdargs, qargs=qargs):
             qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
-            inst = (XDdgGate(qudit_dimensions, steps=steps), qdargs, qargs, cargs)
-            instructions.qd_extend(self.qd_append(*inst))
+            gate = LevelSwitchGate(
+                qudit_dimensions,
+                first_level=first_level,
+                second_level=second_level
+            )
+            instructions.qd_extend(self.qd_append(gate, qdargs, qargs, cargs))
 
         return instructions
 

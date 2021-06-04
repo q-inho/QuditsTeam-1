@@ -49,46 +49,53 @@ def Dephasing(m,phase,dimension):
     return circuit
 
 
-
 #Pi coupling between m and l level. The inverse of the LevelsSwitch fucntion is itself
-def LevelsSwitch(m,l,dimension):
-    if dimension < m or dimension < l:
+def level_switch(m, l, dimension):
+    if m > dimension or l > dimension:
         raise QiskitError('The level is higher than the dimension')
-    n=int(np.ceil(np.log2(dimension)))
-    qubits=QuantumRegister(n+1)
-    circuit=QuantumCircuit(qubits)
+    n = int(np.ceil(np.log2(dimension)))
+    qubits = QuantumRegister(n + 1)
+    circuit = QuantumCircuit(qubits)
     control_qubits = qubits[:n]
     target_qubit = qubits[n]
-    marray=[]
-    larray=[]
-    for i in range(0,n): #bit decomposition
-        if (( m >>  i) & 1) != 1 :
+
+    # save indices of qubits which are 1 for states m, l
+    marray = []
+    larray = []
+    for i in range(n):
+        if (m >> i) & 1 != 1:
             marray.append(i)
-    for i in range(0,n):
-        if (( l >>  i) & 1) != 1 :
+    for i in range(n):
+        if (l >> i) & 1 != 1:
             larray.append(i)
-    #check if m
-    if len(marray)>0:
+
+    # control on m, l
+    if len(marray) > 0:
         circuit.x(marray)
-        circuit.mcx(control_qubits,target_qubit)
+    circuit.mcx(control_qubits, target_qubit)
+    if len(marray) > 0:
         circuit.x(marray)
-    #check if l
-    if len(larray)>0:
+    if len(larray) > 0:
         circuit.x(larray)
-        circuit.mcx(control_qubits,target_qubit)
+    circuit.mcx(control_qubits, target_qubit)
+    if len(larray) > 0:
         circuit.x(larray)
-    #swap
-    for i in range(0,n):
-        if ((( m >>  i) & 1) != (( l >>  i) & 1)):
-            circuit.cx(n,i)
-    #check if m, put back auxiliary qubit    
-    if len(marray)>0:
+
+    # swap
+    for i in range(n):
+        if ((m >> i) & 1) != ((l >> i) & 1):
+            circuit.cx(n, i)
+
+    # control on m, l to reset auxiliary qubit
+    if len(marray) > 0:
         circuit.x(marray)
-        circuit.mcx(control_qubits,target_qubit)
+    circuit.mcx(control_qubits, target_qubit)
+    if len(marray) > 0:
         circuit.x(marray)
-    #check if l, put back auxiliary qubit
-    if len(larray)>0:
+    if len(larray) > 0:
         circuit.x(larray)
-        circuit.mcx(control_qubits,target_qubit)
+    circuit.mcx(control_qubits, target_qubit)
+    if len(larray) > 0:
         circuit.x(larray)
+
     return circuit

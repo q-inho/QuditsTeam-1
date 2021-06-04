@@ -14,5 +14,5 @@
 # that they have been altered from the originals.
 
 from .zd import ZDGate, ZDdgGate
-from .qftd import QFTDGate, QFTDdgGate
-from .xd import XDGate, XDdgGate
+from .qft import QFTGate, QFTdgGate
+from .levelswitch import LevelSwitchGate
