@@ -4,7 +4,7 @@
 This code is from Qiskit Hackathon 2021 by the team
 Qiskit for high dimensional multipartite quantum states.
 
-Author: Hoang Van Do
+Author: Hoang Van Do, Élie Gouzien
 
 (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles
 and Élie Gouzien.
