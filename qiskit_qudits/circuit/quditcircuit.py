@@ -1334,7 +1334,7 @@ class QuditCircuit(QuantumCircuit):
         return instructions
 
     def ls(self, qdargs, qargs, first_level, second_level):
-        """Apply :class:`~.gates.LevelSwitchGate`."""
+        """Apply :class:`~.gates.LevelSwitchGate`. Expects 1 ancilla qubit."""
         from .gates.levelswitch import LevelSwitchGate
 
         instructions = QuditInstructionSet()
@@ -1349,6 +1349,27 @@ class QuditCircuit(QuantumCircuit):
                 qudit_dimensions,
                 first_level=first_level,
                 second_level=second_level
+            )
+            instructions.qd_extend(self.qd_append(gate, qdargs, qargs, cargs))
+
+        return instructions
+
+    def sp(self, qdargs, qargs, level, phase):
+        """Apply :class:`~.gates.SinglePhaseGate`. Expects 1 ancilla qubit."""
+        from .gates.singlephase import SinglePhaseGate
+
+        instructions = QuditInstructionSet()
+
+        if qdargs is None or qdargs == []:
+            return instructions
+
+        for qdargs, qargs, cargs in flex_qd_broadcast_arguments(
+                self, SinglePhaseGate, qdargs=qdargs, qargs=qargs):
+            qudit_dimensions = [qdarg.dimension for qdarg in qdargs]
+            gate = SinglePhaseGate(
+                qudit_dimensions,
+                level=level,
+                phase=phase
             )
             instructions.qd_extend(self.qd_append(gate, qdargs, qargs, cargs))
 

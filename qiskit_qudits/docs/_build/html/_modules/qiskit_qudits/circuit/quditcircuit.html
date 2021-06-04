@@ -1520,9 +1520,9 @@
 
         <span class="k">return</span> <span class="n">instructions</span></div>
 
-<div class="viewcode-block" id="QuditCircuit.qftd"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftd">[docs]</a>    <span class="k">def</span> <span class="nf">qftd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">):</span>
+<div class="viewcode-block" id="QuditCircuit.qft"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qft">[docs]</a>    <span class="k">def</span> <span class="nf">qft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Apply :class:`~.gates.QFTGate`.&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">.gates.qftd</span> <span class="kn">import</span> <span class="n">QFTGate</span>
+        <span class="kn">from</span> <span class="nn">.gates.qft</span> <span class="kn">import</span> <span class="n">QFTGate</span>
 
         <span class="n">instructions</span> <span class="o">=</span> <span class="n">QuditInstructionSet</span><span class="p">()</span>
 
@@ -1536,9 +1536,9 @@
 
         <span class="k">return</span> <span class="n">instructions</span></div>
 
-<div class="viewcode-block" id="QuditCircuit.qftddg"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftddg">[docs]</a>    <span class="k">def</span> <span class="nf">qftddg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">):</span>
+<div class="viewcode-block" id="QuditCircuit.qftdg"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftdg">[docs]</a>    <span class="k">def</span> <span class="nf">qftdg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Apply :class:`~.gates.QFTdgGate`.&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">.gates.qftd</span> <span class="kn">import</span> <span class="n">QFTdgGate</span>
+        <span class="kn">from</span> <span class="nn">.gates.qft</span> <span class="kn">import</span> <span class="n">QFTdgGate</span>
 
         <span class="n">instructions</span> <span class="o">=</span> <span class="n">QuditInstructionSet</span><span class="p">()</span>
 
@@ -1553,34 +1553,68 @@
         <span class="k">return</span> <span class="n">instructions</span></div>
 
 <div class="viewcode-block" id="QuditCircuit.xd"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.xd">[docs]</a>    <span class="k">def</span> <span class="nf">xd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply :class:`~.gates.XDGate`.&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">.gates.xd</span> <span class="kn">import</span> <span class="n">XDGate</span>
+        <span class="sd">&quot;&quot;&quot;Currently appends other gates directly.</span>
+<span class="sd">        In future apply :class:`~.gates.XDGate` is planned.&quot;&quot;&quot;</span>
 
         <span class="n">instructions</span> <span class="o">=</span> <span class="n">QuditInstructionSet</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">qdargs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">qdargs</span> <span class="o">==</span> <span class="p">[]:</span>
-            <span class="k">return</span> <span class="n">instructions</span>
-
-        <span class="k">for</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">flex_qd_broadcast_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XDGate</span><span class="p">,</span> <span class="n">qdargs</span><span class="o">=</span><span class="n">qdargs</span><span class="p">):</span>
-            <span class="n">qudit_dimensions</span> <span class="o">=</span> <span class="p">[</span><span class="n">qdarg</span><span class="o">.</span><span class="n">dimension</span> <span class="k">for</span> <span class="n">qdarg</span> <span class="ow">in</span> <span class="n">qdargs</span><span class="p">]</span>
-            <span class="n">inst</span> <span class="o">=</span> <span class="p">(</span><span class="n">XDGate</span><span class="p">(</span><span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">),</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">)</span>
-            <span class="n">instructions</span><span class="o">.</span><span class="n">qd_extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qd_append</span><span class="p">(</span><span class="o">*</span><span class="n">inst</span><span class="p">))</span>
+        <span class="n">instructions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qft</span><span class="p">(</span><span class="n">qdargs</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+            <span class="n">instructions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zd</span><span class="p">(</span><span class="n">qdargs</span><span class="p">))</span>
+        <span class="n">instructions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qftdg</span><span class="p">(</span><span class="n">qdargs</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">instructions</span></div>
 
 <div class="viewcode-block" id="QuditCircuit.xddg"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.xddg">[docs]</a>    <span class="k">def</span> <span class="nf">xddg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply :class:`~.gates.XDdgGate`.&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">.gates.xd</span> <span class="kn">import</span> <span class="n">XDdgGate</span>
+        <span class="sd">&quot;&quot;&quot;Currently appends other gates directly.</span>
+<span class="sd">        In future apply :class:`~.gates.XDdgGate` is planned.&quot;&quot;&quot;</span>
+
+        <span class="n">instructions</span> <span class="o">=</span> <span class="n">QuditInstructionSet</span><span class="p">()</span>
+        <span class="n">instructions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qftdg</span><span class="p">(</span><span class="n">qdargs</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+            <span class="n">instructions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zd</span><span class="p">(</span><span class="n">qdargs</span><span class="p">))</span>
+        <span class="n">instructions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qftdg</span><span class="p">(</span><span class="n">qdargs</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">instructions</span></div>
+
+<div class="viewcode-block" id="QuditCircuit.ls"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ls">[docs]</a>    <span class="k">def</span> <span class="nf">ls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">first_level</span><span class="p">,</span> <span class="n">second_level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply :class:`~.gates.LevelSwitchGate`. Expects 1 ancilla qubit.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.gates.levelswitch</span> <span class="kn">import</span> <span class="n">LevelSwitchGate</span>
 
         <span class="n">instructions</span> <span class="o">=</span> <span class="n">QuditInstructionSet</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">qdargs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">qdargs</span> <span class="o">==</span> <span class="p">[]:</span>
             <span class="k">return</span> <span class="n">instructions</span>
 
-        <span class="k">for</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">flex_qd_broadcast_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XDdgGate</span><span class="p">,</span> <span class="n">qdargs</span><span class="o">=</span><span class="n">qdargs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">flex_qd_broadcast_arguments</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">LevelSwitchGate</span><span class="p">,</span> <span class="n">qdargs</span><span class="o">=</span><span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="o">=</span><span class="n">qargs</span><span class="p">):</span>
             <span class="n">qudit_dimensions</span> <span class="o">=</span> <span class="p">[</span><span class="n">qdarg</span><span class="o">.</span><span class="n">dimension</span> <span class="k">for</span> <span class="n">qdarg</span> <span class="ow">in</span> <span class="n">qdargs</span><span class="p">]</span>
-            <span class="n">inst</span> <span class="o">=</span> <span class="p">(</span><span class="n">XDdgGate</span><span class="p">(</span><span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">),</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">)</span>
-            <span class="n">instructions</span><span class="o">.</span><span class="n">qd_extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qd_append</span><span class="p">(</span><span class="o">*</span><span class="n">inst</span><span class="p">))</span>
+            <span class="n">gate</span> <span class="o">=</span> <span class="n">LevelSwitchGate</span><span class="p">(</span>
+                <span class="n">qudit_dimensions</span><span class="p">,</span>
+                <span class="n">first_level</span><span class="o">=</span><span class="n">first_level</span><span class="p">,</span>
+                <span class="n">second_level</span><span class="o">=</span><span class="n">second_level</span>
+            <span class="p">)</span>
+            <span class="n">instructions</span><span class="o">.</span><span class="n">qd_extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qd_append</span><span class="p">(</span><span class="n">gate</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">instructions</span></div>
+
+<div class="viewcode-block" id="QuditCircuit.sp"><a class="viewcode-back" href="../../../qiskit_qudits.circuit.html#qiskit_qudits.circuit.quditcircuit.QuditCircuit.sp">[docs]</a>    <span class="k">def</span> <span class="nf">sp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply :class:`~.gates.SinglePhaseGate`. Expects 1 ancilla qubit.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.gates.singlephase</span> <span class="kn">import</span> <span class="n">SinglePhaseGate</span>
+
+        <span class="n">instructions</span> <span class="o">=</span> <span class="n">QuditInstructionSet</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">qdargs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">qdargs</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="n">instructions</span>
+
+        <span class="k">for</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">flex_qd_broadcast_arguments</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">SinglePhaseGate</span><span class="p">,</span> <span class="n">qdargs</span><span class="o">=</span><span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="o">=</span><span class="n">qargs</span><span class="p">):</span>
+            <span class="n">qudit_dimensions</span> <span class="o">=</span> <span class="p">[</span><span class="n">qdarg</span><span class="o">.</span><span class="n">dimension</span> <span class="k">for</span> <span class="n">qdarg</span> <span class="ow">in</span> <span class="n">qdargs</span><span class="p">]</span>
+            <span class="n">gate</span> <span class="o">=</span> <span class="n">SinglePhaseGate</span><span class="p">(</span>
+                <span class="n">qudit_dimensions</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
+                <span class="n">phase</span><span class="o">=</span><span class="n">phase</span>
+            <span class="p">)</span>
+            <span class="n">instructions</span><span class="o">.</span><span class="n">qd_extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qd_append</span><span class="p">(</span><span class="n">gate</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">instructions</span></div>
 

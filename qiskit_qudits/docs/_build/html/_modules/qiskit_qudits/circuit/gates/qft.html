@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>qiskit_qudits.circuit.gates.qftd &mdash; qiskit-qudits  documentation</title>
+  <title>qiskit_qudits.circuit.gates.qft &mdash; qiskit-qudits  documentation</title>
   
 
   
@@ -214,7 +214,7 @@
         
           <li><a href="../../../index.html">Module code</a> &gt;</li>
         
-      <li>qiskit_qudits.circuit.gates.qftd</li>
+      <li>qiskit_qudits.circuit.gates.qft</li>
     
     
       <li class="pytorch-breadcrumbs-aside">
@@ -240,7 +240,7 @@
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
-  <h1>Source code for qiskit_qudits.circuit.gates.qftd</h1><div class="highlight"><pre>
+  <h1>Source code for qiskit_qudits.circuit.gates.qft</h1><div class="highlight"><pre>
 <span></span><span class="c1"># This code is from Qiskit Hackathon 2021 by the team</span>
 <span class="c1"># Qiskit for high dimensional multipartite quantum states.</span>
 <span class="c1">#</span>
@@ -267,7 +267,7 @@
 <span class="kn">from</span> <span class="nn">qiskit_qudits.circuit</span> <span class="kn">import</span> <span class="n">FlexibleQuditGate</span>
 
 
-<div class="viewcode-block" id="QFTDGate"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qftd.QFTDGate">[docs]</a><span class="k">class</span> <span class="nc">QFTGate</span><span class="p">(</span><span class="n">FlexibleQuditGate</span><span class="p">):</span>
+<div class="viewcode-block" id="QFTGate"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qft.QFTGate">[docs]</a><span class="k">class</span> <span class="nc">QFTGate</span><span class="p">(</span><span class="n">FlexibleQuditGate</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;QFT gate for Qudits. Currently only powers of 2 are supported for qudit dimension.&quot;&quot;&quot;</span>
 
     <span class="n">num_qudits</span> <span class="o">=</span> <span class="mi">1</span>
@@ -281,16 +281,16 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;QFT&quot;</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_define</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate qftd()&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;gate qft()&quot;&quot;&quot;</span>
         <span class="c1"># for future reference for generalizations see https://arxiv.org/abs/quant-ph/0212002</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">QFT</span><span class="p">(</span><span class="n">num_qubits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="QFTDGate.inverse"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qftd.QFTDGate.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate qftddg()&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="QFTGate.inverse"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qft.QFTGate.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;gate qftdg()&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">QFTdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="QFTDdgGate"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qftd.QFTDdgGate">[docs]</a><span class="k">class</span> <span class="nc">QFTdgGate</span><span class="p">(</span><span class="n">FlexibleQuditGate</span><span class="p">):</span>
+<div class="viewcode-block" id="QFTdgGate"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qft.QFTdgGate">[docs]</a><span class="k">class</span> <span class="nc">QFTdgGate</span><span class="p">(</span><span class="n">FlexibleQuditGate</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Adjoint of QFT gate for Qudits.</span>
 <span class="sd">    Currently only powers of 2 are supported for qudit dimension.&quot;&quot;&quot;</span>
 
@@ -305,12 +305,12 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;QFT_dg&quot;</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_define</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate qftddg()&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;gate qftdg()&quot;&quot;&quot;</span>
         <span class="c1"># for future reference for generalizations see https://arxiv.org/abs/quant-ph/0212002</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">QFT</span><span class="p">(</span><span class="n">num_qubits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="QFTDdgGate.inverse"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qftd.QFTDdgGate.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate qftd()&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="QFTdgGate.inverse"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.qft.QFTdgGate.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;gate qft()&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">QFTGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div></div>
 </pre></div>
 

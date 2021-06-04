@@ -386,7 +386,7 @@
     <span class="n">cargs</span> <span class="o">=</span> <span class="n">cargs</span> <span class="k">if</span> <span class="n">cargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
 
     <span class="n">qdargs</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">qdit_argument_conversion</span><span class="p">(</span><span class="n">qdargs</span><span class="p">)</span>
-    <span class="n">qargs</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">qbit_argument_conversion</span><span class="p">(</span><span class="n">qargs</span><span class="p">)</span>
+    <span class="n">qargs</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">qbit_argument_conversion</span><span class="p">(</span><span class="n">circuit</span><span class="o">.</span><span class="n">_offset_qubit_representation</span><span class="p">(</span><span class="n">qargs</span><span class="p">))</span>
     <span class="n">cargs</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">cbit_argument_conversion</span><span class="p">(</span><span class="n">cargs</span><span class="p">)</span>
 
     <span class="n">broadcast_factor</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qdargs</span><span class="p">)</span> <span class="o">/</span> <span class="n">instr_class</span><span class="o">.</span><span class="n">num_qudits</span>

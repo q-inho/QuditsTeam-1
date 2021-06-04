@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>qiskit_qudits.circuit.gates.xd &mdash; qiskit-qudits  documentation</title>
+  <title>qiskit_qudits.circuit.gates.singlephase &mdash; qiskit-qudits  documentation</title>
   
 
   
@@ -214,7 +214,7 @@
         
           <li><a href="../../../index.html">Module code</a> &gt;</li>
         
-      <li>qiskit_qudits.circuit.gates.xd</li>
+      <li>qiskit_qudits.circuit.gates.singlephase</li>
     
     
       <li class="pytorch-breadcrumbs-aside">
@@ -240,11 +240,11 @@
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
-  <h1>Source code for qiskit_qudits.circuit.gates.xd</h1><div class="highlight"><pre>
+  <h1>Source code for qiskit_qudits.circuit.gates.singlephase</h1><div class="highlight"><pre>
 <span></span><span class="c1"># This code is from Qiskit Hackathon 2021 by the team</span>
 <span class="c1"># Qiskit for high dimensional multipartite quantum states.</span>
 <span class="c1">#</span>
-<span class="c1"># Author: Tim Alexis Körner</span>
+<span class="c1"># Authors: Hoang Van Do, Tim Alexis Körner</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright 2021 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien.</span>
 <span class="c1">#</span>
@@ -257,86 +257,65 @@
 <span class="c1"># that they have been altered from the originals.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Generalized X gate for qudits, also known as X-.</span>
+<span class="sd">Adds to the phase of the specified level.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">qiskit_qudits.circuit.quditregister</span> <span class="kn">import</span> <span class="n">QuditRegister</span>
-<span class="kn">from</span> <span class="nn">qiskit_qudits.circuit.quditcircuit</span> <span class="kn">import</span> <span class="n">QuditCircuit</span>
+<span class="kn">from</span> <span class="nn">qiskit.exceptions</span> <span class="kn">import</span> <span class="n">QiskitError</span>
+<span class="kn">from</span> <span class="nn">qiskit.circuit.quantumregister</span> <span class="kn">import</span> <span class="n">QuantumRegister</span><span class="p">,</span> <span class="n">AncillaRegister</span>
+<span class="kn">from</span> <span class="nn">qiskit.circuit.quantumcircuit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span>
+
 <span class="kn">from</span> <span class="nn">qiskit_qudits.circuit</span> <span class="kn">import</span> <span class="n">FlexibleQuditGate</span>
-<span class="kn">from</span> <span class="nn">.qftd</span> <span class="kn">import</span> <span class="n">QFTGate</span><span class="p">,</span> <span class="n">QFTdgGate</span>
-<span class="kn">from</span> <span class="nn">.zd</span> <span class="kn">import</span> <span class="n">ZDGate</span>
 
 
-<div class="viewcode-block" id="XDGate"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.xd.XDGate">[docs]</a><span class="k">class</span> <span class="nc">XDGate</span><span class="p">(</span><span class="n">FlexibleQuditGate</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;General X gate for Qudits.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SinglePhaseGate"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.singlephase.SinglePhaseGate">[docs]</a><span class="k">class</span> <span class="nc">SinglePhaseGate</span><span class="p">(</span><span class="n">FlexibleQuditGate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Single level phase modification gate for Qudits. Uses a single ancillary qubit.&quot;&quot;&quot;</span>
 
     <span class="n">num_qudits</span> <span class="o">=</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create new general X gate for a single qudit.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="o">=</span> <span class="n">steps</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;XD&quot;</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create new level switch gate for a single qudit, where ``first_level``</span>
+<span class="sd">        and ``second_level`` are interchanged.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="n">qudit_dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">QiskitError</span><span class="p">(</span><span class="s2">&quot;Level given does not fulfill 0 &lt;= level &lt; dimension.&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;SP&quot;</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="n">phase</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_define</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate xd()&quot;&quot;&quot;</span>
-        <span class="n">qd</span> <span class="o">=</span> <span class="n">QuditRegister</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">,</span> <span class="s1">&#39;qd&#39;</span><span class="p">)</span>
-        <span class="n">qdc</span> <span class="o">=</span> <span class="n">QuditCircuit</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;gate sp(level, phase)&quot;&quot;&quot;</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">QuantumRegister</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">AncillaRegister</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+        <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">qd_rules</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">QFTGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
-        <span class="p">]</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">):</span>
-            <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">ZDGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
-            <span class="p">)</span>
-            <span class="n">qdc</span><span class="o">.</span><span class="n">zd</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">QFTdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
-        <span class="p">)</span>
+        <span class="c1"># indices of qubits which are not 1 in the binary representation of the level</span>
+        <span class="c1"># need to be changed before control</span>
+        <span class="n">level_on_qubits</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">instr</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">qd_rules</span><span class="p">:</span>
-            <span class="n">qdc</span><span class="o">.</span><span class="n">_qd_append</span><span class="p">(</span><span class="n">instr</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">qdc</span>
+        <span class="k">def</span> <span class="nf">_add_controls</span><span class="p">(</span><span class="n">on_qubits</span><span class="p">):</span>
+            <span class="k">nonlocal</span> <span class="n">qc</span>
+            <span class="k">if</span> <span class="n">on_qubits</span><span class="p">:</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">on_qubits</span><span class="p">)</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">mcx</span><span class="p">(</span><span class="n">q</span><span class="p">[:],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">on_qubits</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">mcx</span><span class="p">(</span><span class="n">q</span><span class="p">[:],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<div class="viewcode-block" id="XDGate.inverse"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.xd.XDGate.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate xddg()&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">XDdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="n">_add_controls</span><span class="p">(</span><span class="n">level_on_qubits</span><span class="p">)</span>
 
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">qc</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-<div class="viewcode-block" id="XDdgGate"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.xd.XDdgGate">[docs]</a><span class="k">class</span> <span class="nc">XDdgGate</span><span class="p">(</span><span class="n">FlexibleQuditGate</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Adjoint of general X gate for Qudits, also known as X+.&quot;&quot;&quot;</span>
+        <span class="c1"># reset ancilla</span>
+        <span class="n">_add_controls</span><span class="p">(</span><span class="n">level_on_qubits</span><span class="p">)</span>
 
-    <span class="n">num_qudits</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">qc</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create new adjoint of a general X gate for a single qudit.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="o">=</span> <span class="n">steps</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;XD_dg&quot;</span><span class="p">,</span> <span class="n">qudit_dimensions</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_define</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate xddg()&quot;&quot;&quot;</span>
-        <span class="n">qd</span> <span class="o">=</span> <span class="n">QuditRegister</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">,</span> <span class="s1">&#39;qd&#39;</span><span class="p">)</span>
-        <span class="n">qdc</span> <span class="o">=</span> <span class="n">QuditCircuit</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-        <span class="n">qd_rules</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">QFTdgGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
-        <span class="p">]</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">):</span>
-            <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">ZDGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
-            <span class="p">)</span>
-            <span class="n">qdc</span><span class="o">.</span><span class="n">zd</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">qd_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">QFTGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">),</span> <span class="p">[</span><span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="n">j</span><span class="p">]],</span> <span class="p">[],</span> <span class="p">[])</span>
-        <span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">instr</span><span class="p">,</span> <span class="n">qdargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span> <span class="ow">in</span> <span class="n">qd_rules</span><span class="p">:</span>
-            <span class="n">qdc</span><span class="o">.</span><span class="n">_qd_append</span><span class="p">(</span><span class="n">instr</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">qargs</span><span class="p">,</span> <span class="n">cargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">qdc</span>
-
-<div class="viewcode-block" id="XDdgGate.inverse"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.xd.XDdgGate.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;gate xd()&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">XDGate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="SinglePhaseGate.inverse"><a class="viewcode-back" href="../../../../qiskit_qudits.circuit.gates.html#qiskit_qudits.circuit.gates.singlephase.SinglePhaseGate.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;gate sp(level, -phase)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SinglePhaseGate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qudit_dimensions</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
              </article>

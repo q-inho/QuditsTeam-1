@@ -16,3 +16,4 @@
 from .zd import ZDGate, ZDdgGate
 from .qft import QFTGate, QFTdgGate
 from .levelswitch import LevelSwitchGate
+from .singlephase import SinglePhaseGate

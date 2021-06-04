@@ -253,8 +253,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_qudits.circuit.gates.html">qiskit_qudits.circuit.gates</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-zd">qiskit_qudits.circuit.gates.zd</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-qftd">qiskit_qudits.circuit.gates.qftd</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-xd">qiskit_qudits.circuit.gates.xd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-qft">qiskit_qudits.circuit.gates.qft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-levelswitch">qiskit_qudits.circuit.gates.levelswitch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_qudits.circuit.gates.html#qiskit-qudits-circuit-gates-singlephase">qiskit_qudits.circuit.gates.singlephase</a></li>
 </ul>
 </li>
 </ul>
@@ -2138,6 +2139,12 @@ which can start in an arbitrary state. Default is q_ancillas_dirty = None.</p></
 </dd></dl>
 
 <dl class="py method">
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.ls">
+<code class="sig-name descname">ls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">first_level</span></em>, <em class="sig-param"><span class="n">second_level</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.ls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.ls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">LevelSwitchGate</span></code>. Expects 1 ancilla qubit.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcp">
 <code class="sig-name descname">mcp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">control_qubits</span></em>, <em class="sig-param"><span class="n">target_qubit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.mcp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">MCPhaseGate</span></code>.</p>
@@ -2537,14 +2544,14 @@ into a list of qudits.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftd">
-<code class="sig-name descname">qftd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.qftd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftd" title="Permalink to this definition">¶</a></dt>
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.qft">
+<code class="sig-name descname">qft</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.qft"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qft" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">QFTGate</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftddg">
-<code class="sig-name descname">qftddg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.qftddg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftddg" title="Permalink to this definition">¶</a></dt>
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftdg">
+<code class="sig-name descname">qftdg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.qftdg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.qftdg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">QFTdgGate</span></code>.</p>
 </dd></dl>
 
@@ -2919,6 +2926,12 @@ Works on all qubits, and prevents reordering (like barrier).</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.sp">
+<code class="sig-name descname">sp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">qargs</span></em>, <em class="sig-param"><span class="n">level</span></em>, <em class="sig-param"><span class="n">phase</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.sp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.sp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">SinglePhaseGate</span></code>. Expects 1 ancilla qubit.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.squ">
 <code class="sig-name descname">squ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unitary_matrix</span></em>, <em class="sig-param"><span class="n">qubit</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'ZYZ'</span></em>, <em class="sig-param"><span class="n">up_to_diagonal</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">u</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.squ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decompose an arbitrary 2*2 unitary into three rotation gates.</p>
@@ -3275,13 +3288,15 @@ the single-qubit rotation gates</p></li>
 <dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.xd">
 <code class="sig-name descname">xd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">steps</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.xd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.xd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">XDGate</span></code>.</p>
+<dd><p>Currently appends other gates directly.
+In future apply <code class="xref py py-class docutils literal notranslate"><span class="pre">XDGate</span></code> is planned.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="qiskit_qudits.circuit.quditcircuit.QuditCircuit.xddg">
 <code class="sig-name descname">xddg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qdargs</span></em>, <em class="sig-param"><span class="n">steps</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_qudits/circuit/quditcircuit.html#QuditCircuit.xddg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qiskit_qudits.circuit.quditcircuit.QuditCircuit.xddg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply <code class="xref py py-class docutils literal notranslate"><span class="pre">XDdgGate</span></code>.</p>
+<dd><p>Currently appends other gates directly.
+In future apply <code class="xref py py-class docutils literal notranslate"><span class="pre">XDdgGate</span></code> is planned.</p>
 </dd></dl>
 
 <dl class="py method">

@@ -27,3 +27,12 @@ qiskit\_qudits.circuit.gates.levelswitch
    :members:
    :undoc-members:
    :show-inheritance:
+
+qiskit\_qudits.circuit.gates.singlephase
+----------------------------------------
+
+.. moduleauthor:: Hoang Van Do, Tim Alexis Körner
+.. automodule:: qiskit_qudits.circuit.gates.singlephase
+   :members:
+   :undoc-members:
+   :show-inheritance:
