@@ -39,6 +39,9 @@ class PauliND:
         if len(self.pauli_list) != 3:
             raise ValueError("Invalid phase and generator orders format. "
                              "Please enter a list of length 3.")
+        if d%2 == 0:
+            raise ValueError("Simulator made for high dimension as a prime number higher than 2. "
+                             "Mathematical background will not hold for even dimension.")
 
     def _reduce_orders(self):
         """Bring orders back in Z_p."""
