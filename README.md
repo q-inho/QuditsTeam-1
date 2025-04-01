@@ -8,6 +8,9 @@ We propose to add to QiSkit the capacity to handle qudits following two approach
 1. In the Schrödinger picture; remapping d-dimension qudits to ⌈log₂(d)⌉ qubits, and find the decomposition of qudits gates into qubit gates. The result is the python package qiskit_qudits.
 2. In the Heisenberg picture; using generalized Pauli matrices to write a simulator handling directly gates acting on qudits. The results is the stabilizer_simulator.
 
+## Installation
+Install the package on [Python 3.9](https://www.python.org/downloads/release/python-3913/) using the command \"pip install -e .\" (virtual environment usage strongly advised). The html documentation is already included in \"qiskit_qudits/docs/_build/html\".
+
 ## Team members
 
 Hoang Van Do, Tim Alexis Körner, Inho Choi, Timothé Presles and Élie Gouzien
