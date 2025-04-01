@@ -9,7 +9,8 @@ We propose to add to QiSkit the capacity to handle qudits following two approach
 2. In the Heisenberg picture; using generalized Pauli matrices to write a simulator handling directly gates acting on qudits. The results is the stabilizer_simulator.
 
 ## Installation
-Install the package on [Python 3.9](https://www.python.org/downloads/release/python-3913/) using the command \"pip install -e .\" (virtual environment usage strongly advised). The html documentation is already included in \"qiskit_qudits/docs/_build/html\".
+The installation requires an older python version, e.g. [Python 3.9](https://www.python.org/downloads/release/python-3913/), the usage virtual environment is strongly advised as this repository is no longer mentained and not up to date with the qiskit or numpy package.
+After cloning the repository the package can be installed locally using the command \"pip install -e .\". The html documentation is already included in \"qiskit_qudits/docs/_build/html\".
 
 ## Team members
 
